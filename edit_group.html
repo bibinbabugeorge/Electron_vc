@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="modules/css/style.css" />
+  <script src="modules/EventEmitter.min.js"></script>
+  <script src="RoomClient.js"></script>
+  <script src="RepoClient.js"></script>
+  <script src="bundle.js"></script>
+  <title>Edit Group</title>
+  <link rel="icon" type="image/x-icon" href="modules/images/mobile_view_bg.svg" />
+</head>
+
+<body>
+  <main>
+    <section class="mobile-view-header-section show-in-mobile-view" id="mobileView">
+      <div class="container">
+        <div class="mobile-view-header">
+          <button class="btn back-btn">
+            <svg id="Component_97_3" data-name="Component 97 – 3" xmlns="http://www.w3.org/2000/svg" width="24"
+              height="24" viewBox="0 0 24 24">
+              <rect id="Rectangle_48" data-name="Rectangle 48" width="24" height="24" rx="5"
+                fill="rgba(255,255,255,0)" />
+              <g id="Group_2654" data-name="Group 2654" transform="translate(1.275 -0.458)">
+                <path id="Path_554" data-name="Path 554" d="M634.6,256.467l-6.9-6.926,6.9-6.926"
+                  transform="translate(-625.198 -237.115)" fill="none" stroke="#182024" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" />
+                <line id="Line_54" data-name="Line 54" x2="17" transform="translate(2.725 12.458)" fill="none"
+                  stroke="#182024" stroke-linecap="round" stroke-width="2" />
+              </g>
+            </svg>
+          </button>
+          <h6>Edit Group</h6>
+        </div>
+      </div>
+    </section>
+    <section class="create-group-section mobile-view-main">
+      <div class="container">
+        <div class="create-group-content">
+          <div class="title-content-wrapper hide-in-mobile-view mb-4">
+            <h2>Edit Group</h2>
+          </div>
+          <div class="row g-3">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+              <div class="create-group-inner-content">
+                <div class="title-content-wrapper">
+                  <!-- <h2>Create Group</h2> -->
+                  <!-- <p class="mt-0">Start group calls and have fun</p> -->
+                </div>
+                <div class="group-action-view">
+                  <div class="form-group mb-3">
+                    <!-- <label for="groupName">Group Name</label> -->
+                    <input class="form-control" placeholder="Group Name" type="text" id="groupName" />
+                    <p id="creteGroupNameReqP" style="color: red; display: none; font-size: 14px;">* Group name is
+                      required</p>
+                  </div>
+                  <div class="input-file-btn-view">
+                    <label for="groupIcon" class="form-label">Group Icon</label>
+                    <input class="form-control" placeholder="Group Icon" type="file" id="groupIcon"
+                      accept="image/png, image/jpeg, image/jpg" />
+
+                    <div class="file-image-view">
+                      <img src="modules/images/group_icon.svg" alt="" id="groupImg" />
+                      <button class="btn input-choose-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32"
+                          height="32" viewBox="0 0 32 32">
+                          <defs>
+                            <style>
+                              .choose-btn-icon-1 {
+                                fill: url(#choose-btn-icon-linear-gradient);
+                              }
+
+                              .choose-btn-icon-2 {
+                                fill: #fff;
+                              }
+                            </style>
+                            <linearGradient id="choose-btn-icon-linear-gradient" x1="0.797" y1="0.152" x2="0.261"
+                              y2="0.886" gradientUnits="objectBoundingBox">
+                              <stop offset="0" stop-color="#01bdf4" />
+                              <stop offset="1" stop-color="#009dff" />
+                            </linearGradient>
+                          </defs>
+                          <g id="Group_2835" data-name="Group 2835" transform="translate(-163 -330)">
+                            <circle id="Ellipse_82" data-name="Ellipse 82" class="choose-btn-icon-1" cx="16" cy="16"
+                              r="16" transform="translate(163 330)" />
+                            <path id="Path_576" data-name="Path 576" class="choose-btn-icon-2"
+                              d="M19.4,7.34,16.66,4.6A2,2,0,0,0,14,4.53l-9,9a2,2,0,0,0-.57,1.21L4,18.91A1,1,0,0,0,5,20h.09l4.17-.38a2,2,0,0,0,1.21-.57l9-9a1.92,1.92,0,0,0-.07-2.71ZM16,10.68,13.32,8l1.95-2L18,8.73Z"
+                              transform="translate(167.004 333.942)" />
+                          </g>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="participants-list-view">
+                <div class="participants-list-title">
+                  <h6>Invited Participants</h6>
+                  <p id="memCount">16 Members</p>
+                </div>
+                <a href="invite_participants.html" class="hide-in-desktop-view">
+                  <div class="form-group search-input-field">
+                    <input type="text" placeholder="Search by email ID or name" class="form-control" />
+                  </div>
+                </a>
+                <div class="participants-list main-scroll-style">
+                  <ul class="list-wrapper" id="ParticipantsList">
+                  </ul>
+                </div>
+              </div>
+              <div class="create-group-action-btns">
+                <button id="create-group-button" class="btn main-form-btn">Edit Group</button>
+              </div>
+              <div class="d-flex justify-content-between">
+                <div class="goto-signup">
+                  <p style="display: inline;">Back to</p>
+                  <a style="color: #009DFF;" href="/dashboard.html">Dashboard</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 hide-in-mobile-view">
+              <div class="members-action-list-view hide-in-mobile-view">
+                <div class="title-content-wrapper">
+                  <!-- <h2>Create Group</h2> -->
+                  <p class="mt-0">Add Members</p>
+                </div>
+                <input class="form-control" placeholder="Search by mail ID or name" id="Usersearch" />
+                <div class="members-action-list main-scroll-style">
+                  <ul class="list-wrapper" id="SearchList">
+                    <li id="loader" class="loader" style="margin-left: 280px;margin-top: 50px"></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
+    integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="modules/js/ui.js"></script>
+  <script type="text/javascript" src="modules/js/jquery.listfilter.min.js"></script>
+  <script src="index.js"></script>
+  <script src="EditGroup.js"></script>
+</body>
+
+</html>

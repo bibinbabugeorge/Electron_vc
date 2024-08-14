@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+    <script>
+        var i = 6;
+        var origin = null;
+        var IsUsernameChanged = false;
+        var _UserId = null;
+        var _email = null;
+        var _Logout = false;
+
+        $(document).ready(function() {
+            origin = window.location.origin  
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            if(urlParams =='' || urlParams==null){
+                $("#btnJoin").hide();
+                let url = localStorage.getItem("ReturnURL");
+                if(url!=null){
+                    localStorage.removeItem("ReturnURL");
+                    localStorage.removeItem("RoomId");
+                    DeleteCookie();
+                    _Logout= true;
+                    setTimeout(() => {
+                        window.location.href = url;         
+                    }, 5000);
+                }
+            }
+            else{
+                const Rid = urlParams.get('Rid'); 
+                const Uid = urlParams.get('Uid'); 
+                var RU = urlParams.get('RU');
+                RU = atob(RU); 
+              
+                localStorage.removeItem("ReturnURL");
+                localStorage.removeItem("RoomId");
+                if(Rid != null && Rid != ''&& Rid.length > 4 && Uid != null && Uid != '' && Uid.length > 4){
+                    _UserId = Uid;
+                    if(RU != null && RU != '' && RU.length > 4){
+                        localStorage.setItem("ReturnURL", RU);
+                    }
+                    localStorage.setItem("RoomId", Rid);
+                    if(Uid.toLocaleLowerCase() == 'guest'){
+                        createUser();
+                    }
+                    else{
+                        getUser(Uid);
+                        const UserDetails = JSON.stringify({"userID":Uid,"email":_email,"clientID":"null","name":"null","allowMultiple":false,"isVisible":true,"Notifications":{"MeetingInvitation":true,"NewGroup":true,"MissedCall":true}});
+                        setCookie(UserDetails, 1);
+                    }   
+                }
+                else{
+                    LoadError();
+                }
+            }    
+        });
+
+        function createUser() {
+            var username = "Guest"+(Math.floor(Math.random() * 9999) + 1).toString();
+            var settings = {
+                    "url": `${origin}/createUser`,
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({
+                        "ProjectName": "Guest",
+                        "Name": username,
+                        "Email": '@'+username
+                    }),
+            };
+           $.ajax(settings).done(function (response) {
+                _UserId = response.Data.UserId;
+                const UserDetails = JSON.stringify({"userID":_UserId,"email":_email,"clientID":"null","name":"null","allowMultiple":false,"isVisible":true,"Notifications":{"MeetingInvitation":true,"NewGroup":true,"MissedCall":true}});
+                setCookie(UserDetails, 1);
+           });
+        }
+
+        function LoadError(){
+            _Logout= true;
+            $('#btnJoin').hide();
+            $('#Username').hide();
+            $('#loader').removeClass('bg-primary').addClass('bg-danger');
+            $('#loader-wrapper').removeClass('border-info').addClass('border-danger');
+            $('#loading_text').html("Error: paste a valid url.....")
+                              .addClass('text-danger').css("letter-spacing","2px");
+            // alert("Loading Error, try again");
+        }
+
+        function UsernameChange(){      
+            IsUsernameChanged = true;
+            validate();       
+        }
+
+        function getUser(userid) {    
+            var settings = {
+                "url": `${origin}/getUser?UserId=${userid}`,
+                "method": "GET",
+                "timeout": 0,
+            };
+            $.ajax(settings).done(function (response) {
+                // console.log(response.Data.name);
+                $("#Username").val(response.Data.name)
+            });
+        }
+
+        function UpdateUser() {     
+            if (validate()) {
+                if (IsUsernameChanged) {
+                    var settings = {
+                        "url": `${origin}/updateUser`,
+                        "method": "POST",
+                        "timeout": 0,
+                        "headers": {
+                            "Content-Type": "application/json"
+                        },
+                        "data": JSON.stringify({
+                            "UserId": _UserId,
+                            "Name": ($("#Username").val()).trim()
+                        }),
+                    };
+
+                    $.ajax(settings).done(function (response) {
+                        if (response.Message == "Operation Successful")
+                            location.href = "/confieranceroom.html";
+                        else
+                            alert("Login Failed");
+                    });
+                }
+                else {
+                    location.href = "/confieranceroom.html";
+                }
+            }
+        }
+
+        function validate() {
+            var usename = ($("#Username").val()).trim();
+            var regex = /^[a-zA-Z. ]{2,150}$/;
+            var ret = regex.test(usename);
+            if(ret){
+                $('#validate_user').addClass('d-none')
+            }
+            else{
+                $('#validate_user').removeClass('d-none')
+            }
+            return ret;
+        }
+
+        function callUser() {
+            //https://localhost:3016/WaitingRoom.html?Rid=3068783086893498&Uid=L9qDSCW0lnPuxwrorth8X8K7b72Akn8DuqBe7FBC&RU=aHR0cHM6Ly9sdWNlbnRzdXJnaWNhbC5jb20vbG9naW4=
+            UpdateUser();
+        }
+       
+        function setCookie(UserDetail, expDays) {
+            // create or update
+            let date = new Date();
+            date.setTime(date.getTime() + expDays * 24 * 60 * 60 * 1000);
+            const expires = "expires=" + date.toUTCString();
+            const UserDetails = "user_details=" + UserDetail;
+            document.cookie = UserDetails + "; " + expires + "; path=/";
+        }
+       
+        var refreshIntervalId = setInterval(() => {    
+            if((i--)>1){ 
+                $("#btnJoin").html('Join Call ('+i.toString()+')');
+            }
+            else if(i==0){
+                $("#btnJoin").html('Join Call');
+            }
+        }, 1000);
+
+        function EnableFields() {
+            $("#Username_Wrapper").removeClass("d-none");
+            $("#Loader_Wrapper").addClass("d-none");
+            $("#Loader_Text_Wrapper").addClass("d-none");
+            $("#btnJoin").removeAttr('disabled');
+       }
+
+        setTimeout(() => {
+            clearInterval(refreshIntervalId);
+            //callUser();
+            if(_Logout==false)
+                EnableFields();
+        }, 6000);
+
+        function DeleteCookie() {
+            document.cookie ="user_details=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+        }
+    </script>
+    <style>
+           body{
+            background: rgb(238,174,202);
+            background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+           }
+           #loader-wrapper{
+            width: 250px;
+            border-radius: 10px;
+            overflow:hidden;
+           }
+           #loader {
+              width: 250px;
+              height: 25px;
+              background-color: rgb(36, 28, 28);
+              position: relative;
+              animation-name: example;
+              animation-duration: 5s;
+            }
+            
+            @keyframes example {
+              0%   { width: 10px; }
+              25%  { width: 25px; }
+              50%  { width: 80px; }
+              75%  { width: 140px; }
+              100% { width: 250px; }
+            }
+    </style>
+</head>
+<body class="m-0 p-0 overflow-hidden"> 
+    <div class="d-flex vh-100">       
+        <div class="m-auto">
+            <div class="row">
+                <div class="col-12 mb-3 d-none" id="Username_Wrapper">
+                    <div class="row">
+                        <input class="form-control m-auto" type="text" id="Username" onmousedown="UsernameChange()" onkeydown="UsernameChange()" placeholder="Enter Username" style="width: 250px;">                   
+                    </div>
+                    <div class="row mt-1 d-none" id="validate_user">
+                        <div class="text-danger m-auto" style="width: 250px; padding: 0 4px;">Please provide a valid name.</div>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-3" id="Loader_Wrapper">
+                    <div class="d-flex">
+                        <div class="m-auto">
+                            <div Id="loader-wrapper" class="border border-info">
+                                <div id="loader" class="bg-primary text-white">
+                                    <span style="position: absolute; top:-1px; left:90px;">Loading</span>
+                                </div>
+                            </div>     
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 text-center mb-3" id="Loader_Text_Wrapper">
+                    <h6 style="letter-spacing:5px" id="loading_text">Please wait ...........</h6>
+                </div>
+
+                <div class="col-12">
+                    <div class="row">
+                        <button id="btnJoin" class="btn btn-success m-auto" onclick="callUser()" disabled style="width: 250px;" onclick="callUser()">Join Call</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>       
+</body>
+</html>

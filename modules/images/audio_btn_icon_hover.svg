@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.849" y1="0.238" x2="0.297" y2="0.84" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#182024"/>
+      <stop offset="1" stop-color="#808486"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_3364" data-name="Group 3364" transform="translate(-689 -4243)">
+    <rect id="Rectangle_65" data-name="Rectangle 65" width="48" height="48" rx="24" transform="translate(689 4243)" opacity="0" fill="url(#linear-gradient)"/>
+    <g id="Group_3057" data-name="Group 3057" transform="translate(503.484 3754.578)">
+      <path id="Path_271" data-name="Path 271" d="M3.748,11.219H8.739l7.33-5.864a1.248,1.248,0,0,1,2.028.974v21.01a1.248,1.248,0,0,1-2.028.974l-7.33-5.866H3.748A1.248,1.248,0,0,1,2.5,21.2V12.466a1.248,1.248,0,0,1,1.248-1.248Z" transform="translate(191.5 495.588)" fill="none" stroke="#eaeef0" stroke-linecap="round" stroke-width="1.5"/>
+      <g id="Group_350" data-name="Group 350" transform="translate(217.553 505.002) rotate(45)" opacity="0">
+        <line id="Line_201" data-name="Line 201" y2="10.574" transform="translate(5.287 0)" fill="none" stroke="#eaeef0" stroke-width="1.5"/>
+        <line id="Line_202" data-name="Line 202" y2="10.574" transform="translate(10.574 5.287) rotate(90)" fill="none" stroke="#eaeef0" stroke-width="1.5"/>
+      </g>
+      <path id="Path_550" data-name="Path 550" d="M20.3,9.2a9.356,9.356,0,0,1,0,13.233" transform="translate(193.231 496.286)" fill="none" stroke="#eaeef0" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="Path_551" data-name="Path 551" d="M23.132,6.368a14.354,14.354,0,0,1,0,20.293" transform="translate(193.932 496.227)" fill="none" stroke="#eaeef0" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

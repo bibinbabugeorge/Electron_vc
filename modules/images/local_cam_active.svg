@@ -1,0 +1,25 @@
+<svg id="Component_378_5" data-name="Component 378 – 5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.788" y1="0.211" x2="0.269" y2="0.822" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#808486"/>
+      <stop offset="1" stop-color="#182024"/>
+    </linearGradient>
+  </defs>
+  <rect id="Rectangle_881" data-name="Rectangle 881" width="48" height="48" rx="24" transform="translate(48 48) rotate(180)" opacity="0.1" fill="url(#linear-gradient)"/>
+  <g id="Group_3323" data-name="Group 3323" transform="translate(15.036 15.268)">
+    <g id="Group_3379" data-name="Group 3379" transform="translate(-2.5 -0.5)">
+      <g id="Group_2757" data-name="Group 2757">
+        <g id="Group_367" data-name="Group 367">
+          <path id="Path_416" data-name="Path 416" d="M20.988,17.73H19.1l-.41-1.071a1.82,1.82,0,0,0-1.7-1.16H8.641a1.82,1.82,0,0,0-1.7,1.16l-.41,1.071H4.644A2.947,2.947,0,0,0,1.7,20.675v9.189A2.928,2.928,0,0,0,4.626,32.79H20.971A2.928,2.928,0,0,0,23.9,29.864V20.675A2.894,2.894,0,0,0,20.988,17.73Z" transform="translate(-1.236 -15.268)" fill="none" stroke="#808486" stroke-width="1.2"/>
+        </g>
+      </g>
+      <g id="Ellipse_48" data-name="Ellipse 48" transform="translate(7.965 5.732)" fill="none" stroke="#808486" stroke-width="1.2">
+        <circle cx="4.005" cy="4.005" r="4.005" stroke="none"/>
+        <circle cx="4.005" cy="4.005" r="3.405" fill="none"/>
+      </g>
+    </g>
+  </g>
+  <g id="Mask_Group_3377" data-name="Mask Group 3377" transform="translate(20.398 35.453)">
+    <path id="Path_1428" data-name="Path 1428" d="M5.016,5.016V0H0" transform="translate(0 4.547) rotate(-45)" fill="none" stroke="#808486" stroke-width="1.2"/>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+  <g id="Group_2740" data-name="Group 2740" opacity="0.961">
+    <rect id="Rectangle_147" data-name="Rectangle 147" width="26" height="26" rx="13" fill="#182024" opacity="0.3"/>
+    <g id="Group_2721" data-name="Group 2721" transform="translate(7.918 4.914)">
+      <path id="Path_280" data-name="Path 280" d="M10.368,5.018A5.1,5.1,0,0,0,5.184,0,5.1,5.1,0,0,0,0,5.018" transform="translate(10.368 12.565) rotate(180)" fill="none" stroke="#ff6767" stroke-linejoin="round" stroke-width="1.2"/>
+      <line id="Line_193" data-name="Line 193" y2="2.824" transform="translate(5.166 13.03)" fill="none" stroke="#ff6767" stroke-width="1.2"/>
+      <line id="Line_194" data-name="Line 194" x2="3.445" transform="translate(3.444 15.854)" fill="none" stroke="#ff6767" stroke-width="1.2"/>
+      <g id="Rectangle_133" data-name="Rectangle 133" transform="translate(1.265)" fill="none" stroke="#ff6767" stroke-width="1.2">
+        <rect width="7.696" height="10.774" rx="3.848" stroke="none"/>
+        <rect x="0.6" y="0.6" width="6.496" height="9.574" rx="3.248" fill="none"/>
+      </g>
+      <line id="Line_201" data-name="Line 201" x1="9.748" y2="14.365" transform="translate(0.256 0.257)" fill="none" stroke="#ff6767" stroke-width="1.2"/>
+    </g>
+  </g>
+</svg>

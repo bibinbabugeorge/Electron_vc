@@ -1,0 +1,13 @@
+<svg id="Component_281_7" data-name="Component 281 – 7" xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42">
+  <rect id="Rectangle_207" data-name="Rectangle 207" width="42" height="42" rx="21" fill="#eaeef0"/>
+  <g id="Group_3055" data-name="Group 3055" transform="translate(-49.712 -7.269)">
+    <path id="Path_280" data-name="Path 280" d="M15.451,7.478A7.606,7.606,0,0,0,7.725,0,7.606,7.606,0,0,0,0,7.478" transform="translate(78.437 35.18) rotate(180)" fill="none" stroke="#ff6767" stroke-linejoin="round" stroke-width="1.4"/>
+    <line id="Line_193" data-name="Line 193" y2="4.649" transform="translate(70.685 35.433)" fill="none" stroke="#ff6767" stroke-width="1.4"/>
+    <line id="Line_194" data-name="Line 194" x2="5.133" transform="translate(68.118 40.082)" fill="none" stroke="#ff6767" stroke-width="1.4"/>
+    <g id="Rectangle_133" data-name="Rectangle 133" transform="translate(64.872 16.455)" fill="none" stroke="#ff6767" stroke-width="1.4">
+      <rect width="11.468" height="16.056" rx="5.734" stroke="none"/>
+      <rect x="0.7" y="0.7" width="10.068" height="14.656" rx="5.034" fill="none"/>
+    </g>
+    <line id="Line_201" data-name="Line 201" x1="14.526" y2="21.407" transform="translate(63.369 16.838)" fill="none" stroke="#ff6767" stroke-width="1.4"/>
+  </g>
+</svg>

@@ -1,0 +1,2859 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="modules/css/style.css" />
+  <script src="modules/EventEmitter.min.js"></script>
+  <script src="RoomClient.js"></script>
+  <script src="RepoClient.js"></script>
+  <script src="bundle.js"></script>
+  <title>Apps Connect Home</title>
+  <link rel="icon" type="image/x-icon" href="modules/images/mobile_view_bg.svg" />
+</head>
+
+<body>
+  <header>
+    <section class="header-section">
+      <div class="container">
+        <div>
+          <div class="row">
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-5 col-6">
+              <a href="./dashboard.html">
+                <img src="modules/images/mobile_view_logo.svg" alt="" />
+                <!-- <svg
+                  class="man-logo img-fluid"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  width="213.434"
+                  height="58.831"
+                  viewBox="0 0 213.434 58.831">
+                  <defs>
+                    <style>
+                      .logo-a {
+                        fill: url(#logoIcona);
+                      }
+                      .logo-b {
+                        fill: #fff;
+                      }
+                      .logo-c {
+                        isolation: isolate;
+                      }
+                      .logo-d {
+                        fill: #182024;
+                      }
+                      .logo-e {
+                        fill: #808486;
+                      }
+                    </style>
+                    <linearGradient
+                      id="logoIcona"
+                      x1="1.652"
+                      y1="3.338"
+                      x2="1.659"
+                      y2="3.332"
+                      gradientUnits="objectBoundingBox">
+                      <stop offset="0" stop-color="#01bdf4" />
+                      <stop offset="1" stop-color="#009dff" />
+                    </linearGradient>
+                  </defs>
+                  <g transform="translate(-58.518 -164.814)">
+                    <g transform="translate(58.518 164.814)">
+                      <path
+                        class="logo-a"
+                        d="M107.022,186.458a9.1,9.1,0,0,1,4.472,7.51,8.8,8.8,0,0,1-4.472,8.08l-34.934,20.38a9.089,9.089,0,0,1-9.42-.2,8.773,8.773,0,0,1-4.148-7.593V173.877a9.088,9.088,0,0,1,3.856-7.4,8.827,8.827,0,0,1,9.708-.4Z"
+                        transform="translate(-58.518 -164.814)" />
+                      <circle
+                        class="logo-b"
+                        cx="5.671"
+                        cy="5.671"
+                        r="5.671"
+                        transform="translate(9.072 8.952)" />
+                    </g>
+                    <g class="logo-c" transform="translate(121.649 173.309)">
+                      <g class="logo-c" transform="translate(0 0)">
+                        <path
+                          class="logo-d"
+                          d="M158.876,176.048v2.737H145.259v7.767h12.694v2.737H145.259v8.452h13.72v2.737H142.008v-24.43Z"
+                          transform="translate(-142.008 -176.048)" />
+                        <path
+                          class="logo-d"
+                          d="M172.065,184.83v2.4h.069a4.358,4.358,0,0,1,2.258-2.139,8.445,8.445,0,0,1,3.388-.667,7.988,7.988,0,0,1,3.576.753,7.286,7.286,0,0,1,2.532,2.036,9.024,9.024,0,0,1,1.522,2.96,12.055,12.055,0,0,1,.513,3.558,12.49,12.49,0,0,1-.5,3.558,8.4,8.4,0,0,1-1.5,2.925,7.094,7.094,0,0,1-2.532,1.968,8.212,8.212,0,0,1-3.542.718,8.789,8.789,0,0,1-1.454-.136,8.124,8.124,0,0,1-1.591-.445,6.182,6.182,0,0,1-1.488-.838,4.677,4.677,0,0,1-1.18-1.317h-.069v9.1h-2.908V184.83Zm10.452,6.278a6.488,6.488,0,0,0-.992-2.1,4.859,4.859,0,0,0-1.71-1.471,5.2,5.2,0,0,0-2.446-.547,4.8,4.8,0,0,0-4.174,2.1,6.357,6.357,0,0,0-.941,2.138,10.28,10.28,0,0,0-.29,2.43,10.17,10.17,0,0,0,.308,2.515,6.215,6.215,0,0,0,.975,2.138,4.973,4.973,0,0,0,1.729,1.488,5.39,5.39,0,0,0,2.566.565,4.972,4.972,0,0,0,2.515-.582,4.677,4.677,0,0,0,1.626-1.54,6.711,6.711,0,0,0,.889-2.189,11.7,11.7,0,0,0,.273-2.532A9.033,9.033,0,0,0,182.518,191.108Z"
+                          transform="translate(-148.628 -178.089)" />
+                        <path
+                          class="logo-d"
+                          d="M196.079,179.606v-3.558h2.909v3.558Zm2.909,3.182v17.689h-2.909V182.788Z"
+                          transform="translate(-155.193 -176.048)" />
+                        <path
+                          class="logo-d"
+                          d="M216.162,187.909a4.418,4.418,0,0,0-2.943-.923,5.42,5.42,0,0,0-2.634.581,4.688,4.688,0,0,0-1.693,1.54,6.479,6.479,0,0,0-.907,2.207,12,12,0,0,0-.274,2.583,9.81,9.81,0,0,0,.291,2.395,6.408,6.408,0,0,0,.907,2.07,4.585,4.585,0,0,0,1.608,1.454,4.809,4.809,0,0,0,2.361.547,4.76,4.76,0,0,0,3.37-1.129,5.1,5.1,0,0,0,1.488-3.182h2.976a8.15,8.15,0,0,1-2.446,5.064,7.686,7.686,0,0,1-5.354,1.778,9.226,9.226,0,0,1-3.575-.65,6.915,6.915,0,0,1-2.6-1.848,7.974,7.974,0,0,1-1.574-2.857,11.908,11.908,0,0,1-.53-3.644,12.965,12.965,0,0,1,.513-3.712,8.581,8.581,0,0,1,1.556-3.011,7.3,7.3,0,0,1,2.618-2.019,8.566,8.566,0,0,1,3.661-.736,10.71,10.71,0,0,1,2.822.359,6.891,6.891,0,0,1,2.327,1.112,6.077,6.077,0,0,1,1.66,1.9,7.012,7.012,0,0,1,.821,2.72H217.6A4.435,4.435,0,0,0,216.162,187.909Z"
+                          transform="translate(-157.278 -178.089)" />
+                        <path
+                          class="logo-d"
+                          d="M247.947,176.048l7.7,20.529,7.732-20.529h4.448v24.43h-3.08V180.154h-.068l-7.63,20.324h-2.771l-7.63-20.324h-.069v20.324H243.5v-24.43Z"
+                          transform="translate(-166.756 -176.048)" />
+                        <path
+                          class="logo-d"
+                          d="M294.4,201.389a8.027,8.027,0,0,1-5,1.506,9.09,9.09,0,0,1-3.679-.684,7.25,7.25,0,0,1-2.618-1.915,8.148,8.148,0,0,1-1.59-2.943,14.184,14.184,0,0,1-.6-3.729,10.649,10.649,0,0,1,.616-3.7,8.833,8.833,0,0,1,1.729-2.908A7.832,7.832,0,0,1,285.9,185.1a8.043,8.043,0,0,1,3.335-.684,7.258,7.258,0,0,1,3.918.975,7.755,7.755,0,0,1,2.5,2.48,9.813,9.813,0,0,1,1.3,3.285,14.088,14.088,0,0,1,.291,3.388H284a7.008,7.008,0,0,0,.275,2.206,4.972,4.972,0,0,0,.992,1.847,4.876,4.876,0,0,0,1.745,1.283,6.012,6.012,0,0,0,2.5.479,5.036,5.036,0,0,0,3.028-.855,4.14,4.14,0,0,0,1.557-2.6h2.874A7.074,7.074,0,0,1,294.4,201.389Zm-.7-11.359a4.991,4.991,0,0,0-1.06-1.591,5.053,5.053,0,0,0-1.574-1.061,4.99,4.99,0,0,0-2-.393,5.073,5.073,0,0,0-2.036.393,4.688,4.688,0,0,0-1.556,1.078,5.154,5.154,0,0,0-1.028,1.591,6.072,6.072,0,0,0-.445,1.934h10.162A5.959,5.959,0,0,0,293.7,190.03Z"
+                          transform="translate(-175.88 -178.089)" />
+                        <path
+                          class="logo-d"
+                          d="M318.7,201.389a8.028,8.028,0,0,1-5,1.506,9.087,9.087,0,0,1-3.678-.684,7.25,7.25,0,0,1-2.618-1.915,8.148,8.148,0,0,1-1.59-2.943,14.154,14.154,0,0,1-.6-3.729,10.65,10.65,0,0,1,.616-3.7,8.845,8.845,0,0,1,1.728-2.908,7.841,7.841,0,0,1,2.635-1.916,8.043,8.043,0,0,1,3.335-.684,7.258,7.258,0,0,1,3.918.975,7.755,7.755,0,0,1,2.5,2.48,9.829,9.829,0,0,1,1.3,3.285,14.165,14.165,0,0,1,.291,3.388H308.3a7.03,7.03,0,0,0,.274,2.206,4.974,4.974,0,0,0,.993,1.847,4.869,4.869,0,0,0,1.745,1.283,6.011,6.011,0,0,0,2.5.479,5.036,5.036,0,0,0,3.028-.855,4.139,4.139,0,0,0,1.557-2.6h2.873A7.07,7.07,0,0,1,318.7,201.389ZM318,190.03a4.989,4.989,0,0,0-1.06-1.591,5.053,5.053,0,0,0-1.574-1.061,4.989,4.989,0,0,0-2-.393,5.073,5.073,0,0,0-2.036.393,4.7,4.7,0,0,0-1.557,1.078,5.167,5.167,0,0,0-1.027,1.591,6.073,6.073,0,0,0-.445,1.934h10.162A5.957,5.957,0,0,0,318,190.03Z"
+                          transform="translate(-181.805 -178.089)" />
+                        <path
+                          class="logo-d"
+                          d="M337.735,183.252v2.566h-3.524V196.8a3.148,3.148,0,0,0,.085.82.841.841,0,0,0,.325.479,1.43,1.43,0,0,0,.667.222,9.557,9.557,0,0,0,1.112.051h1.334v2.566h-2.223a10.419,10.419,0,0,1-1.934-.154,2.842,2.842,0,0,1-1.3-.565,2.407,2.407,0,0,1-.735-1.163,6.7,6.7,0,0,1-.24-1.985V185.818h-3.01v-2.566h3.01v-5.3h2.909v5.3Z"
+                          transform="translate(-187.432 -176.512)" />
+                      </g>
+                    </g>
+                    <g class="logo-c" transform="translate(118.981 209.067)">
+                      <g class="logo-c" transform="translate(0 0)">
+                        <path
+                          class="logo-e"
+                          d="M141.1,231.781l-2.623-8.187h1.066l2.132,7.1h.021l2.153-7.1h1.035l-2.655,8.187Z"
+                          transform="translate(-138.479 -223.4)" />
+                        <path
+                          class="logo-e"
+                          d="M153.2,223.594v8.187H152.2v-8.187Z"
+                          transform="translate(-141.826 -223.4)" />
+                        <path
+                          class="logo-e"
+                          d="M162.435,223.594a3.52,3.52,0,0,1,2.655.963,4.083,4.083,0,0,1,.93,2.935,7.248,7.248,0,0,1-.209,1.829,3.53,3.53,0,0,1-.648,1.341,2.817,2.817,0,0,1-1.118.832,4.133,4.133,0,0,1-1.61.286h-2.56v-8.187Zm.084,7.27a3.86,3.86,0,0,0,.418-.029,2.171,2.171,0,0,0,.533-.138,2.317,2.317,0,0,0,.559-.315,1.975,1.975,0,0,0,.5-.562,3.3,3.3,0,0,0,.36-.888,5.083,5.083,0,0,0,.141-1.29,6.047,6.047,0,0,0-.13-1.313,2.649,2.649,0,0,0-.429-.986,1.9,1.9,0,0,0-.768-.619,2.82,2.82,0,0,0-1.161-.212h-1.672v6.352Z"
+                          transform="translate(-143.696 -223.4)" />
+                        <path
+                          class="logo-e"
+                          d="M178.905,223.594v.918h-4.16v2.6h3.878v.917h-3.878v2.833h4.191v.916h-5.184v-8.187Z"
+                          transform="translate(-147.08 -223.4)" />
+                        <path
+                          class="logo-e"
+                          d="M186.016,226.015a4.216,4.216,0,0,1,.675-1.371,3.345,3.345,0,0,1,1.119-.951,3.588,3.588,0,0,1,3.114,0,3.36,3.36,0,0,1,1.119.951,4.215,4.215,0,0,1,.674,1.371,5.888,5.888,0,0,1,0,3.221,4.214,4.214,0,0,1-.674,1.371,3.361,3.361,0,0,1-5.352,0,4.216,4.216,0,0,1-.675-1.371,5.908,5.908,0,0,1,0-3.221Zm.915,2.832a3.48,3.48,0,0,0,.46,1.084,2.448,2.448,0,0,0,.805.774,2.493,2.493,0,0,0,2.341,0,2.438,2.438,0,0,0,.8-.774,3.46,3.46,0,0,0,.46-1.084,5.156,5.156,0,0,0,0-2.442,3.453,3.453,0,0,0-.46-1.084,2.427,2.427,0,0,0-.8-.774,2.487,2.487,0,0,0-2.341,0,2.437,2.437,0,0,0-.805.774,3.472,3.472,0,0,0-.46,1.084,5.156,5.156,0,0,0,0,2.442Z"
+                          transform="translate(-150.016 -223.337)" />
+                        <path
+                          class="logo-e"
+                          d="M213.377,224.69a2.162,2.162,0,0,0-1.354-.436,2.243,2.243,0,0,0-1.144.275,2.335,2.335,0,0,0-.784.74,3.348,3.348,0,0,0-.454,1.061,5.171,5.171,0,0,0-.147,1.238,5.8,5.8,0,0,0,.147,1.325,3.326,3.326,0,0,0,.454,1.089,2.31,2.31,0,0,0,.789.74,2.276,2.276,0,0,0,1.15.275,2.038,2.038,0,0,0,.872-.178,1.977,1.977,0,0,0,.659-.493,2.293,2.293,0,0,0,.433-.751,3.373,3.373,0,0,0,.189-.941h.993a3.894,3.894,0,0,1-.972,2.408,2.989,2.989,0,0,1-2.259.86,3.323,3.323,0,0,1-1.515-.327,3.025,3.025,0,0,1-1.077-.9,4.01,4.01,0,0,1-.643-1.353,6.288,6.288,0,0,1-.214-1.674,5.942,5.942,0,0,1,.23-1.679,4.18,4.18,0,0,1,.674-1.37,3.191,3.191,0,0,1,1.108-.923,3.307,3.307,0,0,1,1.521-.338,3.517,3.517,0,0,1,1.108.172,2.869,2.869,0,0,1,.93.5,2.782,2.782,0,0,1,.68.832,3.26,3.26,0,0,1,.355,1.152h-.993A2.058,2.058,0,0,0,213.377,224.69Z"
+                          transform="translate(-155.554 -223.337)" />
+                        <path
+                          class="logo-e"
+                          d="M222.783,226.015a4.215,4.215,0,0,1,.674-1.371,3.359,3.359,0,0,1,1.119-.951,3.588,3.588,0,0,1,3.114,0,3.35,3.35,0,0,1,1.118.951,4.2,4.2,0,0,1,.675,1.371,5.888,5.888,0,0,1,0,3.221,4.2,4.2,0,0,1-.675,1.371,3.36,3.36,0,0,1-5.351,0,4.215,4.215,0,0,1-.674-1.371,5.907,5.907,0,0,1,0-3.221Zm.915,2.832a3.461,3.461,0,0,0,.46,1.084,2.438,2.438,0,0,0,.8.774,2.495,2.495,0,0,0,2.342,0,2.428,2.428,0,0,0,.8-.774,3.445,3.445,0,0,0,.461-1.084,5.182,5.182,0,0,0,0-2.442,3.438,3.438,0,0,0-.461-1.084,2.418,2.418,0,0,0-.8-.774,2.489,2.489,0,0,0-2.342,0,2.428,2.428,0,0,0-.8.774,3.454,3.454,0,0,0-.46,1.084,5.156,5.156,0,0,0,0,2.442Z"
+                          transform="translate(-158.981 -223.337)" />
+                        <path
+                          class="logo-e"
+                          d="M238.8,223.594l3.93,6.639h.02v-6.639h.941v8.187h-1.087l-3.9-6.569h-.021v6.569h-.941v-8.187Z"
+                          transform="translate(-162.685 -223.4)" />
+                        <path
+                          class="logo-e"
+                          d="M256.789,223.594v.918h-3.909v2.6h3.428v.917h-3.428v3.749h-.993v-8.187Z"
+                          transform="translate(-166.133 -223.4)" />
+                        <path
+                          class="logo-e"
+                          d="M269.121,223.594v.918h-4.16v2.6h3.878v.917h-3.878v2.833h4.191v.916h-5.183v-8.187Z"
+                          transform="translate(-169.079 -223.4)" />
+                        <path
+                          class="logo-e"
+                          d="M280.073,223.594a2.314,2.314,0,0,1,1.667.574,2.066,2.066,0,0,1,.6,1.571,2.671,2.671,0,0,1-.309,1.307,1.6,1.6,0,0,1-.988.768v.023a1.274,1.274,0,0,1,.528.229,1.212,1.212,0,0,1,.324.384,1.835,1.835,0,0,1,.178.5q.057.276.089.573t.032.608a5.728,5.728,0,0,0,.052.608,4.037,4.037,0,0,0,.12.567,1.445,1.445,0,0,0,.236.476h-1.108a.712.712,0,0,1-.142-.344,3.854,3.854,0,0,1-.046-.487c-.008-.179-.014-.373-.021-.579a4.474,4.474,0,0,0-.062-.607c-.029-.2-.063-.388-.105-.568a1.4,1.4,0,0,0-.2-.47,1,1,0,0,0-.355-.321,1.22,1.22,0,0,0-.585-.12h-2.424v3.5h-.993v-8.187Zm.209,3.715a1.353,1.353,0,0,0,.549-.223,1.185,1.185,0,0,0,.376-.448,1.616,1.616,0,0,0,.141-.728,1.561,1.561,0,0,0-.313-1.009,1.228,1.228,0,0,0-1.014-.389h-2.467v2.855h2.069A3.627,3.627,0,0,0,280.281,227.309Z"
+                          transform="translate(-172.149 -223.4)" />
+                        <path
+                          class="logo-e"
+                          d="M295.327,223.594v.918h-4.16v2.6h3.878v.917h-3.878v2.833h4.191v.916h-5.183v-8.187Z"
+                          transform="translate(-175.469 -223.4)" />
+                        <path
+                          class="logo-e"
+                          d="M303.808,223.594l3.931,6.639h.02v-6.639h.941v8.187h-1.087l-3.9-6.569h-.02v6.569h-.941v-8.187Z"
+                          transform="translate(-178.536 -223.4)" />
+                        <path
+                          class="logo-e"
+                          d="M321.284,224.69a2.162,2.162,0,0,0-1.353-.436,2.242,2.242,0,0,0-1.143.275,2.321,2.321,0,0,0-.784.74,3.331,3.331,0,0,0-.455,1.061,5.173,5.173,0,0,0-.146,1.238,5.8,5.8,0,0,0,.146,1.325,3.31,3.31,0,0,0,.455,1.089,2.3,2.3,0,0,0,.789.74,2.271,2.271,0,0,0,1.149.275,2.036,2.036,0,0,0,.872-.178,1.977,1.977,0,0,0,.659-.493,2.294,2.294,0,0,0,.434-.751,3.4,3.4,0,0,0,.188-.941h.993a3.89,3.89,0,0,1-.972,2.408,2.987,2.987,0,0,1-2.258.86,3.324,3.324,0,0,1-1.515-.327,3.032,3.032,0,0,1-1.077-.9,4.01,4.01,0,0,1-.643-1.353,6.289,6.289,0,0,1-.214-1.674,5.939,5.939,0,0,1,.23-1.679,4.178,4.178,0,0,1,.674-1.37,3.191,3.191,0,0,1,1.108-.923,3.307,3.307,0,0,1,1.521-.338,3.513,3.513,0,0,1,1.108.172,2.87,2.87,0,0,1,.93.5,2.771,2.771,0,0,1,.68.832,3.275,3.275,0,0,1,.355,1.152h-.994A2.055,2.055,0,0,0,321.284,224.69Z"
+                          transform="translate(-181.866 -223.337)" />
+                        <path
+                          class="logo-e"
+                          d="M336.171,223.594v.918h-4.16v2.6h3.878v.917h-3.878v2.833H336.2v.916h-5.183v-8.187Z"
+                          transform="translate(-185.429 -223.4)" />
+                      </g>
+                    </g>
+                  </g>
+                </svg> -->
+              </a>
+            </div>
+            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-7 col-6">
+              <div class="header-btns pull-right">
+                <a href="./create_group.html" class="btn group-btn create-group-btn hide-in-mobile-view">
+                  <svg class="group-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                    <defs>
+                      <style>
+                        .group-a {
+                          fill: #fff;
+                          stroke: #707070;
+                          opacity: 0;
+                        }
+
+                        .group-b,
+                        .group-d {
+                          fill: none;
+                        }
+
+                        .group-b {
+                          stroke: #182024;
+                          stroke-width: 1.5px;
+                        }
+
+                        .group-c {
+                          stroke: none;
+                        }
+                      </style>
+                    </defs>
+                    <g transform="translate(-1090 -329)">
+                      <g class="group-a" transform="translate(1090 329)">
+                        <rect class="group-c" width="30" height="30" rx="15" />
+                        <rect class="group-d" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+                      </g>
+                      <g transform="translate(-4 -5)">
+                        <g class="group-b" transform="translate(1101 339.195)">
+                          <rect class="group-c" width="8.902" height="8.902" rx="4.451" />
+                          <rect class="group-d" x="0.75" y="0.75" width="7.402" height="7.402" rx="3.701" />
+                        </g>
+                        <path class="group-b" d="M0,0A7.955,7.955,0,0,1,7.955,7.955,7.955,7.955,0,0,1,0,15.91"
+                          transform="translate(1097.497 358.528) rotate(-90)" />
+                      </g>
+                      <g transform="translate(3 -9)">
+                        <path class="group-b"
+                          d="M4.711.29A3.37,3.37,0,0,1,6.936,3.513,3.445,3.445,0,0,1,3.491,6.958,3.508,3.508,0,0,1,.2,4.52"
+                          transform="matrix(0.454, -0.891, 0.891, 0.454, 1100.894, 346.542)" />
+                        <path class="group-b" d="M6.672,6.183a6.924,6.924,0,0,1,.456,2.545A7.128,7.128,0,0,1,0,15.856"
+                          transform="translate(1097.495 359.272) rotate(-90)" />
+                      </g>
+                    </g>
+                  </svg>
+                  Create Group
+                </a>
+                <a href="./schedule_meeting.html" class="btn schedule-btn hide-in-mobile-view">
+                  <svg class="schedule-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                    viewBox="0 0 30 30">
+                    <defs>
+                      <style>
+                        .schedule-a {
+                          fill: #fff;
+                          stroke: #707070;
+                          opacity: 0;
+                        }
+
+                        .schedule-b {
+                          fill: #182024;
+                          stroke: #182024;
+                          stroke-width: 0.3px;
+                        }
+
+                        .schedule-c {
+                          stroke: none;
+                        }
+
+                        .schedule-d {
+                          fill: none;
+                        }
+                      </style>
+                    </defs>
+                    <g transform="translate(-1090 -329)">
+                      <g class="schedule-a" transform="translate(1090 329)">
+                        <rect class="schedule-c" width="30" height="30" rx="15" />
+                        <rect class="schedule-d" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+                      </g>
+                      <g transform="translate(1081.836 320.836)">
+                        <path class="schedule-b"
+                          d="M23.266,13.3a9.966,9.966,0,1,0,9.966,9.966A9.966,9.966,0,0,0,23.266,13.3Zm0,18.988a9.022,9.022,0,1,1,9.022-9.022A9.035,9.035,0,0,1,23.266,32.288Z"
+                          transform="translate(-0.402 -0.402)" />
+                        <path class="schedule-b"
+                          d="M62.627,39.1v-3.99a.513.513,0,1,0-1.027,0v4.2a.558.558,0,0,0,.15.364l3.911,1.8a.517.517,0,0,0,.727,0,.53.53,0,0,0,0-.727Z"
+                          transform="translate(-39.282 -16.757)" />
+                      </g>
+                    </g>
+                  </svg>
+                  Schedule a Call
+                </a>
+                <a href="./confieranceroom.html" class="btn make-call-btn hide-in-mobile-view text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                    <defs>
+                      <style>
+                        .make-call-a,
+                        .make-call-b {
+                          fill: #fff;
+                        }
+
+                        .make-call-a {
+                          stroke: #707070;
+                          opacity: 0;
+                        }
+
+                        .make-call-c {
+                          stroke: none;
+                        }
+
+                        .make-call-d {
+                          fill: none;
+                        }
+                      </style>
+                    </defs>
+                    <g transform="translate(-1090 -329)">
+                      <g class="make-call-a" transform="translate(1090 329)">
+                        <rect class="make-call-c" width="30" height="30" rx="15" />
+                        <rect class="make-call-d" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+                      </g>
+                      <path class="make-call-b" d="M0,6V17.017H13.221V13.161l4.407,2.2V7.653l-4.407,2.2V6Z"
+                        transform="translate(1096.092 332.307)" />
+                    </g>
+                  </svg>
+
+                  Make a Call
+                </a>
+                <a href="./scheduled_meetings_mobile.html" class="btn header-schedule-btn show-in-mobile-view">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                    <defs>
+                      <style>
+                        .header-schedule-btn-icon-a {
+                          fill: #fff;
+                          stroke-width: 0.4px;
+                          opacity: 0;
+                        }
+
+                        .header-schedule-btn-icon-a,
+                        .header-schedule-btn-icon-b {
+                          stroke: #808486;
+                        }
+
+                        .header-schedule-btn-icon-b {
+                          fill: #808486;
+                          stroke-width: 0.5px;
+                        }
+
+                        .header-schedule-btn-icon-c {
+                          stroke: none;
+                        }
+
+                        .header-schedule-btn-icon-d {
+                          fill: none;
+                        }
+                      </style>
+                    </defs>
+                    <g class="header-schedule-btn-icon-a">
+                      <rect class="header-schedule-btn-icon-c" width="30" height="30" />
+                      <rect class="header-schedule-btn-icon-d" x="0.2" y="0.2" width="29.6" height="29.6" />
+                    </g>
+                    <g transform="translate(-9.163 -9.163)">
+                      <path class="header-schedule-btn-icon-b"
+                        d="M24.265,13.3A10.965,10.965,0,1,0,35.23,24.265,10.965,10.965,0,0,0,24.265,13.3Zm0,20.892a9.927,9.927,0,1,1,9.927-9.927A9.941,9.941,0,0,1,24.265,34.192Z"
+                        transform="translate(-0.402 -0.402)" />
+                      <path class="header-schedule-btn-icon-b"
+                        d="M62.77,39.734V35.185a.585.585,0,1,0-1.17,0v4.792a.636.636,0,0,0,.171.415l4.458,2.052a.589.589,0,0,0,.829,0,.6.6,0,0,0,0-.829Z"
+                        transform="translate(-38.372 -16.482)" />
+                    </g>
+                  </svg>
+                </a>
+                <div class="settings-container btn-active hide-in-mobile-view">
+                  <button class="settings-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32.59" height="32.001" viewBox="0 0 32.59 32.001">
+                      <defs>
+                        <style>
+                          .settings-img-a {
+                            fill: #fff;
+                            stroke-width: 0.4px;
+                            opacity: 0;
+                          }
+
+                          .settings-img-a,
+                          .settings-img-b {
+                            stroke: #808486;
+                          }
+
+                          .settings-img-b {
+                            fill: #808486;
+                            stroke-width: 0.5px;
+                          }
+
+                          .settings-img-c {
+                            stroke: none;
+                          }
+
+                          .settings-img-d {
+                            fill: none;
+                          }
+                        </style>
+                      </defs>
+                      <g transform="translate(0.317 0.001)">
+                        <g class="settings-img-a">
+                          <rect class="settings-img-c" width="32" height="32" />
+                          <rect class="settings-img-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                        </g>
+                        <g class="settings-img-g" transform="translate(10.852 0.354) rotate(30)">
+                          <path class="settings-img-b"
+                            d="M18.682,24.714H9.438A2.723,2.723,0,0,1,7.06,23.42L2.2,15.017a2.185,2.185,0,0,1,0-2.21L7.06,4.4A2.723,2.723,0,0,1,9.438,3.11h9.243A2.723,2.723,0,0,1,21.06,4.463l4.857,8.4a2.185,2.185,0,0,1,0,2.21l-4.857,8.4a2.723,2.723,0,0,1-2.378,1.235ZM9.438,4.429a1.487,1.487,0,0,0-1.294.664L3.287,13.5a.924.924,0,0,0,0,.95l4.857,8.4a1.487,1.487,0,0,0,1.294.664h9.243a1.487,1.487,0,0,0,1.294-.664l4.857-8.4a.924.924,0,0,0,0-.95l-4.857-8.4a1.487,1.487,0,0,0-1.294-.664Z"
+                            transform="translate(-1.903 -3.109)" />
+                          <path class="settings-img-b"
+                            d="M15.452,19.914a4.832,4.832,0,1,1,4.832-4.832A4.832,4.832,0,0,1,15.452,19.914Zm0-8.4a3.571,3.571,0,1,0,3.571,3.571A3.571,3.571,0,0,0,15.452,11.51Z"
+                            transform="translate(-3.295 -4.249)" />
+                        </g>
+                      </g>
+                    </svg>
+                  </button>
+                  <div class="settings-list">
+                    <ul class="list-common-wrap">
+                      <li class="inline-content">
+                        <div class="row">
+                          <div class="col-2">
+                            <div class="input-file-btn-view">
+                              <input class="form-control" placeholder="Group Icon" type="file" id="groupIcon"
+                                accept="image/png, image/jpeg, image/jpg" />
+
+                              <div class="file-image-view">
+                                <img src="modules/images/default_user.svg" alt="" class="Img_ProfilePic" />
+                                <button class="btn input-choose-btn">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="32" height="32" viewBox="0 0 32 32">
+                                    <defs>
+                                      <style>
+                                        .choose-btn-icon-1 {
+                                          fill: url(#choose-btn-icon-linear-gradient);
+                                        }
+
+                                        .choose-btn-icon-2 {
+                                          fill: #fff;
+                                        }
+                                      </style>
+                                      <linearGradient id="choose-btn-icon-linear-gradient" x1="0.797" y1="0.152"
+                                        x2="0.261" y2="0.886" gradientUnits="objectBoundingBox">
+                                        <stop offset="0" stop-color="#01bdf4" />
+                                        <stop offset="1" stop-color="#009dff" />
+                                      </linearGradient>
+                                    </defs>
+                                    <g id="Group_2835" data-name="Group 2835" transform="translate(-163 -330)">
+                                      <circle id="Ellipse_82" data-name="Ellipse 82" class="choose-btn-icon-1" cx="16"
+                                        cy="16" r="16" transform="translate(163 330)" />
+                                      <path id="Path_576" data-name="Path 576" class="choose-btn-icon-2"
+                                        d="M19.4,7.34,16.66,4.6A2,2,0,0,0,14,4.53l-9,9a2,2,0,0,0-.57,1.21L4,18.91A1,1,0,0,0,5,20h.09l4.17-.38a2,2,0,0,0,1.21-.57l9-9a1.92,1.92,0,0,0-.07-2.71ZM16,10.68,13.32,8l1.95-2L18,8.73Z"
+                                        transform="translate(167.004 333.942)" />
+                                    </g>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-10 col-sm-10 col-10">
+                            <div class="add-member-details">
+                              <h6 class="lbl_Username">Brown Smith</h6>
+                              <p class="lbl_email">
+                                brownsmith07@appsteamtechnologies.com
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <a href="./forgot-password.html" class="change-password">Change Password</a>
+                      </li>
+                      <li class="email-radio-btn">
+                        <div class="row">
+                          <div class="col-md-9 col-sm-9 col-9">
+                            <p>
+                              People can contact you using your email address
+                            </p>
+                          </div>
+                          <div class="col-3">
+                            <div class="toggle-switch pull-right">
+                              <label class="switch">
+                                <input type="checkbox" id="ContactVisibilityToggle" />
+                                <span class="slider round"></span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <a data-bs-toggle="modal" data-bs-target="#notificationSettings" href="#">Notification
+                          Settings</a>
+                      </li>
+                      <li>
+                        <a data-bs-toggle="modal" data-bs-target="#blockedUsers" href="#">Blocked Users</a>
+                      </li>
+                      <li>
+                        <a href="./help-feedback.html">Help & Feedback</a>
+                      </li>
+                      <li>
+                        <a data-bs-toggle="modal" data-bs-target="#callHistory" href="#">
+                          Call History</a>
+                      </li>
+                      <li>
+                        <a data-bs-toggle="modal" data-bs-target="#logoutPopup" href="#">Logout</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="notification-container btn-active">
+                  <button class="notification-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="33.327" viewBox="0 0 32 33.327">
+                      <defs>
+                        <style>
+                          .notification-img-a {
+                            fill: #fff;
+                            stroke-width: 0.4px;
+                            opacity: 0;
+                          }
+
+                          .notification-img-a,
+                          .notification-img-b {
+                            stroke: #808486;
+                          }
+
+                          .notification-img-b,
+                          .notification-img-d {
+                            fill: none;
+                          }
+
+                          .notification-img-b {
+                            stroke-width: 1.8px;
+                          }
+
+                          .notification-img-c {
+                            stroke: none;
+                          }
+                        </style>
+                      </defs>
+                      <g transform="translate(0 0.162)">
+                        <g class="notification-img-a">
+                          <rect class="notification-img-c" width="32" height="32" />
+                          <rect class="notification-img-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                        </g>
+                        <path class="notification-img-b"
+                          d="M11.177,20.916a4.014,4.014,0,0,1,1.655.411h.031a1.024,1.024,0,0,1,.166,1.419,3.564,3.564,0,0,1-2.68,1.511,4.262,4.262,0,0,1-3.1-.853,1.879,1.879,0,0,1-.807-1.347c0-.576.538-.843,1.035-.956a8.62,8.62,0,0,1,1.769-.185h1.935ZM9.873,0c3.58,0,7.274,2.591,7.657,6.343.062.771,0,1.573.062,2.354a5.815,5.815,0,0,0,1.355,2.714,4.229,4.229,0,0,1,.714,2.128h0v.236a4.23,4.23,0,0,1-1.035,2.8,5.186,5.186,0,0,1-3.259,1.614,43.619,43.619,0,0,1-11.1,0,5.186,5.186,0,0,1-3.3-1.614A4.167,4.167,0,0,1,0,13.776V13.54A4.33,4.33,0,0,1,.7,11.412,5.928,5.928,0,0,0,2.071,8.7c.062-.781,0-1.573.062-2.354C2.527,2.591,6.148,0,9.769,0h.1Z"
+                          transform="translate(13.558 1.068) rotate(30)" />
+                      </g>
+                    </svg>
+                  </button>
+                  <div class="notification-list">
+                    <ul id="NotificationUl" class="main-scroll-style">
+                      <li id="loader" class="loader"></li>
+                      <!-- <li>
+                        <div class="row">
+                          <div class="col-2">
+                            <div class="notification-icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="30" height="30" viewBox="0 0 30 30">
+                                <defs>
+                                  <style>
+                                    .video-miss-a {
+                                      fill: url(#VideoMissa);
+                                    }
+
+                                    .video-miss-b {
+                                      fill: #fff;
+                                    }
+                                  </style>
+                                  <linearGradient id="VideoMissa" x1="0.825" y1="0.126" x2="0.209" y2="0.902"
+                                    gradientUnits="objectBoundingBox">
+                                    <stop offset="0" stop-color="#01bdf4" />
+                                    <stop offset="1" stop-color="#009dff" />
+                                  </linearGradient>
+                                </defs>
+                                <g transform="translate(-1090 -329)">
+                                  <rect class="video-miss-a" width="30" height="30" rx="15"
+                                    transform="translate(1090 329)" />
+                                  <path class="video-miss-b"
+                                    d="M16.873,17.69a.818.818,0,0,0,.816-.816V14.025a.818.818,0,0,0-.816-.816,9.309,9.309,0,0,1-2.913-.465.685.685,0,0,0-.253-.041.836.836,0,0,0-.579.237l-1.8,1.8A12.363,12.363,0,0,1,5.954,9.357l1.8-1.8a.819.819,0,0,0,.2-.832,9.271,9.271,0,0,1-.465-2.913A.818.818,0,0,0,6.672,3H3.816A.818.818,0,0,0,3,3.816,13.872,13.872,0,0,0,16.873,17.69Zm-2.938-3.248a10.407,10.407,0,0,0,2.122.367v1.216a12.589,12.589,0,0,1-3.1-.612ZM4.657,4.632H5.881a10.609,10.609,0,0,0,.375,2.114l-.979.979A12.1,12.1,0,0,1,4.657,4.632Z"
+                                    transform="translate(1095.102 334.102)" />
+                                </g>
+                              </svg>
+                            </div>
+                          </div>
+                          <div class="col-md-6 col-sm-6 col-6">
+                            <div class="notification-details">
+                              <p>
+                                You missed a group video call from
+                                <span>Lions Club</span>
+                              </p>
+                              <p class="time-date">June 26th, 07:00 PM</p>
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-sm-4 col-4">
+                            <div class="call-join-btn-container">
+                              <button class="call-join-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                  width="30" height="30" viewBox="0 0 30 30">
+                                  <defs>
+                                    <style>
+                                      .add-video-a {
+                                        fill: #fff;
+                                        stroke: #707070;
+                                        opacity: 0;
+                                      }
+
+                                      .add-video-b {
+                                        fill: url(#AddVideoa);
+                                      }
+
+                                      .add-video-c {
+                                        stroke: none;
+                                      }
+
+                                      .add-video-d {
+                                        fill: none;
+                                      }
+                                    </style>
+                                    <linearGradient id="AddVideoa" x1="0.813" y1="0.225" x2="0.171" y2="1"
+                                      gradientUnits="objectBoundingBox">
+                                      <stop offset="0" stop-color="#01bdf4" />
+                                      <stop offset="1" stop-color="#009dff" />
+                                    </linearGradient>
+                                  </defs>
+                                  <g transform="translate(-1090 -329)">
+                                    <g class="add-video-a" transform="translate(1090 329)">
+                                      <rect class="add-video-c" width="30" height="30" rx="15" />
+                                      <rect class="add-video-d" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+                                    </g>
+                                    <path class="add-video-b"
+                                      d="M0,6V17.017H13.221V13.161l4.407,2.2V7.653l-4.407,2.2V6Z"
+                                      transform="translate(1096.092 332.307)" />
+                                  </g>
+                                </svg>
+                                Join
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </li> -->
+                    </ul>
+                  </div>
+                </div>
+                <button class="btn side-menu-btn show-in-mobile-view">
+                  <svg id="Component_175_1" data-name="Component 175 – 1" xmlns="http://www.w3.org/2000/svg" width="30"
+                    height="30" viewBox="0 0 30 30">
+                    <defs>
+                      <style>
+                        .side-menu-btn-icon-1 {
+                          fill: #fff;
+                          stroke: #808486;
+                          opacity: 0;
+                        }
+
+                        .side-menu-btn-icon-2,
+                        .side-menu-btn-icon-4 {
+                          fill: none;
+                        }
+
+                        .side-menu-btn-icon-2 {
+                          stroke: #182024;
+                          stroke-linecap: round;
+                          stroke-width: 2.2px;
+                        }
+
+                        .side-menu-btn-icon-3 {
+                          stroke: none;
+                        }
+                      </style>
+                    </defs>
+                    <g id="b813a40894d201618bca45b61b618de8" class="side-menu-btn-icon-1">
+                      <rect class="side-menu-btn-icon-3" width="30" height="30" rx="15" />
+                      <rect class="side-menu-btn-icon-4" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+                    </g>
+                    <line id="Line_229" data-name="Line 229" class="side-menu-btn-icon-2" x2="9"
+                      transform="translate(15.5 8.5)" />
+                    <line id="Line_231" data-name="Line 231" class="side-menu-btn-icon-2" x2="6"
+                      transform="translate(18.5 22.5)" />
+                    <line id="Line_230" data-name="Line 230" class="side-menu-btn-icon-2" x2="14"
+                      transform="translate(10.5 15.5)" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </header>
+  <!-- ************** Home content start ****************** -->
+  <main class="mobile-view-main">
+    <div class="mobile-view-side-menu">
+      <div class="side-menu-list">
+        <ul class="list-wrapper">
+          <li class="">
+            <div class="row">
+              <div class="col-2">
+                <div class="add-member-pic pic">
+                  <img src="modules/images/default_user.svg" class="Img_ProfilePic" />
+                </div>
+              </div>
+              <div class="col-md-10 col-sm-10 col-10">
+                <div class="add-member-details">
+                  <h6 class="lbl_Username">Brown Smith</h6>
+                  <p class="lbl_email">
+                    brownsmith07@appsteamtechnologies.com
+                  </p>
+                </div>
+              </div>
+            </div>
+            <a href="./forgot-password.html" class="change-password">Change Password</a>
+          </li>
+          <li class="email-radio-btn">
+            <div class="row">
+              <div class="col-md-9 col-sm-9 col-9">
+                <p>People can contact you using your email address</p>
+              </div>
+              <div class="col-3">
+                <div class="toggle-switch pull-right">
+                  <label class="switch">
+                    <input type="checkbox" id="ContactVisibilityToggleMobile" />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a data-bs-toggle="modal" data-bs-target="#notificationSettings" href="#">Notification Settings</a>
+          </li>
+          <li>
+            <a data-bs-toggle="modal" data-bs-target="#blockedUsers" href="#">Blocked Users</a>
+          </li>
+          <li>
+            <a href="./help-feedback.html">Help & Feedback</a>
+          </li>
+          <li>
+            <a data-bs-toggle="modal" data-bs-target="#callHistory" href="#">
+              Call History</a>
+          </li>
+          <li>
+            <a data-bs-toggle="modal" data-bs-target="#logoutPopup" href="#">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <section>
+      <div class="container">
+        <div class="main-wrapper">
+          <div class="row">
+            <div class="col-xl-6 col-lg-6">
+              <div class="profile-container hide-in-mobile-view">
+                <div class="profile-content text-center mb-4">
+                  <img class="pro-img" src="modules/images/default_user.svg" />
+                  <h2 id="lbl_wel_username">Good Morning, John Doe</h2>
+                  <p>
+                    Use Apps Connect to keep in touch. Message contacts, start
+                    free video calls, and hop on a conversation with one
+                    person or a group.
+                  </p>
+                </div>
+                <div class="schedul-container">
+                  <h5 class="text-center">Scheduled Meetings</h5>
+                  <div class="shedule-list-container main-scroll-style">
+                    <ul class="list-wrapper" id="schedule-ul">
+                      <div class="text-center" id="schedule-meeting">
+                        <img class="image-center" src="modules/images/schedule-meetings-icon.svg" />
+                        <h5 class="text-center" style="color: #808486;">No Meetings Found</h5>
+                      </div>
+
+
+
+                      <!-- <li>
+                        <div class="shedule-list-view">
+                          <div class="shedule-list-controls">
+                            <div class="row">
+                              <div class="col-xl-4 col-lg-4 col-md-7 col-sm-4 col-7">
+                                <div class="shedule-invite">
+                                  <p>Invited By</p>
+                                  <h6>Brown Smith</h6>
+                                </div>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-4 col-12 mobile-view-order">
+                                <div class="shedule-time">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+                                    <defs>
+                                      <style>
+                                        .shedule-time-icon-a {
+                                          fill: #fff;
+                                          stroke: #808486;
+                                          stroke-width: 0.4px;
+                                          opacity: 0;
+                                        }
+
+                                        .shedule-time-icon-b {
+                                          fill: #182024;
+                                          stroke: #182024;
+                                          stroke-width: 0.5px;
+                                        }
+
+                                        .shedule-time-icon-c {
+                                          stroke: none;
+                                        }
+
+                                        .shedule-time-icon-d {
+                                          fill: none;
+                                        }
+                                      </style>
+                                    </defs>
+                                    <g transform="translate(-515 -552)">
+                                      <g class="shedule-time-icon-a" transform="translate(515 552)">
+                                        <rect class="shedule-time-icon-c" width="26" height="26" />
+                                        <rect class="shedule-time-icon-d" x="0.2" y="0.2" width="25.6" height="25.6" />
+                                      </g>
+                                      <g transform="translate(506.39 543.39)">
+                                        <path class="shedule-time-icon-b"
+                                          d="M21.712,13.3a8.412,8.412,0,1,0,8.412,8.412A8.412,8.412,0,0,0,21.712,13.3Zm0,16.028a7.616,7.616,0,1,1,7.616-7.616A7.626,7.626,0,0,1,21.712,29.328Z"
+                                          transform="translate(-0.402 -0.402)" />
+                                        <path class="shedule-time-icon-b"
+                                          d="M62.362,37.427V32.981a.381.381,0,1,0-.762,0v4.6a.414.414,0,0,0,.111.27l3.065,3.065a.383.383,0,0,0,.54,0,.394.394,0,0,0,0-.54Z"
+                                          transform="translate(-40.671 -16.276)" />
+                                      </g>
+                                    </g>
+                                  </svg>
+                                  04:00 PM
+                                </div>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-5 col-sm-4 col-5">
+                                <div class="shedule-action-btns call-join-btn-container">
+                                  <a href="#" class="shedule-add-invite-btn btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                      <defs>
+                                        <style>
+                                          .shedule-invite-icon-a {
+                                            fill: #fff;
+                                            stroke-width: 0.4px;
+                                          }
+
+                                          .shedule-invite-icon-a,
+                                          .shedule-invite-icon-b {
+                                            stroke: #808486;
+                                          }
+
+                                          .shedule-invite-icon-b,
+                                          .shedule-invite-icon-d {
+                                            fill: none;
+                                          }
+
+                                          .shedule-invite-icon-b {
+                                            stroke-width: 1.2px;
+                                          }
+
+                                          .shedule-invite-icon-c {
+                                            stroke: none;
+                                          }
+                                        </style>
+                                      </defs>
+                                      <g class="shedule-invite-icon-a">
+                                        <rect class="shedule-invite-icon-c" width="32" height="32" rx="16" />
+                                        <rect class="shedule-invite-icon-d" x="0.2" y="0.2" width="31.6" height="31.6"
+                                          rx="15.8" />
+                                      </g>
+                                      <g transform="translate(-417.474 -500)">
+                                        <g class="shedule-invite-icon-b" transform="translate(426.744 507)">
+                                          <rect class="shedule-invite-icon-c" width="8.974" height="8.974" rx="4.487" />
+                                          <rect class="shedule-invite-icon-d" x="0.6" y="0.6" width="7.774"
+                                            height="7.774" rx="3.887" />
+                                        </g>
+                                        <path class="shedule-invite-icon-b"
+                                          d="M0,0A6.927,6.927,0,0,1,6.927,6.927,6.927,6.927,0,0,1,0,13.854"
+                                          transform="translate(424.5 524.5) rotate(-90)" />
+                                        <g transform="translate(437.064 511.038)">
+                                          <line class="shedule-invite-icon-b" y2="5.385" transform="translate(2.692)" />
+                                          <line class="shedule-invite-icon-b" y2="5.385"
+                                            transform="translate(5.385 2.692) rotate(90)" />
+                                        </g>
+                                      </g>
+                                    </svg>
+                                  </a>
+                                  <button class="call-join-btn">
+                                    <img src="modules/images/video-icon.svg" alt="" />
+                                    Call
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="shedule-share-link">
+                            <input class="form-control" type="text" placeholder=""
+                              value="https://appsteam.com/epicmeet/70fd995erl/70fd995erl70fd995erl70fd995erl"
+                              readonly />
+                            <button class="shedule-link-share-btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                <defs>
+                                  <style>
+                                    .shedule-share-icon-a {
+                                      fill: #fff;
+                                      stroke-width: 0.4px;
+                                      opacity: 0;
+                                    }
+
+                                    .shedule-share-icon-a,
+                                    .shedule-share-icon-b,
+                                    .shedule-share-icon-c {
+                                      stroke: #808486;
+                                    }
+
+                                    .shedule-share-icon-b,
+                                    .shedule-share-icon-c,
+                                    .shedule-share-icon-e {
+                                      fill: none;
+                                    }
+
+                                    .shedule-share-icon-b,
+                                    .shedule-share-icon-c {
+                                      stroke-width: 1.5px;
+                                    }
+
+                                    .shedule-share-icon-c {
+                                      fill-rule: evenodd;
+                                    }
+
+                                    .shedule-share-icon-d {
+                                      stroke: none;
+                                    }
+                                  </style>
+                                </defs>
+                                <g class="shedule-share-icon-a">
+                                  <rect class="shedule-share-icon-d" width="32" height="32" />
+                                  <rect class="shedule-share-icon-e" x="0.2" y="0.2" width="31.6" height="31.6" />
+                                </g>
+                                <g transform="translate(5.389 3.46)">
+                                  <circle class="shedule-share-icon-b" cx="3.275" cy="3.275" r="3.275"
+                                    transform="translate(13.971 1.54)" />
+                                  <circle class="shedule-share-icon-b" cx="3.275" cy="3.275" r="3.275"
+                                    transform="translate(13.971 16.175)" />
+                                  <circle class="shedule-share-icon-b" cx="3.275" cy="3.275" r="3.275"
+                                    transform="translate(1.611 8.858)" />
+                                  <path class="shedule-share-icon-c" d="M14.04,6.106l-6.551,3.5,6.55-3.5Z" />
+                                  <path class="shedule-share-icon-c" d="M14.04,17.882l-6.551-3.5,6.55,3.5Z" />
+                                </g>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </li> -->
+
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-sm-12 col-12">
+              <div class="main-wrapper-tab-section">
+                <h1 class="hide-in-mobile-view">
+                  Secure video meetings for teams and businesses.
+                </h1>
+                <input id="dashboardSearch" class="form-control" placeholder="Search by mail ID or name" />
+                <div class="tab-container">
+                  <ul class="nav nav-pills" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-bs-toggle="pill" href="#nav_pills_default-1">Recent calls</a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link" data-bs-toggle="pill" href="#nav_pills_default-2">Groups</a>
+                    </li>
+                    <li class="nav-item">
+                      <!-- <a
+                          class="nav-link"
+                          data-bs-toggle="pill"
+                          href="#nav_pills_default-3"
+                          >Favourites</a> -->
+                      <a class="nav-link" data-bs-toggle="pill" href="#nav_pills_default-3">Favourites</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content py-3">
+                    <div class="tab-pane fade show active" id="nav_pills_default-1" role="tabpanel">
+                      <div class="tab-list-container main-scroll-style">
+                        <ul class="list-wrapper loader-center" id="recentCalls">
+                          <li id="loader" class="loader"></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav_pills_default-2" role="tabpanel">
+                      <div class="tab-list-container main-scroll-style">
+                        <ul class="list-wrapper loader-center" id="Groupcalls">
+                          <li id="loader" class="loader"></li>
+                          <!-- <li class="">
+                              <div class="row">
+                                <div class="col-lg-8 col-md-7 col-sm-8 col-7">
+                                  <div class="user-profile-container">
+                                    <div class="user-profile-image">
+                                      <img
+                                        class="user-big-icon"
+                                        src="modules/images/default_user.svg" />
+                                      <div
+                                        class="online-status-icon online-view"></div>
+                                    </div>
+                                    <div class="user-profile-details">
+                                      <h6>
+                                        Smith, Williams, Mary, Davis, John,
+                                        Smith
+                                      </h6>
+                                      <p class="user-email">07 Participants</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-lg-4 col-md-5 col-sm-4 col-5">
+                                  <div class="call-join-btn-container">
+                                    <button class="call-join-btn">
+                                      <img src="modules/images/video-icon.svg" alt="" />
+                                      Call
+                                    </button>
+                                    <button class="audio-call-btn">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="32"
+                                        height="32"
+                                        viewBox="0 0 32 32">
+                                        <defs>
+                                          <style>
+                                            .audio-call-icon-a {
+                                              fill: #fff;
+                                              stroke: #808486;
+                                              stroke-width: 0.4px;
+                                            }
+
+                                            .audio-call-icon-b {
+                                              fill: #808486;
+                                            }
+
+                                            .audio-call-icon-c {
+                                              stroke: none;
+                                            }
+
+                                            .audio-call-icon-d {
+                                              fill: none;
+                                            }
+                                          </style>
+                                        </defs>
+                                        <g class="audio-call-icon-a">
+                                          <rect
+                                            class="audio-call-icon-c"
+                                            width="32"
+                                            height="32"
+                                            rx="16" />
+                                          <rect
+                                            class="audio-call-icon-d"
+                                            x="0.2"
+                                            y="0.2"
+                                            width="31.6"
+                                            height="31.6"
+                                            rx="15.8" />
+                                        </g>
+                                        <path
+                                          class="audio-call-icon-b"
+                                          d="M17.413,18.261a.85.85,0,0,0,.848-.848V14.454a.85.85,0,0,0-.848-.848,9.671,9.671,0,0,1-3.027-.483.712.712,0,0,0-.263-.042.868.868,0,0,0-.6.246l-1.865,1.865A12.843,12.843,0,0,1,6.069,9.6L7.934,7.739a.851.851,0,0,0,.212-.865,9.632,9.632,0,0,1-.483-3.027A.85.85,0,0,0,6.815,3H3.848A.85.85,0,0,0,3,3.848,14.412,14.412,0,0,0,17.413,18.261Zm-3.052-3.374a10.812,10.812,0,0,0,2.2.382v1.263a13.079,13.079,0,0,1-3.222-.636ZM4.721,4.7H5.993a11.022,11.022,0,0,0,.39,2.2L5.365,7.909A12.569,12.569,0,0,1,4.721,4.7Z"
+                                          transform="translate(5.37 5.37)" />
+                                      </svg>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </li> -->
+                          <!-- <li>
+                              <div class="row">
+                                <div class="col-lg-8 col-md-7 col-sm-8 col-7">
+                                  <div class="user-profile-container">
+                                    <div class="user-profile-image">
+                                      <img
+                                        class="user-big-icon"
+                                        src="modules/images/default_user.svg" />
+                                      <div
+                                        class="online-status-icon online-view"></div>
+                                    </div>
+                                    <div class="user-profile-details">
+                                      <h6>
+                                        Leads Call
+                                      </h6>
+                                      <p class="user-email">07 Participants</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-lg-4 col-md-5 col-sm-4 col-5">
+                                  <div class="call-join-btn-container">
+                                    <button class="call-join-btn">
+                                      <img src="modules/images/video-icon.svg" alt="" onclick="LeadsCall(123)" />
+                                      Call
+                                    </button>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </li> -->
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav_pills_default-3" role="tabpanel">
+                      <div class="tab-list-container main-scroll-style">
+                        <ul class="list-wrapper loader-center favourites-list" id="favourites">
+                          <li id="loader" class="loader"></li>
+                          <!-- <li class="">
+                              <div class="row">
+                                <div class="col-lg-8 col-md-7 col-sm-8 col-7">
+                                  <div class="user-profile-container">
+                                    <div class="user-profile-image">
+                                      <img
+                                        class="user-big-icon"
+                                        src="modules/images/default_user.svg" />
+                                      <div
+                                        class="online-status-icon online-view"></div>
+                                    </div>
+                                    <div class="user-profile-details">
+                                      <h6>
+                                        Brown Smith
+
+                                        <img
+                                          src="modules/images/favourites_icon.svg"
+                                          alt="" />
+                                      </h6>
+
+                                      <p class="user-email">
+                                        brownsmith07@appsteamtechnologies.com
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-lg-4 col-md-5 col-sm-4 col-5">
+                                  <div class="call-join-btn-container">
+                                    <button class="call-join-btn">
+                                      <img src="modules/images/video-icon.svg" alt="" />
+                                      Call
+                                    </button>
+                                    <button class="audio-call-btn">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="32"
+                                        height="32"
+                                        viewBox="0 0 32 32">
+                                        <defs>
+                                          <style>
+                                            .audio-call-icon-a {
+                                              fill: #fff;
+                                              stroke: #808486;
+                                              stroke-width: 0.4px;
+                                            }
+
+                                            .audio-call-icon-b {
+                                              fill: #808486;
+                                            }
+
+                                            .audio-call-icon-c {
+                                              stroke: none;
+                                            }
+
+                                            .audio-call-icon-d {
+                                              fill: none;
+                                            }
+                                          </style>
+                                        </defs>
+                                        <g class="audio-call-icon-a">
+                                          <rect
+                                            class="audio-call-icon-c"
+                                            width="32"
+                                            height="32"
+                                            rx="16" />
+                                          <rect
+                                            class="audio-call-icon-d"
+                                            x="0.2"
+                                            y="0.2"
+                                            width="31.6"
+                                            height="31.6"
+                                            rx="15.8" />
+                                        </g>
+                                        <path
+                                          class="audio-call-icon-b"
+                                          d="M17.413,18.261a.85.85,0,0,0,.848-.848V14.454a.85.85,0,0,0-.848-.848,9.671,9.671,0,0,1-3.027-.483.712.712,0,0,0-.263-.042.868.868,0,0,0-.6.246l-1.865,1.865A12.843,12.843,0,0,1,6.069,9.6L7.934,7.739a.851.851,0,0,0,.212-.865,9.632,9.632,0,0,1-.483-3.027A.85.85,0,0,0,6.815,3H3.848A.85.85,0,0,0,3,3.848,14.412,14.412,0,0,0,17.413,18.261Zm-3.052-3.374a10.812,10.812,0,0,0,2.2.382v1.263a13.079,13.079,0,0,1-3.222-.636ZM4.721,4.7H5.993a11.022,11.022,0,0,0,.39,2.2L5.365,7.909A12.569,12.569,0,0,1,4.721,4.7Z"
+                                          transform="translate(5.37 5.37)" />
+                                      </svg>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </li> -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- ************** Home content end ****************** -->
+  <footer>
+    <section class="footer-section">
+      <div class="footer-btns">
+        <a href="./confieranceroom.html" class="btn make-call-btn text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+            <defs>
+              <style>
+                .make-call-a,
+                .make-call-b {
+                  fill: #fff;
+                }
+
+                .make-call-a {
+                  stroke: #707070;
+                  opacity: 0;
+                }
+
+                .make-call-c {
+                  stroke: none;
+                }
+
+                .make-call-d {
+                  fill: none;
+                }
+              </style>
+            </defs>
+            <g transform="translate(-1090 -329)">
+              <g class="make-call-a" transform="translate(1090 329)">
+                <rect class="make-call-c" width="30" height="30" rx="15" />
+                <rect class="make-call-d" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+              </g>
+              <path class="make-call-b" d="M0,6V17.017H13.221V13.161l4.407,2.2V7.653l-4.407,2.2V6Z"
+                transform="translate(1096.092 332.307)" />
+            </g>
+          </svg>
+          Make a call
+        </a>
+
+        <a href="./create_group.html" class="btn group-btn create-group-btn">
+          <svg class="group-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+            <defs>
+              <style>
+                .group-a {
+                  fill: #fff;
+                  stroke: #707070;
+                  opacity: 0;
+                }
+
+                .group-b,
+                .group-d {
+                  fill: none;
+                }
+
+                .group-b {
+                  stroke: #182024;
+                  stroke-width: 1.5px;
+                }
+
+                .group-c {
+                  stroke: none;
+                }
+              </style>
+            </defs>
+            <g transform="translate(-1090 -329)">
+              <g class="group-a" transform="translate(1090 329)">
+                <rect class="group-c" width="30" height="30" rx="15" />
+                <rect class="group-d" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+              </g>
+              <g transform="translate(-4 -5)">
+                <g class="group-b" transform="translate(1101 339.195)">
+                  <rect class="group-c" width="8.902" height="8.902" rx="4.451" />
+                  <rect class="group-d" x="0.75" y="0.75" width="7.402" height="7.402" rx="3.701" />
+                </g>
+                <path class="group-b" d="M0,0A7.955,7.955,0,0,1,7.955,7.955,7.955,7.955,0,0,1,0,15.91"
+                  transform="translate(1097.497 358.528) rotate(-90)" />
+              </g>
+              <g transform="translate(3 -9)">
+                <path class="group-b"
+                  d="M4.711.29A3.37,3.37,0,0,1,6.936,3.513,3.445,3.445,0,0,1,3.491,6.958,3.508,3.508,0,0,1,.2,4.52"
+                  transform="matrix(0.454, -0.891, 0.891, 0.454, 1100.894, 346.542)" />
+                <path class="group-b" d="M6.672,6.183a6.924,6.924,0,0,1,.456,2.545A7.128,7.128,0,0,1,0,15.856"
+                  transform="translate(1097.495 359.272) rotate(-90)" />
+              </g>
+            </g>
+          </svg>
+          Create Group
+        </a>
+        <a href="./schedule_meeting.html" class="btn schedule-btn">
+          <svg class="schedule-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+            <defs>
+              <style>
+                .schedule-a {
+                  fill: #fff;
+                  stroke: #707070;
+                  opacity: 0;
+                }
+
+                .schedule-b {
+                  fill: #182024;
+                  stroke: #182024;
+                  stroke-width: 0.3px;
+                }
+
+                .schedule-c {
+                  stroke: none;
+                }
+
+                .schedule-d {
+                  fill: none;
+                }
+              </style>
+            </defs>
+            <g transform="translate(-1090 -329)">
+              <g class="schedule-a" transform="translate(1090 329)">
+                <rect class="schedule-c" width="30" height="30" rx="15" />
+                <rect class="schedule-d" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+              </g>
+              <g transform="translate(1081.836 320.836)">
+                <path class="schedule-b"
+                  d="M23.266,13.3a9.966,9.966,0,1,0,9.966,9.966A9.966,9.966,0,0,0,23.266,13.3Zm0,18.988a9.022,9.022,0,1,1,9.022-9.022A9.035,9.035,0,0,1,23.266,32.288Z"
+                  transform="translate(-0.402 -0.402)" />
+                <path class="schedule-b"
+                  d="M62.627,39.1v-3.99a.513.513,0,1,0-1.027,0v4.2a.558.558,0,0,0,.15.364l3.911,1.8a.517.517,0,0,0,.727,0,.53.53,0,0,0,0-.727Z"
+                  transform="translate(-39.282 -16.757)" />
+              </g>
+            </g>
+          </svg>
+          Schedule a Call
+        </a>
+      </div>
+    </section>
+  </footer>
+  <!-- /************  Notification settings popup start ***************/     -->
+  <div class="mobile-view-shadow"></div>
+  <!-- Modal -->
+  <div class="modal fade popup-main notification-settings-popup" id="notificationSettings" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Notification Settings
+          </h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                <style>
+                  .model-popup-close-a {
+                    fill: #fff;
+                    stroke: #808486;
+                    stroke-width: 0.4px;
+                    opacity: 0;
+                  }
+
+                  .model-popup-close-b,
+                  .model-popup-close-d {
+                    fill: none;
+                  }
+
+                  .model-popup-close-b {
+                    stroke: #182024;
+                    stroke-width: 1.5px;
+                  }
+
+                  .model-popup-close-c {
+                    stroke: none;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(-514.909 -551.909)">
+                <g class="model-popup-close-a" transform="translate(514.909 551.909)">
+                  <rect class="model-popup-close-c" width="32" height="32" />
+                  <rect class="model-popup-close-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                </g>
+                <g transform="translate(531.08 554.485) rotate(45)">
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(9.613)" />
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(19.226 9.613) rotate(90)" />
+                </g>
+              </g>
+            </svg>
+          </button>
+          <hr />
+        </div>
+        <div class="modal-body">
+          <ul class="noti-list">
+            <li class="email-radio-btn">
+              <div class="row">
+                <div class="col-md-9 col-sm-9 col-9">
+                  <p>Meetings Invitations</p>
+                </div>
+                <div class="col-3">
+                  <div class="toggle-switch pull-right">
+                    <label class="switch">
+                      <input type="checkbox" id="MeetInviNotifToggle" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="email-radio-btn">
+              <div class="row">
+                <div class="col-md-9 col-sm-9 col-9">
+                  <p>New Groups</p>
+                </div>
+                <div class="col-3">
+                  <div class="toggle-switch pull-right">
+                    <label class="switch">
+                      <input type="checkbox" id="NewGroupNotifToggle" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="email-radio-btn">
+              <div class="row">
+                <div class="col-md-9 col-sm-9 col-9">
+                  <p>Missed Calls</p>
+                </div>
+                <div class="col-3">
+                  <div class="toggle-switch pull-right">
+                    <label class="switch">
+                      <input type="checkbox" id="MissCallNotifToggle" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /************ Notification settings popup end ***************/     -->
+
+  <!-- incoming call view start -->
+  <div class="incoming-call-wrapper" id="incoming-popup">
+    <div class="incoming-call-content">
+      <img src="modules/images/default_user.svg" alt="" id="CallerImg" class="border border-secondary rounded-circle" />
+      <h6 id="lbl_call"></h6>
+      <p>Video Call</p>
+      <div class="incoming-call-actions">
+        <button class="btn" onclick="RejectCallRequest()">
+          <img src="modules/images/incoming_stop_icon.svg" alt="" />
+        </button>
+        <button class="btn" onclick="JoinRoomRequest('audio')">
+          <img src="modules/images/incoming_audio_icon.svg" alt="" />
+        </button>
+        <button class="btn" onclick="JoinRoomRequest('video')">
+          <img src="modules/images/incoming_video_icon.svg" alt="" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- incoming call view end -->
+  <!-- /************  Block user popup start ***************/     -->
+
+  <!-- Modal -->
+  <div class="modal fade popup-main blocked-users-popup" id="blockedUsers" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Blocked Users</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                <style>
+                  .model-popup-close-a {
+                    fill: #fff;
+                    stroke: #808486;
+                    stroke-width: 0.4px;
+                    opacity: 0;
+                  }
+
+                  .model-popup-close-b,
+                  .model-popup-close-d {
+                    fill: none;
+                  }
+
+                  .model-popup-close-b {
+                    stroke: #182024;
+                    stroke-width: 1.5px;
+                  }
+
+                  .model-popup-close-c {
+                    stroke: none;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(-514.909 -551.909)">
+                <g class="model-popup-close-a" transform="translate(514.909 551.909)">
+                  <rect class="model-popup-close-c" width="32" height="32" />
+                  <rect class="model-popup-close-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                </g>
+                <g transform="translate(531.08 554.485) rotate(45)">
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(9.613)" />
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(19.226 9.613) rotate(90)" />
+                </g>
+              </g>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body main-scroll-style">
+          <ul class="block-list list-wrapper">
+            <li id="NoDataBlockList">
+              <div class="user-profile-details">
+              </div>
+            </li>
+            <li id="loader" class="loader" style="margin-left: 210px;"></li>
+            <!-- <li class="">
+              <div class="row">
+                <div class="col-md-8 col-sm-8 col-7">
+                  <div class="user-details-view">
+                    <div class="user-profile-image">
+                      <img class="user-big-icon" src="modules/images/default_user.svg" />
+
+                      <div class="online-status-icon online-view"></div>
+                    </div>
+                    <div class="user-profile-details">
+                      <h6>Brown Smith</h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-5">
+                  <div class="pl-0 pull-right">
+                    <button class="unblock-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                        <defs>
+                          <style>
+                            .block-icon-a {
+                              fill: #fff;
+                            }
+
+                            .block-icon-a,
+                            .block-icon-b,
+                            .block-icon-c {
+                              stroke: #ff6767;
+                              stroke-width: 1.5px;
+                            }
+
+                            .block-icon-b,
+                            .block-icon-c,
+                            .block-icon-e {
+                              fill: none;
+                            }
+
+                            .block-icon-c {
+                              opacity: 0;
+                            }
+
+                            .block-icon-d {
+                              stroke: none;
+                            }
+                          </style>
+                        </defs>
+                        <g transform="translate(355 -1093.373) rotate(90)">
+                          <g class="block-icon-a" transform="translate(1093.373 333)">
+                            <circle class="block-icon-d" cx="11" cy="11" r="11" />
+                            <circle class="block-icon-e" cx="11" cy="11" r="10.25" />
+                          </g>
+                          <line class="block-icon-b" y2="12" transform="translate(1104.636 338)" />
+                          <line class="block-icon-c" y2="12" transform="translate(1110.635 344) rotate(90)" />
+                        </g>
+                      </svg>
+                      Unblock
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="">
+              <div class="row">
+                <div class="col-md-8 col-sm-8 col-7">
+                  <div class="user-details-view">
+                    <div class="user-profile-image">
+                      <img class="user-big-icon" src="modules/images/default_user.svg" />
+
+                      <div class="online-status-icon online-view"></div>
+                    </div>
+                    <div class="user-profile-details">
+                      <h6>Brown Smith</h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-5">
+                  <div class="pl-0 pull-right">
+                    <button class="unblock-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+                        <defs>
+                          <style>
+                            .block-icon-a {
+                              fill: #fff;
+                            }
+
+                            .block-icon-a,
+                            .block-icon-b,
+                            .block-icon-c {
+                              stroke: #ff6767;
+                              stroke-width: 1.5px;
+                            }
+
+                            .block-icon-b,
+                            .block-icon-c,
+                            .block-icon-e {
+                              fill: none;
+                            }
+
+                            .block-icon-c {
+                              opacity: 0;
+                            }
+
+                            .block-icon-d {
+                              stroke: none;
+                            }
+                          </style>
+                        </defs>
+                        <g transform="translate(355 -1093.373) rotate(90)">
+                          <g class="block-icon-a" transform="translate(1093.373 333)">
+                            <circle class="block-icon-d" cx="11" cy="11" r="11" />
+                            <circle class="block-icon-e" cx="11" cy="11" r="10.25" />
+                          </g>
+                          <line class="block-icon-b" y2="12" transform="translate(1104.636 338)" />
+                          <line class="block-icon-c" y2="12" transform="translate(1110.635 344) rotate(90)" />
+                        </g>
+                      </svg>
+                      Unblock
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /************ Block user popup end ***************/     -->
+  <!-- ************** Call history popup strat *********** -->
+  <div class="modal fade popup-main call-history-popup" id="callHistory" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Call History</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                <style>
+                  .model-popup-close-a {
+                    fill: #fff;
+                    stroke: #808486;
+                    stroke-width: 0.4px;
+                    opacity: 0;
+                  }
+
+                  .model-popup-close-b,
+                  .model-popup-close-d {
+                    fill: none;
+                  }
+
+                  .model-popup-close-b {
+                    stroke: #182024;
+                    stroke-width: 1.5px;
+                  }
+
+                  .model-popup-close-c {
+                    stroke: none;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(-514.909 -551.909)">
+                <g class="model-popup-close-a" transform="translate(514.909 551.909)">
+                  <rect class="model-popup-close-c" width="32" height="32" />
+                  <rect class="model-popup-close-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                </g>
+                <g transform="translate(531.08 554.485) rotate(45)">
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(9.613)" />
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(19.226 9.613) rotate(90)" />
+                </g>
+              </g>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body main-scroll-style">
+          <ul id="univCallHistory" class="call-history-list list-wrapper">
+            <li id="loader" class="loader" style="margin-left: 210px;"></li>
+            <!-- <li class="">
+              <div class="row">
+                <div class="col-md-9 col-sm-9 col-8">
+                  <div class="user-profile-container">
+                    <div class="user-profile-image">
+                      <img class="user-big-icon" src="modules/images/default_user.svg" />
+                      <div class="online-status-icon online-view"></div>
+                    </div>
+                    <div class="user-profile-details">
+                      <h6>Smith, Williams, Mary, Davis, John, Sara</h6>
+                      <p>07 Participants, June 06 2020, 08:00 min</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-4">
+                  <div class="call-join-btn-container">
+                    <button class="call-join-btn">
+                      <img src="modules/images/video-icon.svg" alt="" />
+                      Call
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ********** Call history popup end ************* -->
+  <!-- /************ GO TO CALL HISTORY CODE STARTS HERE ***************/     -->
+
+  <!-- Modal -->
+  <div class="modal fade popup-main go-to-call-popup" id="goToCallHistory" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Call History</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                <style>
+                  .model-popup-close-a {
+                    fill: #fff;
+                    stroke: #808486;
+                    stroke-width: 0.4px;
+                    opacity: 0;
+                  }
+
+                  .model-popup-close-b,
+                  .model-popup-close-d {
+                    fill: none;
+                  }
+
+                  .model-popup-close-b {
+                    stroke: #182024;
+                    stroke-width: 1.5px;
+                  }
+
+                  .model-popup-close-c {
+                    stroke: none;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(-514.909 -551.909)">
+                <g class="model-popup-close-a" transform="translate(514.909 551.909)">
+                  <rect class="model-popup-close-c" width="32" height="32" />
+                  <rect class="model-popup-close-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                </g>
+                <g transform="translate(531.08 554.485) rotate(45)">
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(9.613)" />
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(19.226 9.613) rotate(90)" />
+                </g>
+              </g>
+            </svg>
+          </button>
+          <hr />
+        </div>
+        <div class="modal-body">
+          <div class="call-history-user-details">
+            <ul class="list-wrapper">
+              <li>
+                <div class="row">
+                  <div class="col-lg-8 col-md-8 col-sm-8 col-7">
+                    <div class="user-profile-container">
+                      <div class="user-profile-image">
+                        <img class="user-big-icon" src="" id="callHistoryProfile" />
+                        <div id="callHistoryUserStatus"></div>
+                      </div>
+                      <div class="user-profile-details">
+                        <h6 id="callHistoryName"></h6>
+                        <p class="user-email" id="callHistoryEmailOrCount">
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-5">
+                    <div class="call-join-btn-container">
+                      <button class="call-join-btn" onclick="callHistoryBtn()" id="historyParticipantCall">
+                        <img src="modules/images/video-icon.svg" alt="" />
+                      </button>
+                      <!-- <button class="audio-call-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                          <defs>
+                            <style>
+                              .audio-call-icon-a {
+                                fill: #fff;
+                                stroke: #808486;
+                                stroke-width: 0.4px;
+                              }
+
+                              .audio-call-icon-b {
+                                fill: #808486;
+                              }
+
+                              .audio-call-icon-c {
+                                stroke: none;
+                              }
+
+                              .audio-call-icon-d {
+                                fill: none;
+                              }
+                            </style>
+                          </defs>
+                          <g class="audio-call-icon-a">
+                            <rect class="audio-call-icon-c" width="32" height="32" rx="16" />
+                            <rect class="audio-call-icon-d" x="0.2" y="0.2" width="31.6" height="31.6" rx="15.8" />
+                          </g>
+                          <path class="audio-call-icon-b"
+                            d="M17.413,18.261a.85.85,0,0,0,.848-.848V14.454a.85.85,0,0,0-.848-.848,9.671,9.671,0,0,1-3.027-.483.712.712,0,0,0-.263-.042.868.868,0,0,0-.6.246l-1.865,1.865A12.843,12.843,0,0,1,6.069,9.6L7.934,7.739a.851.851,0,0,0,.212-.865,9.632,9.632,0,0,1-.483-3.027A.85.85,0,0,0,6.815,3H3.848A.85.85,0,0,0,3,3.848,14.412,14.412,0,0,0,17.413,18.261Zm-3.052-3.374a10.812,10.812,0,0,0,2.2.382v1.263a13.079,13.079,0,0,1-3.222-.636ZM4.721,4.7H5.993a11.022,11.022,0,0,0,.39,2.2L5.365,7.909A12.569,12.569,0,0,1,4.721,4.7Z"
+                            transform="translate(5.37 5.37)" />
+                        </svg>
+                      </button> -->
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="user-call-history-list main-scroll-style">
+            <ul class="list-wrapper" id="RoomCallHistory">
+              <!-- <li>
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="user-profile-container">
+                      <div class="user-profile-image">
+                        <img class="" src="modules/images/history_video_call.svg" />
+                      </div>
+                      <div class="user-profile-details">
+                        <h6>00:23 Minutes</h6>
+                        <p class="user-email">
+                          03 Participants, June 06 2020, 08:32 pm
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="user-profile-container">
+                      <div class="user-profile-image">
+                        <img class="" src="modules/images/history_audio_call.svg" />
+                      </div>
+                      <div class="user-profile-details">
+                        <h6>00:23 Minutes</h6>
+                        <p class="user-email">
+                          03 Participants, June 06 2020, 08:32 pm
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade popup-main logout" id="logoutPopup" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="text-center">Logout from this device</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                <style>
+                  .model-popup-close-a {
+                    fill: #fff;
+                    stroke: #808486;
+                    stroke-width: 0.4px;
+                    opacity: 0;
+                  }
+
+                  .model-popup-close-b,
+                  .model-popup-close-d {
+                    fill: none;
+                  }
+
+                  .model-popup-close-b {
+                    stroke: #182024;
+                    stroke-width: 1.5px;
+                  }
+
+                  .model-popup-close-c {
+                    stroke: none;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(-514.909 -551.909)">
+                <g class="model-popup-close-a" transform="translate(514.909 551.909)">
+                  <rect class="model-popup-close-c" width="32" height="32" />
+                  <rect class="model-popup-close-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                </g>
+                <g transform="translate(531.08 554.485) rotate(45)">
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(9.613)" />
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(19.226 9.613) rotate(90)" />
+                </g>
+              </g>
+            </svg>
+          </button>
+          <hr />
+        </div>
+        <div class="modal-body text-center divid-line">
+          <p>Are you sure to logout from this device?</p>
+        </div>
+        <div class="logout-btn">
+          <button type="button" class="cancel-btn" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="logout-success-btn" onclick="Logout()">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /************ Logout popup end ***************/     -->
+  <!-- /************ Delete popup start ***************/     -->
+
+  <!-- Modal -->
+  <div class="modal fade delete-popup main-action-popup" id="deletePopup" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Contact</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                <style>
+                  .model-popup-close-a {
+                    fill: #fff;
+                    stroke: #808486;
+                    stroke-width: 0.4px;
+                    opacity: 0;
+                  }
+
+                  .model-popup-close-b,
+                  .model-popup-close-d {
+                    fill: none;
+                  }
+
+                  .model-popup-close-b {
+                    stroke: #182024;
+                    stroke-width: 1.5px;
+                  }
+
+                  .model-popup-close-c {
+                    stroke: none;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(-514.909 -551.909)">
+                <g class="model-popup-close-a" transform="translate(514.909 551.909)">
+                  <rect class="model-popup-close-c" width="32" height="32" />
+                  <rect class="model-popup-close-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                </g>
+                <g transform="translate(531.08 554.485) rotate(45)">
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(9.613)" />
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(19.226 9.613) rotate(90)" />
+                </g>
+              </g>
+            </svg>
+          </button>
+          <hr />
+        </div>
+        <div class="modal-body">
+          <p>Are you sure to delete this person from your contact?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn active" id="deleteConfirm" data-bs-dismiss="modal">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /************ Delete popup end ***************/     -->
+  <!-- /************ Block popup start ***************/     -->
+
+  <!-- Modal -->
+  <div class="modal fade block-popup main-action-popup" id="blockPopup" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Block contact</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                <style>
+                  .model-popup-close-a {
+                    fill: #fff;
+                    stroke: #808486;
+                    stroke-width: 0.4px;
+                    opacity: 0;
+                  }
+
+                  .model-popup-close-b,
+                  .model-popup-close-d {
+                    fill: none;
+                  }
+
+                  .model-popup-close-b {
+                    stroke: #182024;
+                    stroke-width: 1.5px;
+                  }
+
+                  .model-popup-close-c {
+                    stroke: none;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(-514.909 -551.909)">
+                <g class="model-popup-close-a" transform="translate(514.909 551.909)">
+                  <rect class="model-popup-close-c" width="32" height="32" />
+                  <rect class="model-popup-close-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                </g>
+                <g transform="translate(531.08 554.485) rotate(45)">
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(9.613)" />
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(19.226 9.613) rotate(90)" />
+                </g>
+              </g>
+            </svg>
+          </button>
+          <hr />
+        </div>
+        <div class="modal-body">
+          <p>Are you sure to block this person ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn active" data-bs-dismiss="modal">Block</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /************ Block popup end ***************/     -->
+  <!-- /************ Kick out popup start ***************/     -->
+
+  <!-- Modal -->
+  <div class="modal fade block-popup main-action-popup" id="kickOutPopup" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Kick out from this call
+          </h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                <style>
+                  .model-popup-close-a {
+                    fill: #fff;
+                    stroke: #808486;
+                    stroke-width: 0.4px;
+                    opacity: 0;
+                  }
+
+                  .model-popup-close-b,
+                  .model-popup-close-d {
+                    fill: none;
+                  }
+
+                  .model-popup-close-b {
+                    stroke: #182024;
+                    stroke-width: 1.5px;
+                  }
+
+                  .model-popup-close-c {
+                    stroke: none;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(-514.909 -551.909)">
+                <g class="model-popup-close-a" transform="translate(514.909 551.909)">
+                  <rect class="model-popup-close-c" width="32" height="32" />
+                  <rect class="model-popup-close-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                </g>
+                <g transform="translate(531.08 554.485) rotate(45)">
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(9.613)" />
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(19.226 9.613) rotate(90)" />
+                </g>
+              </g>
+            </svg>
+          </button>
+          <hr />
+        </div>
+        <div class="modal-body">
+          <p>Are you sure to kick out this person from this call?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn active">Kick out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /************ Kick out popup end ***************/     -->
+  <!-- /************ Profile view start  ***************/     -->
+
+  <!-- Modal -->
+  <div class="modal fade popup-main user-view-popup" id="profileView" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                <style>
+                  .model-popup-close-a {
+                    fill: #fff;
+                    stroke: #808486;
+                    stroke-width: 0.4px;
+                    opacity: 0;
+                  }
+
+                  .model-popup-close-b,
+                  .model-popup-close-d {
+                    fill: none;
+                  }
+
+                  .model-popup-close-b {
+                    stroke: #182024;
+                    stroke-width: 1.5px;
+                  }
+
+                  .model-popup-close-c {
+                    stroke: none;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(-514.909 -551.909)">
+                <g class="model-popup-close-a" transform="translate(514.909 551.909)">
+                  <rect class="model-popup-close-c" width="32" height="32" />
+                  <rect class="model-popup-close-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                </g>
+                <g transform="translate(531.08 554.485) rotate(45)">
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(9.613)" />
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(19.226 9.613) rotate(90)" />
+                </g>
+              </g>
+            </svg>
+          </button>
+          <hr />
+        </div>
+        <div class="modal-body">
+          <div class="profile-view-details">
+            <div class="profile-picture-view">
+              <img src="" class="user-big-icon rounded-circle h-100" alt="" id="participantProfile" />
+              <div id="participantUserStatus"></div>
+            </div>
+            <div class="call-join-btn-container">
+              <button class="call-join-btn" id="participantCall">
+                <img src="modules/images/video_call_icon.svg" alt="" />
+              </button>
+            </div>
+            <h3 id="groupOrIndividualName"></h3>
+            <p id="participantCount"></p>
+            <p id="hostName"></p>
+          </div>
+          <div class="profile-view-controls-list">
+            <ul class="list-wrapper">
+              <li>
+                <div class="profile-controls-items btn-active">
+                  <h6>Add to Favourite</h6>
+                  <button class="btn favourite-btn" id="favouriteContact">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28.503"
+                      height="28" viewBox="0 0 28.503 28">
+                      <defs>
+                        <style>
+                          .favourite-btn-icon-a {
+                            fill: #808486;
+                            opacity: 0;
+                          }
+
+                          .favourite-btn-icon-b,
+                          .favourite-btn-icon-c {
+                            stroke: #808486;
+                          }
+
+                          .favourite-btn-icon-b {
+                            fill: url(#idFavouriteBtnIconA);
+                          }
+
+                          .favourite-btn-icon-c {
+                            fill: url(#idFavouriteBtnIconB);
+                          }
+                        </style>
+                        <linearGradient id="idFavouriteBtnIconA" x1="0.84" y1="0.199" x2="0.172" y2="0.908"
+                          gradientUnits="objectBoundingBox">
+                          <stop offset="0" stop-color="#fff" />
+                          <stop offset="1" stop-color="#fff" />
+                        </linearGradient>
+                        <linearGradient id="idFavouriteBtnIconB" x1="0.885" y1="0.125" x2="0.297" y2="0.833"
+                          gradientUnits="objectBoundingBox">
+                          <stop offset="0" stop-color="#fff" />
+                          <stop offset="1" stop-color="#fff" />
+                        </linearGradient>
+                      </defs>
+                      <g transform="translate(0.25)">
+                        <rect class="favourite-btn-icon-a" width="28" height="28" />
+                        <g transform="translate(-485.898 -302.721)">
+                          <path class="favourite-btn-icon-b"
+                            d="M16.719,18.919l2.058,2.06-6.992,6.992a3.7,3.7,0,0,1-5.039.186A6.787,6.787,0,0,1,6.9,18.9,6.924,6.924,0,0,1,16.719,18.919Z"
+                            transform="translate(481.147 289.217)" />
+                          <path class="favourite-btn-icon-c"
+                            d="M36.194,18.549a6.92,6.92,0,0,1-.012,9.819l-9.413,9.416a3.2,3.2,0,0,1-4.524,0l-9.523-9.523c-.089-.089-.172-.175-.252-.268a3.7,3.7,0,0,0,5.039-.186l9.164-9.164a6.8,6.8,0,0,1,9.521-.093Z"
+                            transform="translate(475.419 289.386)" />
+                        </g>
+                      </g>
+                    </svg>
+                  </button>
+                </div>
+              </li>
+              <li>
+                <a class="profile-controls-items" id="EditGroup">
+                  <h6>Edit Group</h6>
+                </a>
+              </li>
+              <li>
+                <div class="profile-controls-items" data-bs-toggle="modal" data-bs-target="#scheduleMeeting"
+                  onclick="scheduleMeeting()" data-bs-dismiss="modal">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                    <defs>
+                      <style>
+                        .shedule-time-icon-a {
+                          fill: #fff;
+                          stroke: #707070;
+                          opacity: 0;
+                        }
+
+                        .shedule-time-icon-b {
+                          fill: #808486;
+                          stroke: #808486;
+                          stroke-width: 0.3px;
+                        }
+
+                        .shedule-time-icon-c {
+                          stroke: none;
+                        }
+
+                        .shedule-time-icon-d {
+                          fill: none;
+                        }
+                      </style>
+                    </defs>
+                    <g transform="translate(-1090 -329)">
+                      <g class="shedule-time-icon-a" transform="translate(1090 329)">
+                        <rect class="shedule-time-icon-c" width="30" height="30" rx="15" />
+                        <rect class="shedule-time-icon-d" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+                      </g>
+                      <g transform="translate(1081.836 320.836)">
+                        <path class="shedule-time-icon-b"
+                          d="M23.266,13.3a9.966,9.966,0,1,0,9.966,9.966A9.966,9.966,0,0,0,23.266,13.3Zm0,18.988a9.022,9.022,0,1,1,9.022-9.022A9.035,9.035,0,0,1,23.266,32.288Z"
+                          transform="translate(-0.402 -0.402)" />
+                        <path class="shedule-time-icon-b"
+                          d="M62.627,39.1v-3.99a.513.513,0,1,0-1.027,0v4.2a.558.558,0,0,0,.15.364l3.911,1.8a.517.517,0,0,0,.727,0,.53.53,0,0,0,0-.727Z"
+                          transform="translate(-39.282 -16.757)" />
+                      </g>
+                    </g>
+                  </svg>
+                  <h6>Schedule a call with <b id="participantName"></b></h6>
+                </div>
+              </li>
+              <li>
+                <div class="profile-controls-items" data-bs-toggle="modal" data-bs-target="#deletePopup"
+                  data-bs-dismiss="modal" id="deleteCall">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                    <defs>
+                      <style>
+                        .delete-popup-icon-a {
+                          fill: #fff;
+                          stroke: #707070;
+                          opacity: 0;
+                        }
+
+                        .delete-popup-icon-b,
+                        .delete-popup-icon-c,
+                        .delete-popup-icon-d,
+                        .delete-popup-icon-f {
+                          fill: none;
+                        }
+
+                        .delete-popup-icon-b,
+                        .delete-popup-icon-c,
+                        .delete-popup-icon-d {
+                          stroke: #808486;
+                          stroke-width: 1.5px;
+                        }
+
+                        .delete-popup-icon-b,
+                        .delete-popup-icon-c {
+                          fill-rule: evenodd;
+                        }
+
+                        .delete-popup-icon-c {
+                          stroke-linecap: round;
+                        }
+
+                        .delete-popup-icon-e {
+                          stroke: none;
+                        }
+                      </style>
+                    </defs>
+                    <g transform="translate(-1090 -329)">
+                      <g class="delete-popup-icon-a" transform="translate(1090 329)">
+                        <rect class="delete-popup-icon-e" width="30" height="30" rx="15" />
+                        <rect class="delete-popup-icon-f" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+                      </g>
+                      <g transform="translate(1092.5 332)">
+                        <path class="delete-popup-icon-b"
+                          d="M5.5,7.5V20A1.5,1.5,0,0,0,7,21.5H18A1.5,1.5,0,0,0,19.5,20V7.5Z" />
+                        <path class="delete-popup-icon-c" d="M8.5,10.41v8.18" />
+                        <path class="delete-popup-icon-c" d="M12.5,10.41v8.18" />
+                        <path class="delete-popup-icon-c" d="M16.5,10.41v8.18" />
+                        <path class="delete-popup-icon-c"
+                          d="M9,4.333V3.244A1.329,1.329,0,0,1,10.4,2h4.2A1.329,1.329,0,0,1,16,3.244v1.09" />
+                        <rect class="delete-popup-icon-d" width="18" height="3" rx="1.5"
+                          transform="translate(3.5 4.5)" />
+                      </g>
+                    </g>
+                  </svg>
+                  <h6>Delete</h6>
+                </div>
+              </li>
+              <li>
+                <div class="profile-controls-items block-user-color" data-bs-toggle="modal" data-bs-target="#blockPopup"
+                  data-bs-dismiss="modal" id="blockContact">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+                    <defs>
+                      <style>
+                        .block-user-icon-a,
+                        .block-user-icon-b {
+                          fill: #fff;
+                        }
+
+                        .block-user-icon-a {
+                          stroke: #707070;
+                          opacity: 0;
+                        }
+
+                        .block-user-icon-b,
+                        .block-user-icon-c {
+                          stroke: #ff6767;
+                          stroke-width: 1.5px;
+                        }
+
+                        .block-user-icon-c,
+                        .block-user-icon-e {
+                          fill: none;
+                        }
+
+                        .block-user-icon-d {
+                          stroke: none;
+                        }
+                      </style>
+                    </defs>
+                    <g transform="translate(-1090 -329)">
+                      <g class="block-user-icon-a" transform="translate(1090 329)">
+                        <rect class="block-user-icon-d" width="30" height="30" rx="15" />
+                        <rect class="block-user-icon-e" x="0.5" y="0.5" width="29" height="29" rx="14.5" />
+                      </g>
+                      <g transform="translate(1448.556 -760.817) rotate(90)">
+                        <g class="block-user-icon-b" transform="translate(1093.373 333)">
+                          <circle class="block-user-icon-d" cx="11" cy="11" r="11" />
+                          <circle class="block-user-icon-e" cx="11" cy="11" r="10.25" />
+                        </g>
+                        <line class="block-user-icon-c" y2="12" transform="translate(1104.636 338)" />
+                      </g>
+                    </g>
+                  </svg>
+                  <h6>Block this person</h6>
+                </div>
+              </li>
+              <li>
+                <a class="profile-controls-items user-history" data-bs-toggle="modal" id="goToUserCallHistory"
+                  data-bs-target="#goToCallHistory" data-bs-dismiss="modal">
+                  <h6>Go to Call history</h6>
+                </a>
+              </li>
+              <li class="display-hide">
+                <div class="user-scheduled-meetings">
+                  <h6>Scheduled Meetings</h6>
+                  <div class="shedule-list-container main-scroll-style">
+                    <ul class="list-wrapper">
+                      <li>
+                        <div class="shedule-list-view">
+                          <div class="shedule-list-controls">
+                            <div class="row">
+                              <div class="col-xl-4 col-lg-4 col-md-7 col-sm-4 col-7">
+                                <div class="shedule-invite">
+                                  <p>Invited By</p>
+                                  <h6>Brown Smith</h6>
+                                </div>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-12 col-sm-4 col-12 mobile-view-order">
+                                <div class="shedule-time">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+                                    <defs>
+                                      <style>
+                                        .shedule-time-icon-a {
+                                          fill: #fff;
+                                          stroke: #808486;
+                                          stroke-width: 0.4px;
+                                          opacity: 0;
+                                        }
+
+                                        .shedule-time-icon-b {
+                                          fill: #182024;
+                                          stroke: #182024;
+                                          stroke-width: 0.5px;
+                                        }
+
+                                        .shedule-time-icon-c {
+                                          stroke: none;
+                                        }
+
+                                        .shedule-time-icon-d {
+                                          fill: none;
+                                        }
+                                      </style>
+                                    </defs>
+                                    <g transform="translate(-515 -552)">
+                                      <g class="shedule-time-icon-a" transform="translate(515 552)">
+                                        <rect class="shedule-time-icon-c" width="26" height="26" />
+                                        <rect class="shedule-time-icon-d" x="0.2" y="0.2" width="25.6" height="25.6" />
+                                      </g>
+                                      <g transform="translate(506.39 543.39)">
+                                        <path class="shedule-time-icon-b"
+                                          d="M21.712,13.3a8.412,8.412,0,1,0,8.412,8.412A8.412,8.412,0,0,0,21.712,13.3Zm0,16.028a7.616,7.616,0,1,1,7.616-7.616A7.626,7.626,0,0,1,21.712,29.328Z"
+                                          transform="translate(-0.402 -0.402)" />
+                                        <path class="shedule-time-icon-b"
+                                          d="M62.362,37.427V32.981a.381.381,0,1,0-.762,0v4.6a.414.414,0,0,0,.111.27l3.065,3.065a.383.383,0,0,0,.54,0,.394.394,0,0,0,0-.54Z"
+                                          transform="translate(-40.671 -16.276)" />
+                                      </g>
+                                    </g>
+                                  </svg>
+                                  04:00 PM
+                                </div>
+                              </div>
+                              <div class="col-xl-4 col-lg-4 col-md-5 col-sm-4 col-5">
+                                <div class="shedule-action-btns call-join-btn-container">
+                                  <a href="#" class="shedule-add-invite-btn btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                      <defs>
+                                        <style>
+                                          .shedule-invite-icon-a {
+                                            fill: #fff;
+                                            stroke-width: 0.4px;
+                                          }
+
+                                          .shedule-invite-icon-a,
+                                          .shedule-invite-icon-b {
+                                            stroke: #808486;
+                                          }
+
+                                          .shedule-invite-icon-b,
+                                          .shedule-invite-icon-d {
+                                            fill: none;
+                                          }
+
+                                          .shedule-invite-icon-b {
+                                            stroke-width: 1.2px;
+                                          }
+
+                                          .shedule-invite-icon-c {
+                                            stroke: none;
+                                          }
+                                        </style>
+                                      </defs>
+                                      <g class="shedule-invite-icon-a">
+                                        <rect class="shedule-invite-icon-c" width="32" height="32" rx="16" />
+                                        <rect class="shedule-invite-icon-d" x="0.2" y="0.2" width="31.6" height="31.6"
+                                          rx="15.8" />
+                                      </g>
+                                      <g transform="translate(-417.474 -500)">
+                                        <g class="shedule-invite-icon-b" transform="translate(426.744 507)">
+                                          <rect class="shedule-invite-icon-c" width="8.974" height="8.974" rx="4.487" />
+                                          <rect class="shedule-invite-icon-d" x="0.6" y="0.6" width="7.774"
+                                            height="7.774" rx="3.887" />
+                                        </g>
+                                        <path class="shedule-invite-icon-b"
+                                          d="M0,0A6.927,6.927,0,0,1,6.927,6.927,6.927,6.927,0,0,1,0,13.854"
+                                          transform="translate(424.5 524.5) rotate(-90)" />
+                                        <g transform="translate(437.064 511.038)">
+                                          <line class="shedule-invite-icon-b" y2="5.385" transform="translate(2.692)" />
+                                          <line class="shedule-invite-icon-b" y2="5.385"
+                                            transform="translate(5.385 2.692) rotate(90)" />
+                                        </g>
+                                      </g>
+                                    </svg>
+                                  </a>
+                                  <button class="call-join-btn">
+                                    <img src="modules/images/video-icon.svg" alt="" />
+                                    Call
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="shedule-share-link">
+                            <input class="form-control" type="text" placeholder=""
+                              value="https://appsteam.com/epicmeet/70fd995erl/70fd995erl70fd995erl70fd995erl"
+                              readonly />
+                            <button class="shedule-link-share-btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                                <defs>
+                                  <style>
+                                    .shedule-share-icon-a {
+                                      fill: #fff;
+                                      stroke-width: 0.4px;
+                                      opacity: 0;
+                                    }
+
+                                    .shedule-share-icon-a,
+                                    .shedule-share-icon-b,
+                                    .shedule-share-icon-c {
+                                      stroke: #808486;
+                                    }
+
+                                    .shedule-share-icon-b,
+                                    .shedule-share-icon-c,
+                                    .shedule-share-icon-e {
+                                      fill: none;
+                                    }
+
+                                    .shedule-share-icon-b,
+                                    .shedule-share-icon-c {
+                                      stroke-width: 1.5px;
+                                    }
+
+                                    .shedule-share-icon-c {
+                                      fill-rule: evenodd;
+                                    }
+
+                                    .shedule-share-icon-d {
+                                      stroke: none;
+                                    }
+                                  </style>
+                                </defs>
+                                <g class="shedule-share-icon-a">
+                                  <rect class="shedule-share-icon-d" width="32" height="32" />
+                                  <rect class="shedule-share-icon-e" x="0.2" y="0.2" width="31.6" height="31.6" />
+                                </g>
+                                <g transform="translate(5.389 3.46)">
+                                  <circle class="shedule-share-icon-b" cx="3.275" cy="3.275" r="3.275"
+                                    transform="translate(13.971 1.54)" />
+                                  <circle class="shedule-share-icon-b" cx="3.275" cy="3.275" r="3.275"
+                                    transform="translate(13.971 16.175)" />
+                                  <circle class="shedule-share-icon-b" cx="3.275" cy="3.275" r="3.275"
+                                    transform="translate(1.611 8.858)" />
+                                  <path class="shedule-share-icon-c" d="M14.04,6.106l-6.551,3.5,6.55-3.5Z" />
+                                  <path class="shedule-share-icon-c" d="M14.04,17.882l-6.551-3.5,6.55,3.5Z" />
+                                </g>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /************ Profile view end ***************/     -->
+  <!-- /************ SCHEDULE MEETING CODE STARTS HERE ***************/     -->
+
+  <!-- Modal -->
+  <div class="modal fade popup-main schedule-meeting-popup" id="scheduleMeeting" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Schedule Meeting</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <defs>
+                <style>
+                  .model-popup-close-a {
+                    fill: #fff;
+                    stroke: #808486;
+                    stroke-width: 0.4px;
+                    opacity: 0;
+                  }
+
+                  .model-popup-close-b,
+                  .model-popup-close-d {
+                    fill: none;
+                  }
+
+                  .model-popup-close-b {
+                    stroke: #182024;
+                    stroke-width: 1.5px;
+                  }
+
+                  .model-popup-close-c {
+                    stroke: none;
+                  }
+                </style>
+              </defs>
+              <g transform="translate(-514.909 -551.909)">
+                <g class="model-popup-close-a" transform="translate(514.909 551.909)">
+                  <rect class="model-popup-close-c" width="32" height="32" />
+                  <rect class="model-popup-close-d" x="0.2" y="0.2" width="31.6" height="31.6" />
+                </g>
+                <g transform="translate(531.08 554.485) rotate(45)">
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(9.613)" />
+                  <line class="model-popup-close-b" y2="19.226" transform="translate(19.226 9.613) rotate(90)" />
+                </g>
+              </g>
+            </svg>
+          </button>
+          <hr />
+        </div>
+        <div class="modal-body">
+          <div class="shedule-meeting-popup-view">
+            <div class="shedule-meeting-popup-user">
+              <ul class="list-wrapper">
+                <li>
+                  <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-7">
+                      <div class="user-profile-container">
+                        <div class="user-profile-image">
+                          <img class="user-big-icon" src="" id="scheduleParticipantProfile" />
+                          <div id="scheduleMeetingUserStatus"></div>
+                        </div>
+                        <div class="user-profile-details">
+                          <h6 id="scheduleDataName"></h6>
+                          <p class="user-email" id="scheduleDataEmailOrCount"></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="shedule-time-setup-view">
+              <div class="row g-3">
+                <div class="col-sm-2 col-4">
+                  <label for="daySelect">Day</label>
+                  <div class="select-main-wrapper">
+                    <select name="" id="daySelect" class="form-control"></select>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-4">
+                  <label for="monthSelect">Month</label>
+                  <div class="select-main-wrapper">
+                    <select name="" id="monthSelect" class="form-control"></select>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-4">
+                  <label for="yearSelect">Year</label>
+                  <div class="select-main-wrapper">
+                    <select name="" id="yearSelect" class="form-control"></select>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-12">
+                  <label for="timeSelect">Time</label>
+                  <input type="time" id="timeSelect" class="form-control time-set" value="" />
+                </div>
+              </div>
+            </div>
+            <div class="shedule-action-btns">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="scheduleUrl" placeholder="" value="" readonly />
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <button class="shedule-link-share-btn" id="shareUrlBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                          <defs>
+                            <style>
+                              .shedule-share-icon-a {
+                                fill: #fff;
+                                stroke-width: 0.4px;
+                                opacity: 0;
+                              }
+
+                              .shedule-share-icon-a,
+                              .shedule-share-icon-b,
+                              .shedule-share-icon-c {
+                                stroke: #808486;
+                              }
+
+                              .shedule-share-icon-b,
+                              .shedule-share-icon-c,
+                              .shedule-share-icon-e {
+                                fill: none;
+                              }
+
+                              .shedule-share-icon-b,
+                              .shedule-share-icon-c {
+                                stroke-width: 1.5px;
+                              }
+
+                              .shedule-share-icon-c {
+                                fill-rule: evenodd;
+                              }
+
+                              .shedule-share-icon-d {
+                                stroke: none;
+                              }
+                            </style>
+                          </defs>
+                          <g class="shedule-share-icon-a">
+                            <rect class="shedule-share-icon-d" width="32" height="32" />
+                            <rect class="shedule-share-icon-e" x="0.2" y="0.2" width="31.6" height="31.6" />
+                          </g>
+                          <g transform="translate(5.389 3.46)">
+                            <circle class="shedule-share-icon-b" cx="3.275" cy="3.275" r="3.275"
+                              transform="translate(13.971 1.54)" />
+                            <circle class="shedule-share-icon-b" cx="3.275" cy="3.275" r="3.275"
+                              transform="translate(13.971 16.175)" />
+                            <circle class="shedule-share-icon-b" cx="3.275" cy="3.275" r="3.275"
+                              transform="translate(1.611 8.858)" />
+                            <path class="shedule-share-icon-c" d="M14.04,6.106l-6.551,3.5,6.55-3.5Z" />
+                            <path class="shedule-share-icon-c" d="M14.04,17.882l-6.551-3.5,6.55,3.5Z" />
+                          </g>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="btn main-form-btn mt-3" data-bs-dismiss="modal" onclick="scheduleMeetingSubmit()">
+                Schedule Meeting
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <audio controls loop autoplay muted="true"> -->
+  <audio controls id="ringtone" style="display: none">
+    <source src="modules/images/iphone-6.mp3" type="audio/mpeg" />
+  </audio>
+  <!-- <button onclick="playringTone()" type="button">Play Audio</button> -->
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content d-flex border-0" style="background-color: transparent !important">
+        <div class="card m-auto" style="width: 18rem; background-color: rgba(0, 0, 0, 0.5)">
+          <div class="card-body">
+            <div class="profile-content text-center mb-4">
+              <img class="pro-img" src="modules/images/default_user.svg" />
+              <h5 id="lbl_call" class="text-white"></h5>
+              <p class="text-white">Video Call</p>
+            </div>
+
+            <button class="stop-call-btn" id="epic_StopCall">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="54" height="54"
+                viewBox="0 0 54 54">
+                <defs>
+                  <style>
+                    .stop-call-a {
+                      fill: url(#svg-stop-call);
+                    }
+
+                    .stop-call-b {
+                      fill: #fff;
+                    }
+
+                    .stop-call-c {
+                      opacity: 0;
+                      fill: #fff;
+                    }
+                  </style>
+                  <linearGradient id="svg-stop-call" x1="0.183" y1="0.862" x2="0.924" y2="0.23"
+                    gradientUnits="objectBoundingBox">
+                    <stop offset="0" stop-color="#ff2851"></stop>
+                    <stop offset="1" stop-color="#ff9090"></stop>
+                  </linearGradient>
+                </defs>
+                <rect class="stop-call-a" width="54" height="54" rx="27"></rect>
+                <rect class="stop-call-b" width="18" height="18" transform="translate(18 18)"></rect>
+                <rect class="stop-call-c" width="22" height="22" transform="translate(16 16)"></rect>
+              </svg>
+            </button>
+
+            <button class="video-camera-btn" onclick="JoinRoomRequest()">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="54" height="54"
+                viewBox="0 0 54 54">
+                <defs>
+                  <style>
+                    .video-camera-a {
+                      fill: url(#svg-video-camera);
+                    }
+
+                    .video-camera-b {
+                      fill: none;
+                      stroke: #fff;
+                      stroke-width: 1.5px;
+                    }
+
+                    .video-camera-c {
+                      opacity: 0;
+                    }
+                  </style>
+                  <linearGradient id="svg-video-camera" x1="0.818" y1="0.135" x2="0.217" y2="0.848"
+                    gradientUnits="objectBoundingBox">
+                    <stop offset="0" stop-color="#a7a3ff"></stop>
+                    <stop offset="1" stop-color="#4a43e3"></stop>
+                  </linearGradient>
+                </defs>
+                <rect class="video-camera-a" width="54" height="54" rx="27"></rect>
+                <path class="video-camera-b" d="M2,6V25.372H23.04V19.814l7.749,2.652V8.906L23.04,11.558V6Z"
+                  transform="translate(10.512 11.13)"></path>
+                <g class="video-camera-c" transform="translate(23.006 16.395) rotate(45)">
+                  <line class="video-camera-b" y2="14.667" transform="translate(7.333)"></line>
+                  <line class="video-camera-b" y2="14.667" transform="translate(14.667 7.333) rotate(90)"></line>
+                </g>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /************ SCHEDULE MEETING CODE ENDS HERE ***************/     -->
+
+  <div class="toast align-items-center border-0 toast-wrapper" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">Hello, world! This is a toast message.</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+        aria-label="Close"></button>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
+    integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="modules/js/ui.js"></script>
+  <script type="text/javascript" src="modules/js/jquery.listfilter.min.js"></script>
+  <script src="index.js"></script>
+  <script src="dashboard.js"></script>
+  <script>
+    fillDashboardDetails();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <g id="Group_3439" data-name="Group 3439" transform="translate(-20 -75.5)">
+    <g id="Group_3437" data-name="Group 3437" transform="translate(20 74)">
+      <g id="Group_3436" data-name="Group 3436" transform="translate(-254.002 -141.502)">
+        <g id="Group_3440" data-name="Group 3440">
+          <g id="photo-1503443207922-dff7d543fd0e" transform="translate(254.002 143.002)" fill="#eaeef0" stroke="#808486" stroke-width="0.2">
+            <circle cx="18" cy="18" r="18" stroke="none"/>
+            <circle cx="18" cy="18" r="17.9" fill="none"/>
+          </g>
+          <g id="Group_353" data-name="Group 353" transform="translate(259.76 148.76)">
+            <g id="Rectangle_124" data-name="Rectangle 124" transform="translate(0.241 0.241)" fill="#fff" stroke="#707070" stroke-width="1" opacity="0">
+              <rect width="24" height="24" rx="12" stroke="none"/>
+              <rect x="0.5" y="0.5" width="23" height="23" rx="11.5" fill="none"/>
+            </g>
+            <g id="Group_510" data-name="Group 510" transform="translate(2.846 4.233)">
+              <g id="Rectangle_131" data-name="Rectangle 131" transform="translate(2.861)" fill="none" stroke="#808486" stroke-width="1.5">
+                <rect width="7.271" height="7.271" rx="3.636" stroke="none"/>
+                <rect x="0.75" y="0.75" width="5.771" height="5.771" rx="2.886" fill="none"/>
+              </g>
+              <path id="Path_411" data-name="Path 411" d="M0,0A6.5,6.5,0,0,1,6.5,6.5,6.5,6.5,0,0,1,0,13" transform="translate(0 15.79) rotate(-90)" fill="none" stroke="#808486" stroke-width="1.5"/>
+            </g>
+            <g id="Group_511" data-name="Group 511" transform="translate(11.621 2.026)">
+              <path id="Path_546" data-name="Path 546" d="M3.688,0A2.752,2.752,0,0,1,5.506,2.632,2.814,2.814,0,0,1,2.692,5.446,2.865,2.865,0,0,1,0,3.456" transform="matrix(0.454, -0.891, 0.891, 0.454, 0, 4.906)" fill="none" stroke="#808486" stroke-width="1.5"/>
+              <path id="Path_411-2" data-name="Path 411" d="M5.45,0a5.656,5.656,0,0,1,.372,2.079A5.822,5.822,0,0,1,0,7.9" transform="translate(1.991 15.338) rotate(-90)" fill="none" stroke="#808486" stroke-width="1.5"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

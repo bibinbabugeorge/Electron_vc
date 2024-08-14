@@ -1,0 +1,16 @@
+<svg id="Component_142_1" data-name="Component 142 – 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="26" viewBox="0 0 26 26">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.818" y1="0.136" x2="0.236" y2="0.873" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#a7a3ff"/>
+      <stop offset="1" stop-color="#4a43e3"/>
+    </linearGradient>
+  </defs>
+  <rect id="Rectangle_147" data-name="Rectangle 147" width="26" height="26" rx="13" fill="url(#linear-gradient)"/>
+  <g id="Group_2755" data-name="Group 2755" transform="translate(6.973 8.255)">
+    <path id="Path_570" data-name="Path 570" d="M2,6v9.881h9.873V13.046L15.509,14.4V7.482L11.873,8.835V6Z" transform="translate(-2 -6)" fill="none" stroke="#fff" stroke-width="1"/>
+    <g id="Group_2730" data-name="Group 2730" transform="translate(4.925 0.598) rotate(45)" opacity="0.978">
+      <line id="Line_201" data-name="Line 201" x2="0.254" y2="6.104" transform="translate(2.925 0)" fill="none" stroke="#fff" stroke-width="1"/>
+      <line id="Line_202" data-name="Line 202" x1="0.254" y2="6.104" transform="translate(6.104 2.925) rotate(90)" fill="none" stroke="#fff" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

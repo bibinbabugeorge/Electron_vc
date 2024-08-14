@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="modules/css/style.css" />
+    <script src="modules/EventEmitter.min.js"></script>
+    <script src="RoomClient.js"></script>
+    <script src="RepoClient.js"></script>
+    <script src="bundle.js"></script>
+    <title>Sign Up</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="modules/images/mobile_view_bg.svg"
+    />
+  </head>
+
+  <body>
+    <main>
+      <section class="login-view-section signup-view-section">
+        <div class="row g-2">
+          <div class="col-xl-6 col-lg-6 logo-section-bg">
+            <img
+              src="modules/images/main_logo.svg"
+              class="position-absolute w-auto"
+              alt=""
+            />
+            <div
+              class="d-flex h-100 justify-content-center align-items-center sub-logo-wrapper"
+            >
+              <img src="modules/images/sub_logo.svg" class="" alt="" />
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-sm-12 col-12 login-form-bg">
+            <div class="container">
+              <div class="mobile-view-logo">
+                <img
+                  class="mobile-view-logo"
+                  src="modules/images/main_logo.svg"
+                  alt=""
+                />
+              </div>
+              <div
+                class="outer position-relative d-flex justify-content-center"
+              >
+                <div class="middle d-flex align-items-center w-100">
+                  <div class="main-form-container">
+                    <!-- Sign up form start -->
+                    <div class="sign-up-form-container">
+                      <h1>Sign Up</h1>
+                      <h5 class="mt-4 mb-4">
+                        Easy registration and simply talk with your friends or a
+                        group
+                      </h5>
+                      <form id="registrationForm" method="post">
+                        <div class="row align-items-center g-3">
+                          <div class="col-sm-6 my-1 mb-3">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="FirstName"
+                              name="FirstName"
+                              placeholder="First Name"
+                              onkeydown="return /[a-z]/i.test(event.key)"
+                            />
+                          </div>
+                          <div class="col-sm-6 my-1 mb-3">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="LastName"
+                              name="LastName"
+                              name="LastName"
+                              placeholder="Last Name"
+                              onkeydown="return /[a-z]/i.test(event.key)"
+                            />
+                          </div>
+                        </div>
+                        <div class="form-group mb-3">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="UserName"
+                            name="UserName"
+                            placeholder="User Name"
+                            onkeydown="return /[a-z0-9._]/i.test(event.key)"
+                          />
+                        </div>
+                        <div class="form-group mb-3">
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="Email"
+                            name="Email"
+                            aria-describedby="emailHelp"
+                            placeholder="Email Address"
+                          />
+                        </div>
+                        <div class="form-group mb-3">
+                          <div class="input-group">
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="Password"
+                              name="Password"
+                              onkeydown="return /[a-z0-9@!#$%^&*?~;_=`]/i.test(event.key)"
+                              placeholder="Create a Password"
+                            />
+                            <div class="input-group-prepend">
+                              <div class="input-group-text h-100">
+                                <button class="password-view-btn" type="button">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="30"
+                                    height="30"
+                                    viewBox="0 0 30 30"
+                                  >
+                                    <defs>
+                                      <style>
+                                        .password-a {
+                                          fill: #fff;
+                                          opacity: 0;
+                                        }
+
+                                        .password-b,
+                                        .password-c,
+                                        .password-e {
+                                          fill: none;
+                                        }
+
+                                        .password-b,
+                                        .password-c {
+                                          stroke: #00000067;
+                                        }
+
+                                        .password-b {
+                                          stroke-linecap: round;
+                                          stroke-linejoin: round;
+                                        }
+
+                                        .password-d {
+                                          stroke: none;
+                                        }
+                                      </style>
+                                    </defs>
+                                    <rect
+                                      class="password-a"
+                                      width="30"
+                                      height="30"
+                                    />
+                                    <g transform="translate(4.823 9.346)">
+                                      <path
+                                        class="password-b"
+                                        d="M6.177,0c5.088,0,10.177,5.654,10.177,5.654s-5.088,5.654-10.177,5.654S-4,5.654-4,5.654,1.088,0,6.177,0Z"
+                                        transform="translate(4)"
+                                      />
+                                      <g
+                                        class="password-c"
+                                        transform="translate(6.177 1.654)"
+                                      >
+                                        <circle
+                                          class="password-d"
+                                          cx="4"
+                                          cy="4"
+                                          r="4"
+                                        />
+                                        <circle
+                                          class="password-e"
+                                          cx="4"
+                                          cy="4"
+                                          r="3.5"
+                                        />
+                                      </g>
+                                    </g>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group mb-3">
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="gridCheck"
+                            />
+                            <label class="form-check-label" for="gridCheck">
+                              Creating an account means you’re okay with our
+                              <b> Terms of Service, Privacy Policy,</b> and our
+                              default
+                              <b> Notification Settings.</b>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="form-group mb-3">
+                          <button
+                            id="signupBtn"
+                            type="submit"
+                            class="btn form-btn"
+                          >
+                            Sign Up
+                          </button>
+                        </div>
+
+                        <div class="goto-signup">
+                          <p>Already have an account?</p>
+                          <a href="/index.html">Sign In</a>
+                        </div>
+                      </form>
+                    </div>
+                    <!-- Sign up form  End -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
+      integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="modules/js/ui.js"></script>
+    <script
+      type="text/javascript"
+      src="modules/js/jquery.listfilter.min.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="index.js"></script>
+    <script>
+      SignUpSubmit();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<svg id="Component_18_1" data-name="Component 18 – 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="54" height="54" viewBox="0 0 54 54">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.849" y1="0.238" x2="0.297" y2="0.84" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#182024"/>
+      <stop offset="1" stop-color="#808486"/>
+    </linearGradient>
+  </defs>
+  <rect id="Rectangle_65" data-name="Rectangle 65" width="54" height="54" rx="27" opacity="0.2" fill="url(#linear-gradient)"/>
+  <g id="Group_270" data-name="Group 270" transform="translate(-45.986 -4.455)">
+    <path id="Path_280" data-name="Path 280" d="M20.209,9.781A9.949,9.949,0,0,0,10.1,0,9.949,9.949,0,0,0,0,9.781" transform="translate(83.196 40.946) rotate(180)" fill="none" stroke="#ff6767" stroke-linejoin="round" stroke-width="1.5"/>
+    <line id="Line_193" data-name="Line 193" y2="5.505" transform="translate(73.056 41.853)" fill="none" stroke="#ff6767" stroke-width="1.5"/>
+    <line id="Line_194" data-name="Line 194" x2="6.714" transform="translate(69.699 47.358)" fill="none" stroke="#ff6767" stroke-width="1.5"/>
+    <g id="Rectangle_133" data-name="Rectangle 133" transform="translate(65.453 16.455)" fill="none" stroke="#ff6767" stroke-width="1.5">
+      <rect width="15" height="21" rx="7.5" stroke="none"/>
+      <rect x="0.75" y="0.75" width="13.5" height="19.5" rx="6.75" fill="none"/>
+    </g>
+    <line id="Line_201" data-name="Line 201" x1="19" y2="28" transform="translate(63.486 16.955)" fill="none" stroke="#ff6767" stroke-width="1.5"/>
+  </g>
+</svg>
