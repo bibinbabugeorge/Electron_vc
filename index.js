@@ -146,7 +146,7 @@ server.connect().then((events) => {
       GuestRequest();
   });
   events.on(callbackEvents.CreateGroupSuccess, function (data) {
-    location.href = "/dashboard.html";
+    location.href = "./dashboard.html";
   });
 
   events.on(callbackEvents.UpdateUserClientIdFailed, function (data) {
@@ -340,7 +340,7 @@ server.connect().then((events) => {
     ExitRoom(data.Event, data);
     if (JSON.parse(getCookie()).email.includes("guest")) Logout();
     let url = localStorage.getItem("ReturnURL");
-    if (url == null) location.href = "/dashboard.html";
+    if (url == null) location.href = "./dashboard.html";
     else location.href = "/Join.html";
   });
 
@@ -890,7 +890,7 @@ function RingtheGroup(_roomId) {
 function AutoLogin() {
   var UserDetails = getCookie();
   if (UserDetails != undefined) {
-    location.href = "/dashboard.html";
+    location.href = "./dashboard.html";
   }
 }
 
@@ -1765,13 +1765,13 @@ function CreateGroup(data) {
 function EditGroup(data) {
   var dataObj = { commandType: "EditedGroupData", Data: data };
   server.sendCommand(JSON.stringify(dataObj));
-  location.href = "/dashboard.html";
+  location.href = "./dashboard.html";
 }
 
 function ScheduleRandomCall(data) {
   var dataObj = { commandType: "ScheduleRandomCall", Data: data };
   server.sendCommand(JSON.stringify(dataObj));
-  location.href = "/dashboard.html";
+  location.href = "./dashboard.html";
 }
 
 function UpdateProfilePic(data) {
@@ -1923,8 +1923,8 @@ async function enumerateDevices() {
         let el = null;
         let mel = null;
         if ("audioinput" === device.kind) {
-          el = audioSelect;
-          mel = audioSelectMobile;
+          // el = audioSelect;
+          // mel = audioSelectMobile;
           audioDevices.push({
             deviceId: device.deviceId,
             label: device.label,
@@ -1975,11 +1975,11 @@ function LiveConsole(msg) {
   if (window.location.href.includes("confieranceroom")) {
     let ele = document.getElementById("alert_box");
     // if (msg == 'Room Created Successfully.' || msg == 'Room Already Exists.') {
-    if (msg == "WebSocket Connected") {
-      ele.innerHTML = "<p>" + msg + "</p>";
-    } else {
-      ele.innerHTML += "<p>" + msg + "</p>";
-    }
+    // if (msg == "WebSocket Connected") {
+    //   ele.innerHTML = "<p>" + msg + "</p>";
+    // } else {
+    //   ele.innerHTML += "<p>" + msg + "</p>";
+    // }
   }
 }
 
