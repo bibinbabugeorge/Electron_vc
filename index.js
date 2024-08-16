@@ -964,12 +964,7 @@ function acknowledgeUserStatus() {
 }
 
 function setCookie(UserDetail, expDays) {
-  // create or update
-  let date = new Date();
-  date.setTime(date.getTime() + expDays * 24 * 60 * 60 * 1000);
-  const expires = "expires=" + date.toUTCString();
-  const UserDetails = "user_details=" + UserDetail;
-  document.cookie = UserDetails + "; " + expires + "; path=/";
+  sessionStorage.setItem('user_details=', UserDetail);
 }
 
 function DeleteCookie() {
@@ -1008,14 +1003,8 @@ function getCookieDetails(key) {
 }
 
 function getCookie() {
-  const name = "user_details=";
-  const cDecoded = decodeURIComponent(document.cookie); //to be careful
-  const cArr = cDecoded.split("; ");
-  let res;
-  cArr.forEach((val) => {
-    if (val.indexOf(name) === 0) res = val.substring(name.length);
-  });
-  return res;
+  const UserDetails = sessionStorage.getItem('user_details=');
+  return UserDetails;
 }
 
 function initRoom() {
