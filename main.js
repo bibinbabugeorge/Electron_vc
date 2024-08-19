@@ -5,10 +5,13 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    //frame: false,    //hiding frame 
+    //autoHideMenuBar: true,  // hide menu bar
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'), // Preload script
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      //devTools: false    //disble dev tools 
     }
   });
 
