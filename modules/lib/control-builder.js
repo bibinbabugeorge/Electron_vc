@@ -1304,6 +1304,7 @@
   }
 
   async SearchParticipantListItem(participant) {
+    debugger
     var list = "";
     var listMob = "";
     if (participant && participant.length > 0) {
@@ -4402,7 +4403,7 @@
 
     if (callParticiapantsCount == 0) {
       if ($(".waiting-h6").length == 0) {
-        $('[data-username="video_' + JSON.parse(getCookie()).userID + '"]')
+        $('[data-username="video_' + JSON.parse(await getCookie()).userID + '"]')
           .find(".audio-container")
           .append(
             `<h6 class="mb-0 mt-2 waiting-h6" style="padding: 5px; background: black; border-radius: 2px;">Waiting for other participants to join</h6>`

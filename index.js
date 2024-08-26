@@ -1000,8 +1000,8 @@ async function getuserid() {
 }
 
 
-function getCookieDetails(key) {
-  var UserDetails = getCookie();
+async function getCookieDetails(key) {
+  var UserDetails = await getCookie();
   if (UserDetails != undefined) {
     UserDetails = JSON.parse(UserDetails);
     return UserDetails[key];
@@ -1059,7 +1059,7 @@ async function initRoom() {
 }
 
 async function OpenVideoProducer() {
-  var userDetails = JSON.parse(getCookie());
+  var userDetails = JSON.parse(await getCookie());
   roomObj.produce(RoomClient.mediaType.video, videoSelect.value);
 
   // if (videoPause) {
@@ -2070,7 +2070,7 @@ async function closeRemoteProducer(clientid, kind) {
     commandType: "closeRemoteProducer",
     Data: {
       RoomId: localStorage.getItem("RoomId"),
-      userName: JSON.parse(getCookie()).name,
+      userName: JSON.parse(await getCookie()).name,
       clientid,
       kind,
     },

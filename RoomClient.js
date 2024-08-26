@@ -1136,7 +1136,7 @@ class RoomClient {
     if (callParticiapantsCount == 0) {
       if ($(".video-waiting-h6").length == 0) {
         $(
-          '[data-username="video_' + JSON.parse(getCookie()).userID + '"]'
+          '[data-username="video_' + JSON.parse(await getCookie()).userID + '"]'
         ).append(
           `<h6 class="mb-0 mt-2 video-waiting-h6" style="padding: 5px;background: #00000090;border-radius: 2px;position: absolute;inset: 0;display: flex;justify-content: center;align-items: center;font-size: 17px;">Waiting for other participants to join</h6>`
         );
@@ -1147,7 +1147,7 @@ class RoomClient {
       $(".waiting-h6").remove();
     }
 
-    if (JSON.parse(getCookie()).email.includes("guest")) {
+    if (JSON.parse(await getCookie()).email.includes("guest")) {
       $(`.participant-list-mic-btns,.participant-list-video-btns`).hide();
       $(`.participant-mute-camera-btn,.participant-mute-audio-btn`).hide();
     }

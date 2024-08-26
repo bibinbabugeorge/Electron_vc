@@ -341,7 +341,7 @@ async function sendChat(files) {
     Data: {
       time: time,
       RoomId: localStorage.getItem("RoomId"),
-      user_id: JSON.parse(getCookie()).userID,
+      user_id: JSON.parse(await getCookie()).userID,
       message,
       files,
       groupId: groupId,
@@ -421,7 +421,7 @@ function bindChatHistory(Data) {
                   </div>
                 </li>`);
 
-  Data.chatHistory.forEach((chat) => {
+  Data.chatHistory.forEach(async (chat) => {
     if (
       chatDate !=
       new Date(chat.sendTime).toLocaleDateString("en-GB", {
@@ -448,7 +448,7 @@ function bindChatHistory(Data) {
       ? `uploads/${chat.sendUserPic}`
       : "modules/images/default_user.svg";
 
-    if (chat.sendUserId == JSON.parse(getCookie()).userID) {
+    if (chat.sendUserId == JSON.parse(await getCookie()).userID) {
       bindSenderChat(chat.files, chat.message, istSendTime, chat.groupId);
     } else {
       bindRecieverChat(chat.sendUserName, chat, senderPic, istSendTime);
@@ -771,7 +771,7 @@ $("#epic_HandRaiseBtn").click(async function () {
     commandType: "RaiseHandCommand",
     Data: {
       RoomId: localStorage.getItem("RoomId"),
-      user_id: JSON.parse(getCookie()).userID,
+      user_id: JSON.parse(await getCookie()).userID,
       raisedHand: raiseHandFlag,
     },
   };
