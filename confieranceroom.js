@@ -982,8 +982,8 @@ function admitOrRejectGuest(user_id, resType) {
   server.sendCommand(JSON.stringify(dataObj));
 }
 
-function BindGuestLobby(data) {
-  if (JSON.parse(getCookie()).email.includes("guest")) {
+async function BindGuestLobby(data) {
+  if (JSON.parse(await getCookie()).email.includes("guest")) {
     return;
   }
   $(".guest-request-ul").empty();

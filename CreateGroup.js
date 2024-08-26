@@ -1,7 +1,7 @@
 let submitUserList = [];
 let UserDetail = [];
 let IconName = null;
-
+const serverUri = 'https://vps271818.vps.ovh.ca:3024';
 
 $("#Usersearch").keyup(function () {
   SearchParticipants(this.value);
@@ -77,7 +77,7 @@ function toggleButtontext() {
 
 $("#groupIcon").change(function () {
   var form = new FormData();
-  ApiURL = window.location.origin + "/uploadfile"
+  ApiURL = serverUri + "/uploadfile"
   form.append("Picture", $('#groupIcon')[0].files[0]);
   var settings = {
     "url": ApiURL,
@@ -200,8 +200,8 @@ function Bindparticipant(participant) {
 }
 
 
-$(".main-form-btn").click(function () {
-  var UserDetails = getCookie();
+$(".main-form-btn").click(async function () {
+  var UserDetails = await getCookie();
   if (UserDetails != undefined) {
     UserDetails = JSON.parse(UserDetails);
     var CreatedUserDetails = {

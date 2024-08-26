@@ -1064,16 +1064,16 @@
   //   return _ParticipantsList;
   // }
 
-  createAddParticipantsListItem(CurrentParticipants) {
+  async createAddParticipantsListItem(CurrentParticipants) {
     this.CreateAvatar(CurrentParticipants);
     const name = "user_details=";
-    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+    const cDecoded = decodeURIComponent(await getCookie()); //to be careful
     const cArr = cDecoded.split("; ");
     let res;
-    cArr.forEach((val) => {
-      if (val.indexOf(name) === 0) res = val.substring(name.length);
-    });
-    let UserDetails = JSON.parse(res); // to be noted
+    // cArr.forEach((val) => {
+    //   if (val.indexOf(name) === 0) res = val.substring(name.length);
+    // });
+    let UserDetails = JSON.parse(await getCookie()); // to be noted
 
     let prevUserEmails = [];
     let currentParticipantsEmails = [];
@@ -4750,7 +4750,7 @@
       $("#remoteVideos .carousel-item:last-child")
         .find(".video-container")
         .children().length === 1 &&
-      $('[data-username="video_' + JSON.parse(getCookie()).userID + '"]')
+      $('[data-username="video_' + JSON.parse(await getCookie()).userID + '"]')
         .parent()
         .is(
           $("#remoteVideos .carousel-item:last-child").children(
@@ -4815,7 +4815,7 @@
 
   async manageLocalTile() {
     var localTile = $(
-      '[data-username="video_' + JSON.parse(getCookie()).userID + '"]'
+      '[data-username="video_' + JSON.parse(await getCookie()).userID + '"]'
     );
     $(localTile).find("p").text("You");
     // $(localTile).find(".participant-video-controls-btns").hide();
@@ -4839,16 +4839,16 @@
         ).append(localTile);
       }
     }
-    $('[data-username="video_' + JSON.parse(getCookie()).userID + '"]')
+    $('[data-username="video_' + JSON.parse(await getCookie()).userID + '"]')
       .parent()
       .append(
-        $('[data-username="video_' + JSON.parse(getCookie()).userID + '"]')
+        $('[data-username="video_' + JSON.parse(await getCookie()).userID + '"]')
       );
     await this.resetVideoLayout().then(() => {
       this.resetMultipleVideoLayout();
     });
     setCarouselButtonState();
-    $('[data-username="video_' + JSON.parse(getCookie()).userID + '"]')
+    $('[data-username="video_' + JSON.parse(await getCookie()).userID + '"]')
       .find(".participant-video-controls-btns ")
       .hide();
     this.setCarouselButtons();

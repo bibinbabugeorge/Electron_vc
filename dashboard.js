@@ -1442,8 +1442,11 @@ function scheduleMeetingSubmit() {
   server.sendCommand(JSON.stringify(dataObj));
 }
 
-function fillDashboardDetails() {
-  var UserDetails = getCookie();
+async function fillDashboardDetails() {
+  debugger
+  var UserDetails = await getCookie();
+  if (UserDetails.length == 0)
+    location.href = "./index.html";
   if (UserDetails != undefined) {
     UserDetails = JSON.parse(UserDetails);
     var curHr = new Date().getHours();
@@ -1477,6 +1480,7 @@ function fillDashboardDetails() {
     missedCallNotification = UserDetails.Notifications.MissedCall;
 
   } else {
+    debugger
     location.href = "./dashboard.html";
   }
 }
@@ -1633,7 +1637,7 @@ $(document).on("click", function (e) {
 });
 
 var settings = {
-  "url": `${origin}/getProjectConfig?Project=VideoConference`,
+  "url": `${apiUri}getProjectConfig?Project=VideoConference`,
   "method": "GET",
   "timeout": 0,
 };

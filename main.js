@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, session } = require('electron');
 const path = require('node:path');
 
 function createWindow() {
@@ -16,6 +16,7 @@ function createWindow() {
   });
 
   mainWindow.loadFile('index.html');
+  //mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);
@@ -30,4 +31,19 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+ipcMain.on('set-cookie', (event, cookieDetails) => {
+  session.defaultSession.cookies.set(cookieDetails, (error) => {
+      if (error) {
+          console.error('Error setting cookie:', error);
+      } else {
+          console.log('Cookie set successfully');
+      }
+  });
+});
+
+ipcMain.handle('get-cookies', async () => {
+  const cookies = await session.defaultSession.cookies.get({});
+  return cookies;
 });

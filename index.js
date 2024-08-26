@@ -1,6 +1,5 @@
-
-
-const server = new window.conference('wss://vps271818.vps.ovh.ca:3024/');
+const apiUri = 'https://vps271818.vps.ovh.ca:3024/';
+const server = new window.conference(apiUri.replace('https', 'wss'));
 
 let producer = null;
 let roomObj = null;
@@ -97,6 +96,7 @@ const callbackEvents = {
 };
 
 let currentURL = window.location.href;
+
 
 server.connect().then((events) => {
   events.on(callbackEvents.WebSocketConnected, function (data) {
@@ -336,9 +336,9 @@ server.connect().then((events) => {
     roomObj.disconnect();
   });
 
-  events.on(callbackEvents.RoomExited, function (data) {
+  events.on(callbackEvents.RoomExited, async function (data) {
     ExitRoom(data.Event, data);
-    if (JSON.parse(getCookie()).email.includes("guest")) Logout();
+    if (JSON.parse(await getCookie()).email.includes("guest")) Logout();
     let url = localStorage.getItem("ReturnURL");
     if (url == null) location.href = "./dashboard.html";
     else location.href = "/Join.html";
@@ -553,7 +553,7 @@ server.connect().then((events) => {
     roomObj.setroomDetailsObj(data.Data);
     roomObj.updateRoom(data.Data.Data);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       data.Data.Data.forEach((MSuser) => {
         data.Data.Userlist.forEach((DBuser) => {
           if (DBuser.clientid == MSuser.user_id) {
@@ -615,7 +615,7 @@ server.connect().then((events) => {
         });
       });
 
-      if ((JSON.parse(getCookie()).email.includes("guest"))) {
+      if ((JSON.parse(await getCookie()).email.includes("guest"))) {
         $(`.participant-list-mic-btns,.participant-list-video-btns`).hide();
         $(`.participant-mute-camera-btn,.participant-mute-audio-btn`).hide();
       }
@@ -837,7 +837,7 @@ function GuestRequestResponse(data) {
   }
 }
 
-function RequestToJoin(clientid, userid) {
+async function RequestToJoin(clientid, userid) {
   $(".participants-list-container").hide(700);
   $(".mobile-menu-view-content").hide("slide", { direction: "down" }, 1000);
   $(".add-participants-list-container").toggle(
@@ -870,15 +870,15 @@ function RequestToJoin(clientid, userid) {
     Data: {
       RequestUserId: userid,
       RoomId: _roomId,
-      UserId: JSON.parse(getCookie()).userID,
+      UserId: JSON.parse(await getCookie()).userID,
     },
   };
   // server.sendCommand(JSON.stringify(dataObj));
   // calling avatar for all participants
 }
 
-function RingtheGroup(_roomId) {
-  var UserDetails = getCookie();
+async function RingtheGroup(_roomId) {
+  var UserDetails = await getCookie();
   if (UserDetails != undefined) {
     UserDetails = JSON.parse(UserDetails);
   }
@@ -887,17 +887,17 @@ function RingtheGroup(_roomId) {
   server.sendCommand(JSON.stringify(dataObj));
 }
 
-function AutoLogin() {
-  var UserDetails = getCookie();
+async function AutoLogin() {
+  var UserDetails = await getCookie();
   if (UserDetails != undefined) {
     location.href = "./dashboard.html";
   }
 }
 
-function updateUserClientId(newClientId) {
+async function updateUserClientId(newClientId) {
   var dataObj = {
     commandType: "UpdateUserClientId",
-    Data: { UserId: getuserid(), NewClientId: newClientId },
+    Data: { UserId: await getuserid(), NewClientId: newClientId },
   };
   if (dataObj.Data.UserId != null) {
     server.sendCommand(JSON.stringify(dataObj));
@@ -953,7 +953,7 @@ function DesktopNotification(body) {
 function Logout() {
   acknowledgeUserStatus();
   DeleteCookie();
-  location.href = "/index.html";
+  location.href = "./index.html";
 }
 
 function acknowledgeUserStatus() {
@@ -964,7 +964,14 @@ function acknowledgeUserStatus() {
 }
 
 function setCookie(UserDetail, expDays) {
-  sessionStorage.setItem('user_details=', UserDetail);
+  //sessionStorage.setItem('user_details=', UserDetail);
+
+  window.electronAPI.setCookie({
+    url: 'http://localhost',
+    name: 'UserDetail',
+    value: UserDetail,
+    expirationDate: Math.floor(Date.now() / 1000) + 3600 // Expiration time set to 1 hour
+  });
 }
 
 function DeleteCookie() {
@@ -982,15 +989,16 @@ function getclientid() {
   }
 }
 
-function getuserid() {
-  var UserDetails = getCookie();
-  if (UserDetails != undefined) {
+async function getuserid() {
+  var UserDetails = await getCookie();
+  if (UserDetails !== undefined && UserDetails !== "") {
     UserDetails = JSON.parse(UserDetails);
     return UserDetails.userID;
   } else {
     return null;
   }
 }
+
 
 function getCookieDetails(key) {
   var UserDetails = getCookie();
@@ -1002,12 +1010,13 @@ function getCookieDetails(key) {
   }
 }
 
-function getCookie() {
-  const UserDetails = sessionStorage.getItem('user_details=');
-  return UserDetails;
+async function getCookie() {
+  //sessionStorage.getItem('user_details=');
+  const UserDetails = await window.electronAPI.getCookies({ name: 'userdetails' });
+  return UserDetails[0].value;
 }
 
-function initRoom() {
+async function initRoom() {
   if (window.location.href.includes("confieranceroom")) {
     if (roomObj && roomObj.isOpen()) {
       console.log("Already connected to a room");
@@ -1026,7 +1035,7 @@ function initRoom() {
         localStorage.setItem("RoomId", _roomId);
       }
       console.log(_roomId);
-      var UserDetails = getCookie();
+      var UserDetails = await getCookie();
       if (UserDetails != undefined) {
         UserDetails = JSON.parse(UserDetails);
         _username = UserDetails.name;
@@ -1083,7 +1092,7 @@ function CloseVideoProducer() {
 }
 
 async function OpenAudioProducer() {
-  var userDetails = JSON.parse(getCookie());
+  var userDetails = JSON.parse(await getCookie());
   roomObj.produce(RoomClient.mediaType.audio, audioSelect.value);
 
   // if (audioPause) {
@@ -1114,7 +1123,7 @@ function CloseAudioProducer() {
 // }
 
 async function unifiedScreenShare() {
-  var userDetails = JSON.parse(getCookie());
+  var userDetails = JSON.parse(await getCookie());
 
   if (roomObj.IsShareScreen) roomObj.closeProducer(RoomClient.mediaType.screen);
   else {
@@ -1990,7 +1999,7 @@ function JoinRoomRequest(type) {
   } else {
     localStorage.setItem("video", true);
   }
-  location.href = "/confieranceroom.html"; //To be Noted name
+  location.href = "./confieranceroom.html"; //To be Noted name
 }
 
 function RejectCallRequest() {
