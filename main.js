@@ -1,10 +1,12 @@
-const { app, BrowserWindow, ipcMain, session } = require('electron');
+const { app, BrowserWindow, ipcMain, session, Menu } = require('electron');
 const path = require('node:path');
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    minHeight:750,
+    minWidth: 350,
     //frame: false,    //hiding frame 
     //autoHideMenuBar: true,  // hide menu bar
     webPreferences: {
@@ -12,11 +14,14 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       //devTools: false    //disble dev tools 
+      devTools: true    //disble dev tools 
     }
   });
 
+  Menu.setApplicationMenu(null);
+
   mainWindow.loadFile('index.html');
-  //mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);
