@@ -11,6 +11,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'), // Preload script
       nodeIntegration: false,
       contextIsolation: true,
+      enableRemoteModule: false,
       //devTools: false    //disble dev tools 
     }
   });
@@ -46,4 +47,10 @@ ipcMain.on('set-cookie', (event, cookieDetails) => {
 ipcMain.handle('get-cookies', async () => {
   const cookies = await session.defaultSession.cookies.get({});
   return cookies;
+});
+
+ipcMain.handle('get-sources', async () => {
+  const { desktopCapturer } = require('electron');
+  const sources = await desktopCapturer.getSources({ types: ['screen', 'window'] });
+  return sources;
 });
