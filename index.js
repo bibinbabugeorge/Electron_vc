@@ -2335,7 +2335,7 @@ async function switchFsUser(userId) {
   checkOverflow();
   await controlBuilder.resetVideoLayout();
   await controlBuilder.resetMultipleVideoLayout();
-  $(`#fsli_${JSON.parse(getCookie()).userID}`).hide();
+  $(`#fsli_${JSON.parse(await getCookie()).userID}`).hide();
 }
 
 $("#ContactVisibilityToggle,#ContactVisibilityToggleMobile").on(
