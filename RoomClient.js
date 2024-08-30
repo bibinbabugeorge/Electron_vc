@@ -735,6 +735,7 @@ class RoomClient {
           const selectedElement = document.querySelector('.ScreenSharelist.selected');
           if (selectedElement) {
             const selectedId = selectedElement.getAttribute('data-id');
+            $('#selectMainMenu').css('display', 'none');
             await this.handleOptionClick(selectedId, type);
           } else {
             alert('Please select a screen or window to share.');
