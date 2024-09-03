@@ -23,6 +23,7 @@ let elem;
 let userName = null;
 let roomDetailsObj;
 let participantList;
+let currentStream;
 
 class RoomClient {
   socket = null;
@@ -70,6 +71,7 @@ class RoomClient {
       }.bind(this)
     );
   }
+
 
   ////////// PartcipantList and Pause-Resume /////////
 
@@ -670,10 +672,104 @@ class RoomClient {
       let params = null;
       let sysAudioParams = null;
       let screenParams = null;
+      let stream;
 
-      let stream = screen
-        ? await navigator.mediaDevices.getDisplayMedia({ audio: true })
-        : await navigator.mediaDevices.getUserMedia(mediaConstraints);
+
+      if (!screen) {
+        stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+      } else {
+        let selectedScreenId = null;
+
+        function handleScreenSelection(element, id) {
+          if (element.classList.contains('selected')) {
+            element.classList.remove('selected');
+            selectedScreenId = null;
+            document.querySelector('.share-btn').disabled = true;
+          } else {
+            // Remove the 'selected' class from all screen elements
+            document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
+
+            // Add the 'selected' class to the clicked element
+            element.classList.add('selected');
+            selectedScreenId = id;
+            document.querySelector('.share-btn').disabled = false;
+          }
+        }
+
+        async function getVideoSources() {
+          const inputSources = await window.electronAPI.getSources();
+          const desktopScreensContainer = document.getElementById("desktop-screens-img-block");
+          desktopScreensContainer.innerHTML = "";
+
+          const desktopScreens = inputSources.filter(source => source.id.includes('screen'));
+          desktopScreens.forEach((desktop, index) => {
+            const desktopHTML = `<div class="img-block" data-id="${desktop.id}">
+                <img src="${desktop.thumbnailURL}" alt="${desktop.name}" class="img-fluid" />
+              </div>`;
+            desktopScreensContainer.innerHTML += desktopHTML;
+          });
+
+          const windowScreensContainer = document.getElementById("window-screens-img-block");
+          windowScreensContainer.innerHTML = "";
+          const windowScreens = inputSources.filter(source => source.id.includes('window'));
+
+          windowScreens.forEach((window, index) => {
+            const windowHTML = `<div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-2">
+                <div class="img-block" data-id="${window.id}">
+                  <img src="${window.thumbnailURL}" alt="${window.name}" class="img-fluid" />
+                </div>
+              </div>`;
+            windowScreensContainer.innerHTML += windowHTML;
+          });
+
+          // Reattach event listeners
+          document.querySelectorAll('#desktop-screens-img-block .img-block, #window-screens-img-block .img-block').forEach(container => {
+            container.addEventListener('click', (event) => {
+              const imgBlock = event.currentTarget;
+              handleScreenSelection(imgBlock, imgBlock.getAttribute('data-id'));
+            });
+          });
+
+          $("#sharePopup").show();
+        }
+
+        // Attach the click event for the first time
+        getVideoSources();
+
+        document.querySelector('.share-btn').addEventListener('click', async () => {
+          if (selectedScreenId) {
+            await this.handleOptionClick(selectedScreenId, type);
+            $('#sharePopup').hide();
+            // Reset after sharing
+            selectedScreenId = null;
+            const tabaudio = document.getElementById("tabAudioshareSwitch");
+            sysAudio = tabaudio.checked;
+            document.querySelector('.share-btn').disabled = true;
+            document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
+          }
+        });
+
+        // Handle the "Cancel" button click
+        document.querySelector('.cancel-btn').addEventListener('click', () => {
+          $('#sharePopup').hide();
+          selectedScreenId = null;
+          document.querySelector('.share-btn').disabled = true;
+          document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
+        });
+
+        // Close modal when clicking outside of it
+        $(document).on('click', function (e) {
+          if ($(e.target).closest('.modal-content').length === 0) {
+            $('#sharePopup').hide();
+            selectedScreenId = null;
+            document.querySelector('.share-btn').disabled = true;
+            document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
+          }
+        });
+
+        return;
+
+      }
 
       if (stream.getAudioTracks()[0] != undefined && type == mediaType.screen)
         sysAudio = true;
@@ -891,7 +987,7 @@ class RoomClient {
         }
       }
     } catch (err) {
-      console.log("Produce error:", err);
+      console.error("Produce error:", err);
     }
   }
 
@@ -1555,42 +1651,38 @@ class RoomClient {
           .attr("id", "multipleInnerVideos")
           .append(
             $("<div>").addClass("col").append(`
-                  <!--  <h3 class=" text-white mt-1" style="font-size:14px" data-username="avatar_${
-                    userinfo.user_id
-                  }">
+                  <!--  <h3 class=" text-white mt-1" style="font-size:14px" data-username="avatar_${userinfo.user_id
+              }">
                   <span id="audiostatus_${userinfo.user_id}">
                     <img src="modules/images/remote_mic_muted.svg" />
                   </span>
                   ${userinfo.name}
                 </h3> -->
                 ${controlBuilder.RemoteVideoControllerAvatar(
-                  userinfo.name,
-                  userinfo.user_id,
-                  userinfo.client_id
-                )}
+                userinfo.name,
+                userinfo.user_id,
+                userinfo.client_id
+              )}
               <div class="audio-container">
-              ${
-                userinfo.profileImg
-                  ? `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center hand-raised-icon" data-username="avatar_${userinfo.user_id}"
+              ${userinfo.profileImg
+                ? `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center hand-raised-icon" data-username="avatar_${userinfo.user_id}"
                       style="width: 122px; height: 122px;">
                       <img class="rounded-circle d-flex mb-1 justify-content-center align-items-center" style="width: 122px; height: 122px;" src="uploads/${userinfo.profileImg}" alt="Profile Image" /> 
                       <img id="hand-raised${userinfo.user_id}" src="modules/images/audio_raise_hand.svg" class="audio-raise-hand d-none" />
                   </div>`
-                  : `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center" data-username="avatar_${
-                      userinfo.user_id
-                    }"
+                : `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center" data-username="avatar_${userinfo.user_id
+                }"
                     style="width: 122px; height: 122px; background-color: ${backgroundColor}36;">
                     <h6 class="fs-1 mb-0 noselect" style="text-indent: 0px; position: relative; color: ${backgroundColor}">
                       ${userinfo.name
-                        .split(" ")
-                        .filter((word) => word !== "")
-                        .map((word) => word[0].toUpperCase())
-                        .slice(0, 2) // Take only the first two initials
-                        .join("")}
+                  .split(" ")
+                  .filter((word) => word !== "")
+                  .map((word) => word[0].toUpperCase())
+                  .slice(0, 2) // Take only the first two initials
+                  .join("")}
                     </h6>
-                    <img id="hand-raised${
-                      userinfo.user_id
-                    }" src="modules/images/audio_raise_hand.svg" class="audio-raise-hand d-none" />     
+                    <img id="hand-raised${userinfo.user_id
+                }" src="modules/images/audio_raise_hand.svg" class="audio-raise-hand d-none" />     
                 </div>`
               }
               
@@ -1766,4 +1858,258 @@ class RoomClient {
       }
     });
   }
+
+  async handleOptionClick(selectedOption, type) {
+    let params = null;
+    let sysAudioParams = null;
+    let screenParams = null;
+    let stream;
+    if (currentStream) {
+      currentStream.getTracks().forEach(track => track.stop());
+      currentStream = null;
+      this.closeProducer(type, null) // Clear the current stream
+    }
+    const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin';
+    const audio = !IS_MACOS
+      ? {
+        mandatory: {
+          chromeMediaSource: 'desktop'
+        }
+      }
+      : false;
+    const constraints = {
+      audio, // Set to true if you need audio
+      video: {
+        mandatory: {
+          chromeMediaSource: 'desktop',
+          chromeMediaSourceId: selectedOption // Use selectedOption as the screenId
+        }
+      }
+    };
+
+    // if (stream) {
+    //   stream.getTracks().forEach(track => track.stop());
+    // }
+
+    currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+    //currentStream = stream;
+
+    if (currentStream.getAudioTracks()[0] != undefined && type == mediaType.screen)
+      sysAudio = true;
+
+    if (!jsonConfig.MultipleCamera) {
+      if (type == mediaType.screen) {
+        if (IsVideoOpen) {
+          fn_VideoCam();
+          $("#epic_MuteVideoCam,#epic_MuteVideoCam_Mob").addClass("active");
+        }
+        $(".video-camera-btn").prop("disabled", true);
+        $(".video-camera-btn").addClass("not-allowed");
+      }
+    }
+
+    let track = null;
+    if (screen == false) {
+      track = audio ? stream.getAudioTracks()[0] : stream.getVideoTracks()[0];
+      params = {
+        track,
+      };
+    } else {
+      if (sysAudio) {
+        track = currentStream.getAudioTracks()[0];
+        sysAudioParams = {
+          track,
+        };
+      }
+      track = currentStream.getVideoTracks()[0];
+      screenParams = {
+        track,
+      };
+    }
+
+    if (!audio && !screen) {
+      params.encodings = [
+        {
+          rid: "r0",
+          maxBitrate: 100000,
+          // scaleResolutionDownBy:10.0,
+          scaleResolutionDownBy: 8.0,
+          scalabilityMode: "L1T3",
+        },
+        {
+          rid: "r1",
+          maxBitrate: 300000,
+          scaleResolutionDownBy: 3.0,
+          scalabilityMode: "L1T3",
+        },
+        {
+          rid: "r2",
+          maxBitrate: 900000,
+          scaleResolutionDownBy: 1.0,
+          scalabilityMode: "L1T3",
+        },
+      ];
+      params.codecOptions = {
+        videoGoogleStartBitrate: 1000,
+      };
+    }
+    if (!screen) {
+      producer = await this.producerTransport.produce(params);
+      this.producers.set(producer.id, producer);
+      if (audio)
+        this.acknowledgeNewProduer(
+          producer.id,
+          producer.kind,
+          mediaType.audio
+        );
+      else
+        this.acknowledgeNewProduer(
+          producer.id,
+          producer.kind,
+          mediaType.video
+        );
+
+      if (!audio) {
+        elem = document.createElement("video");
+        elem.srcObject = currentStream;
+        elem.id = producer.id;
+        elem.setAttribute("playsinline", "true");
+        elem.autoplay = true;
+        elem.setAttribute("data-localVideo", "primary");
+        elem.muted = true;
+        elem.className = "vid";
+
+        $(`#${deviceId}`).empty();
+        $(`#${deviceId}`).append($(elem));
+        $(`#${deviceId}`).addClass("active");
+        $(`#${deviceId}`).removeClass("inactive");
+
+        let elemMob = document.createElement("video");
+        elemMob.srcObject = currentStream;
+        elemMob.id = producer.id;
+        elemMob.setAttribute("playsinline", "true");
+        elemMob.autoplay = true;
+        elemMob.setAttribute("data-localVideo", "primary");
+        elemMob.muted = true;
+        elemMob.className = "vid";
+
+        $(`#${deviceId}Mob`).empty();
+        $(`#${deviceId}Mob`).append($(elemMob));
+        $(`#${deviceId}Mob`).addClass("active");
+        $(`#${deviceId}Mob`).removeClass("inactive");
+
+        let videoElem = document.createElement("video");
+        videoElem.srcObject = currentStream;
+        videoElem.setAttribute("playsinline", "true");
+        videoElem.autoplay = true;
+        videoElem.muted = true;
+        videoElem.className = "vid";
+
+        $(".local-audio-list").hide();
+
+        let newLi = `<li id="LocalLi${producer.id}" class="active"></li>`;
+        $(".local-camera-view-wrapper > ul").append($(newLi));
+        $(`#LocalLi${producer.id}`).append(videoElem);
+        $(`#LocalLi${producer.id}`).siblings().removeClass("active");
+
+        let videoElemMob = document.createElement("video");
+        videoElemMob.srcObject = currentStream;
+        videoElemMob.setAttribute("playsinline", "true");
+        videoElemMob.autoplay = true;
+        videoElemMob.muted = true;
+        videoElemMob.className = "vid";
+
+        let newLiMob = `<li id="LocalLi${producer.id}Mob" class="active"></li>`;
+        $(".mobile-active-local-cameras").append($(newLiMob));
+        $(`#LocalLi${producer.id}Mob`).append(videoElemMob);
+        $(`#LocalLi${producer.id}Mob`).siblings().removeClass("active");
+
+        $(".local-camera-view-wrapper > ul").children().off("click");
+        $(".local-camera-view-wrapper > ul")
+          .children()
+          .on("click", function () {
+            $(this).toggleClass("active");
+            $(this).siblings().removeClass("active");
+          });
+
+        $(".mobile-active-local-cameras").children().off("click");
+        $(".mobile-active-local-cameras")
+          .children()
+          .on("click", function () {
+            $(this).toggleClass("active");
+            $(this).siblings().removeClass("active");
+          });
+      } else {
+        audioStream = currentStream;
+        if (recordingActive) {
+          let micAudio =
+            this.audioContext.createMediaStreamSource(audioStream);
+          micAudio.connect(destAudio);
+        }
+      }
+
+      if (type === mediaType.video) {
+        this.videoProducerLabel.set(deviceId, producer.id);
+        setTimeout(() => {
+          // this.getConsumeStream(producer.id);
+          if (this.producers.get(producer.id)) {
+            let localConsumer = { id: deviceId };
+            this.consumeMedia({
+              consumer: localConsumer,
+              stream,
+              kind: "video",
+              producerId: producer.id,
+            });
+          }
+        }, 1500);
+      } else {
+        this.micLevel(currentStream);
+        this.producerLabel.set(type, producer.id);
+      }
+
+      this.producerEvents(type, producer, audio, elem);
+    } else {
+      params = screenParams;
+      producer = await this.producerTransport.produce(params);
+      this.producers.set(producer.id, producer);
+      this.acknowledgeNewProduer(
+        producer.id,
+        producer.kind,
+        mediaType.screen
+      );
+
+      $(".share-screen-btn").addClass("active");
+      this.IsShareScreen = true;
+
+      this.producerLabel.set(type, producer.id);
+      this.producerEvents(type, producer, audio, elem);
+
+      var dataObj = {
+        commandType: "ScreenShared",
+        Data: {
+          userName: JSON.parse(await getCookie()).name,
+          userId: JSON.parse(await getCookie()).userID,
+          producerId: producer.id,
+          roomId: localStorage.getItem("RoomId"),
+        },
+      };
+      await this.socket.sendCommand(JSON.stringify(dataObj));
+
+      if (sysAudio) {
+        params = sysAudioParams;
+        producer = await this.producerTransport.produce(params);
+        this.producers.set(producer.id, producer);
+        this.acknowledgeNewProduer(
+          producer.id,
+          producer.kind,
+          mediaType.systemAudio
+        );
+
+        this.producerLabel.set(mediaType.systemAudio, producer.id);
+        this.producerEvents(mediaType.systemAudio, producer, audio, elem);
+      }
+    }
+  }
 }
+
+

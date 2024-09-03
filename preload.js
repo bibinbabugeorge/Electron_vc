@@ -11,5 +11,7 @@ contextBridge.exposeInMainWorld('electron', {
 
 contextBridge.exposeInMainWorld('electronAPI', {
   setCookie: (cookieDetails) => ipcRenderer.send('set-cookie', cookieDetails),
-  getCookies: () => ipcRenderer.invoke('get-cookies')
+  getCookies: () => ipcRenderer.invoke('get-cookies'),
+  getSources: () => ipcRenderer.invoke('get-sources'),
+  getOperatingSystem: () => ipcRenderer.invoke('getOperatingSystem')
 });
