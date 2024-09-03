@@ -4,20 +4,26 @@ const path = require('node:path');
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 800,
+    show: false,
     //frame: false,    //hiding frame 
     //autoHideMenuBar: true,  // hide menu bar
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'), // Preload script
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true,
       enableRemoteModule: false,
       //devTools: false    //disble dev tools 
     }
   });
-
-  mainWindow.loadFile('index.html');
+  mainWindow.loadFile('splash.html');
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
   //mainWindow.webContents.openDevTools();
+  setTimeout(function () {
+    mainWindow.loadFile('index.html');  // Load the main content
+  }, 5000);  // Adjust the time as needed
 }
 
 app.whenReady().then(createWindow);
@@ -36,11 +42,11 @@ app.on('activate', () => {
 
 ipcMain.on('set-cookie', (event, cookieDetails) => {
   session.defaultSession.cookies.set(cookieDetails, (error) => {
-      if (error) {
-          console.error('Error setting cookie:', error);
-      } else {
-          console.log('Cookie set successfully');
-      }
+    if (error) {
+      console.error('Error setting cookie:', error);
+    } else {
+      console.log('Cookie set successfully');
+    }
   });
 });
 
@@ -52,5 +58,13 @@ ipcMain.handle('get-cookies', async () => {
 ipcMain.handle('get-sources', async () => {
   const { desktopCapturer } = require('electron');
   const sources = await desktopCapturer.getSources({ types: ['screen', 'window'] });
-  return sources;
+  return sources.map(source => {
+    source.thumbnailURL = source.thumbnail.toDataURL();
+    return source;
+  });
 });
+
+ipcMain.handle('getOperatingSystem', async () => {
+  const Os = await process.platform;
+  return Os;
+})
