@@ -105,7 +105,60 @@
 
   <section class="video-section">
   </section>
-  <div style="display: none;" id="selectMainMenu"></div>
+  <!-- <div style="display: none;" id="selectMainMenu"></div> -->
+
+  <!-- Share screen modal -->
+  <div class="modal fade share-screen-popup show" id="sharePopup" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="staticBackdropLabel">
+            Choose Screen to share
+          </h6>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="row">
+              <div class="col-xl-4 col-lg-4 col-md-4">
+                <div class="window-sub-container">
+                  <p style="color: black;">Desktop</p>
+                  <div id="desktop-screens-img-block">
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-8 col-lg-8 col-md-8">
+                <div class="window-sub-container">
+                  <p style="color: black;">Window</p>
+                  <div class="row" id="window-screens-img-block">
+                    <!-- the window screens will be shown here -->
+                  </div>
+                </div>
+              </div>
+              <div style="color: black;">Also share tab audio
+                <input class="form-check-input" type="checkbox" role="switch" id="tabAudioshareSwitch">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+              <button type="button" class="btn cancel-btn" data-dismiss="modal">
+                Cancel
+              </button>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+              <button type="button" class="btn share-btn">
+                Start Sharing
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"

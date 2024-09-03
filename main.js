@@ -57,7 +57,7 @@ ipcMain.handle('get-cookies', async () => {
 
 ipcMain.handle('get-sources', async () => {
   const { desktopCapturer } = require('electron');
-  const sources = await desktopCapturer.getSources({ types: ['screen', 'window'] });
+  const sources = await desktopCapturer.getSources({ types: ['screen', 'window'], thumbnailSize: { width: 854, height: 600 } });
   return sources.map(source => {
     source.thumbnailURL = source.thumbnail.toDataURL();
     return source;

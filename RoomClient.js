@@ -674,87 +674,101 @@ class RoomClient {
       let screenParams = null;
       let stream;
 
-      const selectMenu = document.getElementById('selectMainMenu');
+
       if (!screen) {
         stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
       } else {
-        // Call the function to get video sources and populate the select menu
-        await getVideoSources();
+        let selectedScreenId = null;
+
+        function handleScreenSelection(element, id) {
+          if (element.classList.contains('selected')) {
+            element.classList.remove('selected');
+            selectedScreenId = null;
+            document.querySelector('.share-btn').disabled = true;
+          } else {
+            // Remove the 'selected' class from all screen elements
+            document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
+
+            // Add the 'selected' class to the clicked element
+            element.classList.add('selected');
+            selectedScreenId = id;
+            document.querySelector('.share-btn').disabled = false;
+          }
+        }
 
         async function getVideoSources() {
           const inputSources = await window.electronAPI.getSources();
-          selectMenu.innerHTML = '';
-          // inputSources.forEach((source) => {
-          //   const element = document.createElement('option');
-          //   element.value = source.id;
-          //   element.innerHTML = source.name;
-          //   selectMenu.appendChild(element);
-          // });
+          const desktopScreensContainer = document.getElementById("desktop-screens-img-block");
+          desktopScreensContainer.innerHTML = "";
 
-          let htmlContent = `
-          <div id="selectMenuContainer" style="left: 50%;">
-          <div class="ScreenSharesection-header">Choose Screen to Share</div>
-          <div style="display: flex;height: 431px;">
-              <div class="ScreenSharesection-screens">
-                ${inputSources.filter(source => source.id.includes('screen')).map(source => `
-                  <div class="ScreenSharelist" data-id="${source.id}">
-                    <div class="ScreenSharethumbnail">
-                      <img src="${source.thumbnailURL}" class="ScreenSharethumbnail-image" />
-                      <div class="ScreenSharescreen-name">${source.name}</div>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-              <div class="ScreenSharesection-windows">
-                ${inputSources.filter(source => source.id.includes('window')).map(source => `
-                  <div class="ScreenSharelist" data-id="${source.id}">
-                    <div class="ScreenSharethumbnail">
-                      <img src="${source.thumbnailURL}" class="ScreenSharethumbnail-image" />
-                      <div class="ScreenSharescreen-name">${source.name}</div>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-              </div>
-            <div id="buttonContainer" class="ScreenSharebuttons">
-              <button id="cancelButton" class="ScreenSharebutton">Cancel</button>
-              <button id="shareButton" class="ScreenSharebutton">Share</button>
-            </div>
-          </div>
-        `;
-          selectMenu.innerHTML += htmlContent;
+          const desktopScreens = inputSources.filter(source => source.id.includes('screen'));
+          desktopScreens.forEach((desktop, index) => {
+            const desktopHTML = `<div class="img-block" data-id="${desktop.id}">
+                <img src="${desktop.thumbnailURL}" alt="${desktop.name}" class="img-fluid" />
+              </div>`;
+            desktopScreensContainer.innerHTML += desktopHTML;
+          });
 
+          const windowScreensContainer = document.getElementById("window-screens-img-block");
+          windowScreensContainer.innerHTML = "";
+          const windowScreens = inputSources.filter(source => source.id.includes('window'));
+
+          windowScreens.forEach((window, index) => {
+            const windowHTML = `<div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-2">
+                <div class="img-block" data-id="${window.id}">
+                  <img src="${window.thumbnailURL}" alt="${window.name}" class="img-fluid" />
+                </div>
+              </div>`;
+            windowScreensContainer.innerHTML += windowHTML;
+          });
+
+          // Reattach event listeners
+          document.querySelectorAll('#desktop-screens-img-block .img-block, #window-screens-img-block .img-block').forEach(container => {
+            container.addEventListener('click', (event) => {
+              const imgBlock = event.currentTarget;
+              handleScreenSelection(imgBlock, imgBlock.getAttribute('data-id'));
+            });
+          });
+
+          $("#sharePopup").show();
         }
-        $('#selectMainMenu').css('display', 'block');
-        $('#selectMainMenu').focusout(function () {
-          setTimeout(() => {
-            $('#selectMainMenu').css('display', 'none');
-          }, 100); // Delay to ensure that the 'change' event is handled before hiding
-        });
-        document.getElementById('shareButton').addEventListener('click', async () => {
-          const selectedElement = document.querySelector('.ScreenSharelist.selected');
-          if (selectedElement) {
-            const selectedId = selectedElement.getAttribute('data-id');
-            $('#selectMainMenu').css('display', 'none');
-            await this.handleOptionClick(selectedId, type);
-          } else {
-            alert('Please select a screen or window to share.');
+
+        // Attach the click event for the first time
+        getVideoSources();
+
+        document.querySelector('.share-btn').addEventListener('click', async () => {
+          if (selectedScreenId) {
+            await this.handleOptionClick(selectedScreenId, type);
+            $('#sharePopup').hide();
+            // Reset after sharing
+            selectedScreenId = null;
+            const tabaudio = document.getElementById("tabAudioshareSwitch");
+            sysAudio = tabaudio.checked;
+            document.querySelector('.share-btn').disabled = true;
+            document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
           }
         });
 
-        // Add event listener for the "Cancel" button
-        document.getElementById('cancelButton').addEventListener('click', () => {
-          $('#selectMainMenu').css('display', 'none');
+        // Handle the "Cancel" button click
+        document.querySelector('.cancel-btn').addEventListener('click', () => {
+          $('#sharePopup').hide();
+          selectedScreenId = null;
+          document.querySelector('.share-btn').disabled = true;
+          document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
         });
 
-        selectMenu.addEventListener('click', (event) => {
-          if (event.target.closest('.ScreenSharelist')) {
-            document.querySelectorAll('.ScreenSharelist').forEach(item => item.classList.remove('selected'));
-            event.target.closest('.ScreenSharelist').classList.add('selected');
+        // Close modal when clicking outside of it
+        $(document).on('click', function (e) {
+          if ($(e.target).closest('.modal-content').length === 0) {
+            $('#sharePopup').hide();
+            selectedScreenId = null;
+            document.querySelector('.share-btn').disabled = true;
+            document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
           }
         });
 
         return;
+
       }
 
       if (stream.getAudioTracks()[0] != undefined && type == mediaType.screen)
@@ -1411,9 +1425,6 @@ class RoomClient {
         },
       };
       this.socket.sendCommand(JSON.stringify(dataObj));
-      const selectMenu = document.getElementById('selectMainMenu');
-      selectMenu.innerHTML = '';
-      $('#selectMainMenu').css('display', 'none');
     }
   }
 
