@@ -5,7 +5,7 @@ let IconName = null;
 // let room_id = parseInt(Math.floor(Math.random() * 100000000000000000 + 100000000000))
 let room_id = makeUniqueRoom();
 let url = window.location.href.split("schedule_meeting.html");
-$("#scheduleUrl").val(`${url[0]}Join.html?Rid=${room_id}&RU=aHR0cHM6Ly9sdWNlbnRzdXJnaWNhbC5jb20vbG9naW4&Uid=Guest`);
+$("#scheduleUrl").val(`${apiUri}Join.html?Rid=${room_id}&RU=aHR0cHM6Ly9sdWNlbnRzdXJnaWNhbC5jb20vbG9naW4&Uid=Guest`);
 $("#Usersearch").keyup(function () {
     SearchParticipants(this.value);
 });

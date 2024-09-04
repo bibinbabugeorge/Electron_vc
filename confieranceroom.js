@@ -592,7 +592,6 @@ function bindSenderChat(files, message, time, groupId) {
     );
 }
 function mobileViewChatBodyHeight() {
-  // debugger;
   let windowHeight = window.innerHeight;
   let chatViewHeaderHeight = $(".mobile-view-modal-header").innerHeight();
   let chatViewFooterHeight = $(".mobile-view-modal-footer").innerHeight();

@@ -107,11 +107,10 @@ $("#groupIcon").change(function () {
 
 
 function Bindparticipant(participant) {
-
   var list = "";
   if (participant !== null || participant !== undefined) {
-    participant.forEach((element) => {
-      if (element.userid == JSON.parse(getCookie()).userID) return
+    participant.forEach(async (element) => {
+      if (element.userid == JSON.parse(await getCookie()).userID) return
       list += `<li>
       <div class="row">
       <div class="col-md-9 col-sm-8 col-8">
@@ -207,8 +206,8 @@ function Bindparticipant(participant) {
 }
 
 
-$(".main-form-btn").click(function () {
-  var UserDetails = getCookie();
+$(".main-form-btn").click(async function () {
+  var UserDetails = await getCookie();
   if (UserDetails != undefined) {
     UserDetails = JSON.parse(UserDetails);
     var CreatedUserDetails = {

@@ -1122,37 +1122,34 @@
         <div class="participants-list-details-wrapper">
           <div class="d-flex align-items-center">
             <div class="participant-pic">
-            ${
-              element.profileImg
-                ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
+            ${element.profileImg
+          ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
                   <img src="uploads/${element.profileImg}" alt="Profile Image" /> 
                  </div>`
-                : `<div class="add-participant-pic position-relative border border-secondary rounded-circle" style=" background-color: ${backgroundColor}36; height:50px;width:50px;">
+          : `<div class="add-participant-pic position-relative border border-secondary rounded-circle" style=" background-color: ${backgroundColor}36; height:50px;width:50px;">
                     <h6 class="mb-0 noselect" style="text-indent: 0px; position: relative; color: ${backgroundColor}; left:15px; top: 15px;">
                       ${element.name
-                        .split(" ")
-                        .filter((word) => word !== "")
-                        .map((word) => word[0].toUpperCase())
-                        .slice(0, 2)
-                        .join("")}
+            .split(" ")
+            .filter((word) => word !== "")
+            .map((word) => word[0].toUpperCase())
+            .slice(0, 2)
+            .join("")}
                     </h6>
                 </div>`
-            }
+        }
             </div>
             <div class="participant-details">
-              <h6>${
-                element.email != UserDetails.email
-                  ? element.name
-                  : element.name + " (You)"
-              }</h6>
+              <h6>${element.email != UserDetails.email
+          ? element.name
+          : element.name + " (You)"
+        }</h6>
               <!--<p>test@gmail.com</p>--> 
-              ${
-                element.email.includes("@guest")
-                  ? '<p style="display:none;">' +
-                    element.email +
-                    '</p><h4 style="color:#808486;font-size: 12px;">Guest</h4>'
-                  : "<p>" + element.email + "</p>"
-              }
+              ${element.email.includes("@guest")
+          ? '<p style="display:none;">' +
+          element.email +
+          '</p><h4 style="color:#808486;font-size: 12px;">Guest</h4>'
+          : "<p>" + element.email + "</p>"
+        }
             </div>
           </div>
         </div>`;
@@ -1214,36 +1211,33 @@
         </li > `;
       $("#participantsListView").append(_ParticipantsList);
       _ParticipantListMob += `<li>
-        ${
-          element.profileImg
-            ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
+        ${element.profileImg
+          ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
           <img src="uploads/${element.profileImg}" alt="Profile Image" />
         </div>`
-            : `<div class="add-participant-pic position-relative border border-secondary rounded-circle"
+          : `<div class="add-participant-pic position-relative border border-secondary rounded-circle"
           style=" background-color: ${backgroundColor}36; height:50px;width:50px;">
           <h6 class="mb-0 noselect"
             style="text-indent: 0px; position: relative; color: ${backgroundColor}; left:15px; top: 15px;">
             ${element.name
-              .split(" ")
-              .filter((word) => word !== "")
-              .map((word) => word[0].toUpperCase())
-              .slice(0, 2) // Take only the first two initials
-              .join("")}
+            .split(" ")
+            .filter((word) => word !== "")
+            .map((word) => word[0].toUpperCase())
+            .slice(0, 2) // Take only the first two initials
+            .join("")}
           </h6>
         </div>`
         }
       <div class="participant-info">
-        <h6>${
-          element.email != UserDetails.email
-            ? element.name
-            : element.name + " (You)"
+        <h6>${element.email != UserDetails.email
+          ? element.name
+          : element.name + " (You)"
         }</h6>
-        ${
-          element.email.includes("@guest")
-            ? '<p style="display:none;">' +
-              element.email +
-              '</p><h4 style="color:#808486;font-size: 12px;">Guest</h4>'
-            : "<p>" + element.email + "</p>"
+        ${element.email.includes("@guest")
+          ? '<p style="display:none;">' +
+          element.email +
+          '</p><h4 style="color:#808486;font-size: 12px;">Guest</h4>'
+          : "<p>" + element.email + "</p>"
         }
       </div>`;
       if (element.email != UserDetails.email) {
@@ -1304,7 +1298,6 @@
   }
 
   async SearchParticipantListItem(participant) {
-    debugger
     var list = "";
     var listMob = "";
     if (participant && participant.length > 0) {
@@ -1315,41 +1308,37 @@
           <div class="row">
               <div class="col-md-9 col-sm-8 col-8 d-flex align-items-center">
                  
-                      ${
-                        element.profileImg
-                          ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
+                      ${element.profileImg
+              ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
               <img src="uploads/${element.profileImg}" alt="Profile Image" /> 
-              ${
-                element.status === "Active"
-                  ? '<div class="online-status-icon online-view" style="right: 0;left: 45px;top: 45px;bottom:0;"></div>'
-                  : ""
+              ${element.status === "Active"
+                ? '<div class="online-status-icon online-view" style="right: 0;left: 45px;top: 45px;bottom:0;"></div>'
+                : ""
               }
              </div>`
-                          : `<div class="add-participant-pic position-relative border border-secondary rounded-circle"style=" background-color: ${backgroundColor}36; height:50px;width:50px;flex-shrink: 0;">
+              : `<div class="add-participant-pic position-relative border border-secondary rounded-circle"style=" background-color: ${backgroundColor}36; height:50px;width:50px;flex-shrink: 0;">
                 <h6 class="mb-0 noselect" style="text-indent: 0px; position: relative; color: ${backgroundColor}; left:15px; top: 15px;">
                   ${element.username
-                    .split(" ")
-                    .filter((word) => word !== "")
-                    .map((word) => word[0].toUpperCase())
-                    .slice(0, 2) // Take only the first two initials
-                    .join("")}
+                .split(" ")
+                .filter((word) => word !== "")
+                .map((word) => word[0].toUpperCase())
+                .slice(0, 2) // Take only the first two initials
+                .join("")}
                 </h6>
-                ${
-                  element.status === "Active"
-                    ? '<div class="online-status-icon online-view" style="right: 0;left: 45px;top: 45px;bottom:0;"></div>'
-                    : ""
-                }
+                ${element.status === "Active"
+                ? '<div class="online-status-icon online-view" style="right: 0;left: 45px;top: 45px;bottom:0;"></div>'
+                : ""
+              }
             </div>`
-                      }
+            }
                   <div class="add-participant-details">
                       <h6>${element.username}</h6>
                       <p>${element.email}</p>
                   </div>
               </div>
               <div class="col-md-3 col-sm-4 col-4 pl-0">
-                  <button class="pull-right add-video-call-btn" onclick="RequestToJoin('${
-                    element.clientid
-                  }','${element.userid}')">
+                  <button class="pull-right add-video-call-btn" onclick="RequestToJoin('${element.clientid
+            }','${element.userid}')">
                       <img src="modules/images/video_call_icon.svg" alt="Video Call Icon"/>
                       Add
                   </button>
@@ -1359,41 +1348,37 @@
 
           listMob += `
                       <li>
-                      ${
-                        element.profileImg
-                          ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
+                      ${element.profileImg
+              ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
                 <img src="uploads/${element.profileImg}" alt="Profile Image" />
-                ${
-                  element.status === "Active"
-                    ? '<div class="online-status-icon online-view" style="right: 0;left: 45px;top: 45px;bottom:0;"></div>'
-                    : ""
-                }
+                ${element.status === "Active"
+                ? '<div class="online-status-icon online-view" style="right: 0;left: 45px;top: 45px;bottom:0;"></div>'
+                : ""
+              }
               </div>`
-                          : `<div class="add-participant-pic position-relative border border-secondary rounded-circle"
+              : `<div class="add-participant-pic position-relative border border-secondary rounded-circle"
                 style=" background-color: ${backgroundColor}36; height:50px;width:50px;flex-shrink: 0;">
                 <h6 class="mb-0 noselect"
                   style="text-indent: 0px; position: relative; color: ${backgroundColor}; left:15px; top: 15px;">
                   ${element.username
-                    .split(" ")
-                    .filter((word) => word !== "")
-                    .map((word) => word[0].toUpperCase())
-                    .slice(0, 2) // Take only the first two initials
-                    .join("")}
+                .split(" ")
+                .filter((word) => word !== "")
+                .map((word) => word[0].toUpperCase())
+                .slice(0, 2) // Take only the first two initials
+                .join("")}
                 </h6>
-                ${
-                  element.status === "Active"
-                    ? '<div class="online-status-icon online-view" style="right: 0;left: 45px;top: 45px;bottom:0;"></div>'
-                    : ""
-                }
+                ${element.status === "Active"
+                ? '<div class="online-status-icon online-view" style="right: 0;left: 45px;top: 45px;bottom:0;"></div>'
+                : ""
+              }
               </div>`
-                      }
+            }
                         <div class="participant-info">
                           <h6>${element.username}</h6>
                           <p>${element.email}</p>
                         </div>
-                        <button class="btn" onclick="RequestToJoin('${
-                          element.clientid
-                        }','${element.userid}')">
+                        <button class="btn" onclick="RequestToJoin('${element.clientid
+            }','${element.userid}')">
                             <img src="modules/images/video_call_icon.svg" alt="Video Call Icon" />
                             Add
                         </button>
@@ -1477,26 +1462,22 @@
 
   createUlElement(option) {
     return $(
-      `<ul ${option.id ? "id='" + option.id + "'" : ""} ${
-        option.class ? "class='" + option.class + "'" : ""
+      `<ul ${option.id ? "id='" + option.id + "'" : ""} ${option.class ? "class='" + option.class + "'" : ""
       }></ul>`
     );
   }
 
   createOlElement(option) {
     return $(
-      `<ol ${option.id ? "id='" + option.id + "'" : ""} ${
-        option.class ? "class='" + option.class + "'" : ""
+      `<ol ${option.id ? "id='" + option.id + "'" : ""} ${option.class ? "class='" + option.class + "'" : ""
       }></ol>`
     );
   }
 
   createDivElement(option) {
     var div = $(
-      `<div ${option.id ? "id='" + option.id + "'" : ""} ${
-        option.name ? "name='" + option.name + "'" : ""
-      } ${option.class ? "class='" + option.class + "'" : ""} >${
-        option.text ? option.text : ""
+      `<div ${option.id ? "id='" + option.id + "'" : ""} ${option.name ? "name='" + option.name + "'" : ""
+      } ${option.class ? "class='" + option.class + "'" : ""} >${option.text ? option.text : ""
       }</div>`
     );
     if (option.attr) {
@@ -1509,10 +1490,8 @@
 
   createATag(option) {
     let aTag = $(
-      `<a ${option.id ? "id='" + option.id + "'" : ""} ${
-        option.name ? "name='" + option.name + "'" : ""
-      } ${option.class ? "class='" + option.class + "'" : ""} >${
-        option.text ? option.text : ""
+      `<a ${option.id ? "id='" + option.id + "'" : ""} ${option.name ? "name='" + option.name + "'" : ""
+      } ${option.class ? "class='" + option.class + "'" : ""} >${option.text ? option.text : ""
       }</a>`
     );
 
@@ -1527,39 +1506,34 @@
 
   createPElement(option) {
     return $(
-      `<p ${option.id ? "id='" + option.id + "'" : ""} ${
-        option.class ? "class='" + option.class + "'" : ""
+      `<p ${option.id ? "id='" + option.id + "'" : ""} ${option.class ? "class='" + option.class + "'" : ""
       }>${option.text}</p>`
     );
   }
 
   createImgElement(option) {
     return $(
-      `<img ${option.id ? "id='" + option.id + "'" : ""} src='${option.src}' ${
-        option.class ? "class='" + option.class + "'" : ""
+      `<img ${option.id ? "id='" + option.id + "'" : ""} src='${option.src}' ${option.class ? "class='" + option.class + "'" : ""
       }/>`
     );
   }
 
   createH5Element(option) {
     return $(
-      `<h5 ${option.class ? "class='" + option.class + "'" : ""}>${
-        option.text
+      `<h5 ${option.class ? "class='" + option.class + "'" : ""}>${option.text
       }</h5>`
     );
   }
   createH6Element(option) {
     return $(
-      `<h6 ${option.class ? "class='" + option.class + "'" : ""}>${
-        option.text
+      `<h6 ${option.class ? "class='" + option.class + "'" : ""}>${option.text
       }</h6>`
     );
   }
 
   createSpanElement(option) {
     let span = $(
-      `<span ${option.id ? "id='" + option.id + "'" : ""} ${
-        option.class ? "class='" + option.class + "'" : ""
+      `<span ${option.id ? "id='" + option.id + "'" : ""} ${option.class ? "class='" + option.class + "'" : ""
       }>${option.text}</span>`
     );
     if (option.attr) {
@@ -1623,16 +1597,14 @@
 
   createButtonElement(option) {
     return $(
-      `<button ${option.id ? "id='" + option.id + "'" : ""} ${
-        option.onclick ? "onclick='" + option.onclick + "'" : ""
+      `<button ${option.id ? "id='" + option.id + "'" : ""} ${option.onclick ? "onclick='" + option.onclick + "'" : ""
       } ${option.class ? "class='" + option.class + "'" : ""}></button>`
     );
   }
 
   createLiElement(option) {
     let li = $(
-      `<li ${option.class ? "class='" + option.class + "'" : ""} ${
-        option.id ? "id='" + option.id + "'" : ""
+      `<li ${option.class ? "class='" + option.class + "'" : ""} ${option.id ? "id='" + option.id + "'" : ""
       } ${option.onclick ? "onclick='" + option.onclick + "'" : ""}></li>`
     );
 
@@ -2067,8 +2039,7 @@
   }
   createSectionElement(option) {
     return $(
-      `<section ${
-        option.class ? "class='" + option.class + "'" : ""
+      `<section ${option.class ? "class='" + option.class + "'" : ""
       }></section>`
     );
   }
@@ -2982,15 +2953,14 @@
             />
           </button>
         </li>
-        ${
-          jsonConfig.Chat
-            ? `<li class="">
+        ${jsonConfig.Chat
+        ? `<li class="">
           <button class="mobile-chat-btn">
             <img src="modules/images/chat_default.svg" class="img-default" />
           </button>
         </li>`
-            : ``
-        }
+        : ``
+      }
         <li>
           <button class="mobile-drawer-video-camera-btn active" id="epic_MuteVideoCam_Mob">
             <img src="modules/images/video_cam_icon.svg" class="img-default" />
@@ -3038,25 +3008,23 @@
             <img src="modules/images/mobile_shareScreen_icon.svg" alt="" />
           </button>
         </li>
-        ${
-          jsonConfig.RaiseHand
-            ? `<li class="">
+        ${jsonConfig.RaiseHand
+        ? `<li class="">
           <button class="mobile-hand-raise-btn btn p-0">
             <img src="modules/images/hand_raise_hover.svg" class="img-default" />
             <img src="modules/images/hand_raise_active.svg" class="img-active" />
           </button>
         </li>`
-            : ``
-        }
-        ${
-          jsonConfig.AddParticipants
-            ? `<li class="">
+        : ``
+      }
+        ${jsonConfig.AddParticipants
+        ? `<li class="">
           <button class="add-participants-btn p-0 btn">
             <img src="modules/images/mobile_add_ participants_icon.svg" alt="" />
           </button>
         </li>`
-            : ``
-        }
+        : ``
+      }
         <li>
           <div class="position-relative">
             <h6 id="participants-count-mob" class="participants-count">0</h6>
@@ -3564,11 +3532,11 @@
                   .append(
                     jsonConfig.Chat
                       ? this.createDivElement({
-                          class: "chat-view-main-wrapper",
-                        })
+                        class: "chat-view-main-wrapper",
+                      })
 
-                          .append(this.createMessageBtn)
-                          .append(this.createChatView)
+                        .append(this.createMessageBtn)
+                        .append(this.createChatView)
                       : ""
                   )
                   .append(this.createAudioVideoSettingsBtn())
@@ -3643,10 +3611,10 @@
                         .append(
                           jsonConfig.RaiseHand
                             ? this.createDivElement({
-                                class: "position-relative",
-                              })
-                                .append(this.createLocalRaiseHandPopupDiv)
-                                .append(this.createRaiseHandBtn)
+                              class: "position-relative",
+                            })
+                              .append(this.createLocalRaiseHandPopupDiv)
+                              .append(this.createRaiseHandBtn)
                             : ""
                         )
                     ),
@@ -3658,47 +3626,47 @@
                         .append(
                           jsonConfig.AddParticipants
                             ? this.createDivElement({
-                                class: "add-participants-container",
-                              })
-                                .append(this.createAddParticipantBtn())
+                              class: "add-participants-container",
+                            })
+                              .append(this.createAddParticipantBtn())
 
-                                .append(
-                                  this.createDivElement({
-                                    class: "add-participants-list-container",
-                                  })
+                              .append(
+                                this.createDivElement({
+                                  class: "add-participants-list-container",
+                                })
 
-                                    .append(
-                                      this.createDivElement({
-                                        class:
-                                          "add-participants-header sticky-top",
-                                      })
-                                        .append(
-                                          this.createAddParticipantsListCloseBtn()
-                                        )
-                                        .append(
-                                          this.createH6Element({
-                                            text: "Add Friends",
-                                          })
-                                        )
-                                        .append(
-                                          this.createDivElement({
-                                            class:
-                                              "add-participants-header-actions",
-                                          }).append(
-                                            this.addParticipantsListsearch()
-                                          )
-                                        )
-                                    )
-                                    .append(
-                                      this.createDivElement({
-                                        class: "add-participants-body",
-                                      }).append(
-                                        this.createUlElement({
-                                          id: "addParticipantsList",
-                                        }).append(this.createFriendsListItem()) //
+                                  .append(
+                                    this.createDivElement({
+                                      class:
+                                        "add-participants-header sticky-top",
+                                    })
+                                      .append(
+                                        this.createAddParticipantsListCloseBtn()
                                       )
+                                      .append(
+                                        this.createH6Element({
+                                          text: "Add Friends",
+                                        })
+                                      )
+                                      .append(
+                                        this.createDivElement({
+                                          class:
+                                            "add-participants-header-actions",
+                                        }).append(
+                                          this.addParticipantsListsearch()
+                                        )
+                                      )
+                                  )
+                                  .append(
+                                    this.createDivElement({
+                                      class: "add-participants-body",
+                                    }).append(
+                                      this.createUlElement({
+                                        id: "addParticipantsList",
+                                      }).append(this.createFriendsListItem()) //
                                     )
-                                )
+                                  )
+                              )
                             : ""
                         )
                         .append(
@@ -3921,7 +3889,7 @@
     }
   }
 
-  exitFullScreen() {}
+  exitFullScreen() { }
 
   addSlideVideo(elm, elmcss) {
     var videoLen = $("#epic_carouselSlider li").length;
@@ -4298,22 +4266,21 @@
             <li id="jr-toastr-${element.userid}">
                 <div class="raise-hand-popup">
                     <div class="d-flex align-items-center gap-2">
-                        ${
-                          element.profileImg
-                            ? `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;">
+                        ${element.profileImg
+                ? `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;">
                                 <img src="uploads/${element.profileImg}" alt="Profile Image">
                             </div>`
-                            : `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 35px; height: 35px; background-color: ${backgroundColor}36;">
+                : `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 35px; height: 35px; background-color: ${backgroundColor}36;">
                               <h6 class="noselect" style="text-indent: 0px; margin: 0px; position: absolute; left: 11px; color: ${backgroundColor}">
                                 ${element.name
-                                  .split(" ")
-                                  .filter((word) => word !== "")
-                                  .map((word) => word[0].toUpperCase())
-                                  .slice(0, 2) // Take only the first two initials
-                                  .join("")}
+                  .split(" ")
+                  .filter((word) => word !== "")
+                  .map((word) => word[0].toUpperCase())
+                  .slice(0, 2) // Take only the first two initials
+                  .join("")}
                               </h6>
                             </div>`
-                        }
+              }
                         <p>${element.name} joined room</p>
                     </div>
                 </div>
@@ -4497,39 +4464,37 @@
             .append(
               $("<div>").addClass("col").append(`
                             ${this.RemoteVideoControllerAvatar(
-                              name,
-                              userid,
-                              clientid
-                            )}
+                name,
+                userid,
+                clientid
+              )}
                             <div class="audio-container">
-                                ${
-                                  profileImg
-                                    ? `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center hand-raised-icon" data-username="avatar_${userid}"
+                                ${profileImg
+                  ? `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center hand-raised-icon" data-username="avatar_${userid}"
                                         style="width: 122px; height: 122px;">
                                         <img class="rounded-circle d-flex mb-1 justify-content-center align-items-center" style="width: 122px; height: 122px;" src="uploads/${profileImg}" alt="Profile Image" /> 
                                         <img id="hand-raised${userid}" src="modules/images/audio_raise_hand.svg" class="audio-raise-hand d-none" />
                                     </div>`
-                                    : `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center" data-username="avatar_${userid}"
+                  : `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center" data-username="avatar_${userid}"
                                         style="width: 122px; height: 122px; background-color: ${backgroundColor}36; position: relative;">
                                         <h6 class="fs-1 mb-0 noselect" style="text-indent: 0px; position : absolute; color : ${backgroundColor}">
                                             ${name
-                                              .split(" ")
-                                              .filter((word) => word !== "")
-                                              .map((word) =>
-                                                word[0].toUpperCase()
-                                              )
-                                              .slice(0, 2) // Take only the first two initials
-                                              .join("")}
+                    .split(" ")
+                    .filter((word) => word !== "")
+                    .map((word) =>
+                      word[0].toUpperCase()
+                    )
+                    .slice(0, 2) // Take only the first two initials
+                    .join("")}
                                         </h6>
                                         <img id="hand-raised${userid}" src="modules/images/audio_raise_hand.svg" class="audio-raise-hand d-none" style="position: absolute;"/>
                                     </div>`
-                                } 
+                } 
                 <!--<h6 style="margin: 0 !important;" class="m-auto text-white mt-2">${name}</h6>--> <!-- Participant's name -->
-                                ${
-                                  calling // Display "Connecting..." if calling is true
-                                    ? `<h2 style="margin: 0 !important;" class="m-auto text-white mt-2 connecting">Connecting...</h2>`
-                                    : ``
-                                }
+                                ${calling // Display "Connecting..." if calling is true
+                  ? `<h2 style="margin: 0 !important;" class="m-auto text-white mt-2 connecting">Connecting...</h2>`
+                  : ``
+                }
                             </div>
                         `)
             )
@@ -4631,22 +4596,21 @@
             )}" >
                           <div class="raise-hand-popup ">
                             <div class="d-flex align-items-center gap-2">
-                            ${
-                              element.profileImg
-                                ? `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;">
+                            ${element.profileImg
+                ? `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 35px; height: 35px;">
                                     <img src="uploads/${element.profileImg}" alt="Profile Image">
                                 </div>`
-                                : `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 35px; height: 35px; background-color: ${backgroundColor}36;">
+                : `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 35px; height: 35px; background-color: ${backgroundColor}36;">
                                     <h6 class="noselect" style="text-indent: 0px; margin: 0px; position: absolute; left: 11px; color: ${backgroundColor};">
                                         ${name
-                                          .split(" ")
-                                          .filter((word) => word !== "")
-                                          .map((word) => word[0].toUpperCase())
-                                          .slice(0, 2) // Take only the first two initials
-                                          .join("")}
+                  .split(" ")
+                  .filter((word) => word !== "")
+                  .map((word) => word[0].toUpperCase())
+                  .slice(0, 2) // Take only the first two initials
+                  .join("")}
                                     </h6>
                                  </div>`
-                            }
+              }
                               <p> ${name} exited room</p>
                             </div>
                           </div> 
@@ -4729,8 +4693,8 @@
           );
           var targetVideoContainer = $(
             "#remoteVideos .carousel-item:nth-child(" +
-              (index + 1) +
-              ") > .video-container"
+            (index + 1) +
+            ") > .video-container"
           );
           lastVideoContainer.children(":last").appendTo(targetVideoContainer);
 
@@ -4787,8 +4751,7 @@
       if (createRemoveCount > 0) {
         for (let index = buttonCount; index < sliderCount; index++) {
           $(".carousel-indicators-main-slider").append(
-            `<li type="button" data-bs-target="#carousel-thumb" aria-label="Slide ${
-              index + 1
+            `<li type="button" data-bs-target="#carousel-thumb" aria-label="Slide ${index + 1
             }" data-bs-slide-to="${index}"></li>`
           );
         }
