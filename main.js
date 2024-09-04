@@ -1,17 +1,15 @@
 const { app, BrowserWindow, ipcMain, session, Menu } = require('electron');
 const path = require('node:path');
 
+
+Menu.setApplicationMenu(null);
+
 function createWindow() {
   const mainWindow = new BrowserWindow({
+    icon: './assets/group_icon.ico',
     width: 800,
-<<<<<<< HEAD
-    height: 600,
-    minHeight:750,
-    minWidth: 350,
-=======
     height: 800,
     show: false,
->>>>>>> main
     //frame: false,    //hiding frame 
     //autoHideMenuBar: true,  // hide menu bar
     webPreferences: {
@@ -23,13 +21,6 @@ function createWindow() {
       devTools: true    //disble dev tools 
     }
   });
-<<<<<<< HEAD
-
-  Menu.setApplicationMenu(null);
-
-  mainWindow.loadFile('index.html');
-  mainWindow.webContents.openDevTools();
-=======
   mainWindow.loadFile('splash.html');
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
@@ -38,7 +29,6 @@ function createWindow() {
   setTimeout(function () {
     mainWindow.loadFile('index.html');  // Load the main content
   }, 5000);  // Adjust the time as needed
->>>>>>> main
 }
 
 app.whenReady().then(createWindow);
