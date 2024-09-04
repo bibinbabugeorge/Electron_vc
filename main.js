@@ -7,8 +7,8 @@ Menu.setApplicationMenu(null);
 function createWindow() {
   const mainWindow = new BrowserWindow({
     icon: './assets/group_icon.ico',
-    width: 800,
     height: 800,
+    width : 800,
     show: false,
     //frame: false,    //hiding frame 
     //autoHideMenuBar: true,  // hide menu bar
@@ -21,6 +21,11 @@ function createWindow() {
       devTools: true    //disble dev tools 
     }
   });
+
+  Menu.setApplicationMenu(null);
+
+  mainWindow.loadFile('index.html');
+  mainWindow.webContents.openDevTools();
   mainWindow.loadFile('splash.html');
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
