@@ -31,4 +31,6 @@ The packaging and installer is done using `electron-builder`
 * Package the application
     -> npm run dist
 
+* executable is located in dist folder.
+
 
