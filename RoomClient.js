@@ -742,8 +742,6 @@ class RoomClient {
             $('#sharePopup').hide();
             // Reset after sharing
             selectedScreenId = null;
-            const tabaudio = document.getElementById("tabAudioshareSwitch");
-            sysAudio = tabaudio.checked;
             document.querySelector('.share-btn').disabled = true;
             document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
           }
