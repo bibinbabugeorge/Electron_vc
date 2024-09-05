@@ -1,6 +1,6 @@
 // function that will hit on the initialization of dashboard.html
-function dashboardInit(Roomlist) {
-  var _userid = getCookieDetails("userID");
+async function dashboardInit(Roomlist) {
+  var _userid = await getCookieDetails("userID");
   fillDashboardDetails();
   var individualCalls = [];
   var GroupCalls = [];
@@ -1443,7 +1443,6 @@ function scheduleMeetingSubmit() {
 }
 
 async function fillDashboardDetails() {
-  debugger
   var UserDetails = await getCookie();
   if (UserDetails.length == 0)
     location.href = "./index.html";
@@ -1480,7 +1479,6 @@ async function fillDashboardDetails() {
     missedCallNotification = UserDetails.Notifications.MissedCall;
 
   } else {
-    debugger
     location.href = "./dashboard.html";
   }
 }
