@@ -1,7 +1,6 @@
 let submitUserList = [];
 let UserDetail = [];
 let IconName = null;
-const serverUri = 'https://vps271818.vps.ovh.ca:3024';
 
 $("#Usersearch").keyup(function () {
   SearchParticipants(this.value);
@@ -19,7 +18,7 @@ function CreateGroupInit(participant) {
       <div class="col-md-9 col-sm-8 col-8">
       <div class="user-profile-container">
       <div class="user-profile-image">
-      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : "uploads/" + element.profileImg}
+      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : fileUploadPath + element.profileImg}
       />
       ${(element.status == "Active") ? '<div class="online-status-icon online-view"></div>' : ''}
       </div>
@@ -76,8 +75,9 @@ function toggleButtontext() {
 }
 
 $("#groupIcon").change(function () {
+  debugger
   var form = new FormData();
-  ApiURL = serverUri + "/uploadfile"
+  ApiURL = apiUri + "uploadfile"
   form.append("Picture", $('#groupIcon')[0].files[0]);
   var settings = {
     "url": ApiURL,
@@ -93,7 +93,7 @@ $("#groupIcon").change(function () {
     console.log(response);
     response = JSON.parse(response)
     if (response.success) {
-      $("#groupImg").attr("src", "uploads/" + response.filename);
+      $("#groupImg").attr("src", fileUploadPath + response.filename);
       IconName = response.filename;
     }
   });
@@ -101,7 +101,7 @@ $("#groupIcon").change(function () {
 
 
 function Bindparticipant(participant) {
-
+  debugger
   var list = "";
   if (participant !== null || participant !== undefined) {
     participant.forEach((element) => {
@@ -110,7 +110,7 @@ function Bindparticipant(participant) {
       <div class="col-md-9 col-sm-8 col-8">
       <div class="user-profile-container">
       <div class="user-profile-image">
-      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : "uploads/" + element.profileImg}
+      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : fileUploadPath + element.profileImg}
       />
       ${(element.status == "Active") ? '<div class="online-status-icon online-view"></div>' : ''}
       </div>
@@ -222,7 +222,7 @@ $(".main-form-btn").click(async function () {
     status: "Active",
     lastActiveDate: new Date(),
     groupIcon: IconName,
-    host: JSON.parse(getCookie()).name,
+    host: JSON.parse(await getCookie()).name,
   }
   if (CreateRoomData.name != "") {
     $("#creteGroupNameReqP").hide();

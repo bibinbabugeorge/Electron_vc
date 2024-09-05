@@ -1,6 +1,6 @@
 // function that will hit on the initialization of dashboard.html
-function dashboardInit(Roomlist) {
-  var _userid = getCookieDetails("userID");
+async function dashboardInit(Roomlist) {
+  var _userid = await getCookieDetails("userID");
   fillDashboardDetails();
   var individualCalls = [];
   var GroupCalls = [];
@@ -292,10 +292,10 @@ function BindCallHistory(joinedCalls) {
     var Image = "";
     if (element.roomName.includes(',') || element.roomName.includes('...')) {
       user = `<p>${element.participantCount} Participants, ${istTimestamp.toLocaleDateString('en-US', options)}, ${formattedTime} </p>`;
-      Image = `<img class="user-big-icon" src="${element.groupIcon == "" ? 'modules/images/group_icon.svg' : `uploads/${element.groupIcon}`}" />`;
+      Image = `<img class="user-big-icon" src="${element.groupIcon == "" || element.groupIcon == null ? 'modules/images/group_icon.svg' : `${fileUploadPath}${element.groupIcon}`}" />`;
     } else {
       user = `<p>${istTimestamp.toLocaleDateString('en-US', options)}, ${formattedTime} </p>`;
-      Image = `<img class="user-big-icon" src="${element.groupIcon == "" ? 'modules/images/default_user.svg' : `uploads/${element.groupIcon}`}" />`;
+      Image = `<img class="user-big-icon" src="${element.groupIcon == "" || element.groupIcon == null ? 'modules/images/default_user.svg' : `${fileUploadPath}${element.groupIcon}`}" />`;
     }
 
     var listItem = document.createElement("li");
@@ -620,7 +620,7 @@ function BindBlockedUsers(blockedContacts) {
                   <div class="col-md-8 col-sm-8 col-7">
                   <div class="user-details-view">
                   <div class="user-profile-image">
-                  <img src=${element.profilePic == null || element.profilePic == "" ? "modules/images/default_user.svg" : "uploads/" + element.profilePic}
+                  <img src=${element.profilePic == null || element.profilePic == "" ? "modules/images/default_user.svg" : fileUploadPath + element.profilePic}
                   />
                   
                   <div class="online-status-icon online-view"></div>
@@ -707,7 +707,7 @@ function bindindividualCalls(participant) {
                     <div class="user-profile-image">
                     <img class="user-big-icon rounded-circle" src=${element.joinedusers[0].profileImg == null
           ? "modules/images/default_user.svg"
-          : "uploads/" + element.joinedusers[0].profileImg
+          : fileUploadPath + element.joinedusers[0].profileImg
         }>
                     ${element.joinedusers[0].status == "Active"
           ? '<div class="online-status-icon online-view"></div>'
@@ -763,7 +763,7 @@ function bindFavouriteCalls(participant) {
                     <div class="user-profile-image">
                     <img class="user-big-icon rounded-circle" src=${element.joinedusers[0].profileImg == null
             ? "modules/images/default_user.svg"
-            : "uploads/" + element.joinedusers[0].profileImg
+            : fileUploadPath + element.joinedusers[0].profileImg
           }>
                     ${element.joinedusers[0].status == "Active"
             ? '<div class="online-status-icon online-view"></div>'
@@ -816,7 +816,7 @@ function bindFavouriteCalls(participant) {
                     <div class="user-profile-image">
                     <img class="user-big-icon rounded-circle"  src=${element.groupIcon == "" || element.groupIcon == null
             ? "modules/images/group_icon.svg"
-            : "uploads/" + element.groupIcon
+            : fileUploadPath + element.groupIcon
           }>
                   ${element.status == "Active"
             ? '<div class="online-status-icon online-view"></div>'
@@ -881,7 +881,7 @@ function bindRecentCalls(participant) {
                     <div class="user-profile-image">
                     <img class="user-big-icon rounded-circle" src=${element.joinedusers[0].profileImg == null
             ? "modules/images/default_user.svg"
-            : "uploads/" + element.joinedusers[0].profileImg
+            : fileUploadPath + element.joinedusers[0].profileImg
           }>
                     ${element.joinedusers[0].status == "Active"
             ? '<div class="online-status-icon online-view"></div>'
@@ -929,7 +929,7 @@ function bindRecentCalls(participant) {
                     <div class="user-profile-image">
                     <img class="user-big-icon rounded-circle"  src=${element.groupIcon == "" || element.groupIcon == null
             ? "modules/images/group_icon.svg"
-            : "uploads/" + element.groupIcon
+            : fileUploadPath + element.groupIcon
           }>
                   ${element.status == "Active"
             ? '<div class="online-status-icon online-view"></div>'
@@ -997,7 +997,7 @@ function bindGroupCalls(participant) {
                 <div class="user-profile-image">
                 <img class="user-big-icon rounded-circle"  src=${element.groupIcon == null || element.groupIcon == ""
           ? "modules/images/group_icon.svg"
-          : "uploads/" + element.groupIcon
+          : fileUploadPath + element.groupIcon
         }>
               ${element.status == "Active"
           ? '<div class="online-status-icon online-view"></div>'
@@ -1037,7 +1037,7 @@ function bindGroupCalls(participant) {
 
 $("#groupIcon").change(function () {
   var form = new FormData();
-  ApiURL = window.location.origin + "/uploadfile";
+  ApiURL = apiUri + "uploadfile";
   form.append("Picture", $("#groupIcon")[0].files[0]);
   var settings = {
     url: ApiURL,
@@ -1049,16 +1049,16 @@ $("#groupIcon").change(function () {
     data: form,
   };
 
-  $.ajax(settings).done(function (response) {
+  $.ajax(settings).done(async function (response) {
     console.log(response);
     response = JSON.parse(response);
     if (response.success) {
-      $(".Img_ProfilePic").attr("src", "uploads/" + response.filename);
-      $(".pro-img").attr("src", "uploads/" + response.filename);
+      $(".Img_ProfilePic").attr("src", fileUploadPath + response.filename);
+      $(".pro-img").attr("src", fileUploadPath + response.filename);
 
       var data = {
         ProfileImg: response.filename,
-        UserId: getuserid(),
+        UserId: await getuserid(),
       };
       UpdateProfilePic(data);
     }
@@ -1075,7 +1075,7 @@ function callUser(userid, roomid, type) {
   }
 
   localStorage.setItem("RoomId", roomid);
-  location.href = "/confieranceroom.html";
+  location.href = "./confieranceroom.html";
 }
 
 // function to make data binding into the popup that showing the corresponding user details
@@ -1103,7 +1103,7 @@ function createdPopupData(data, groupname = "") {
 
   $("#EditGroup").attr("href", `edit_group.html?roomid=${data.roomid}`);
 
-  $("#favouriteContact").on("click", function () {
+  $("#favouriteContact").on("click", async function () {
     // Get values needed for operations
     const roomId = data.roomid;
     const active = data.isfav;
@@ -1115,7 +1115,7 @@ function createdPopupData(data, groupname = "") {
         commandType: "UnFavouriteContact",
         Data: {
           unfavouriteid: roomId,
-          userid: JSON.parse(getCookie()).userID
+          userid: JSON.parse(await getCookie()).userID
         }
       };
       server.sendCommand(JSON.stringify(dataObj));
@@ -1125,7 +1125,7 @@ function createdPopupData(data, groupname = "") {
         commandType: "FavouriteContact",
         Data: {
           favouriteid: roomId,
-          userid: JSON.parse(getCookie()).userID
+          userid: JSON.parse(await getCookie()).userID
         }
       };
       server.sendCommand(JSON.stringify(dataObj));
@@ -1163,7 +1163,7 @@ function createdPopupData(data, groupname = "") {
       "src",
       data.groupIcon == "" || data.groupIcon == null
         ? "modules/images/group_icon.svg"
-        : "uploads/" + data.groupIcon
+        : fileUploadPath + data.groupIcon
     );
 
   if (groupname == "") {
@@ -1233,12 +1233,12 @@ function createdPopupData(data, groupname = "") {
 
   $("#deleteCall").click(function () {
     $("#deleteConfirm").off("click");
-    $("#deleteConfirm").click(function () {
+    $("#deleteConfirm").click(async function () {
       var dataObj = {
         commandType: "DeleteCall",
         Data: {
           roomid: data.roomid,
-          userid: JSON.parse(getCookie()).userID
+          userid: JSON.parse(await getCookie()).userID
         },
       };
       server.sendCommand(JSON.stringify(dataObj));
@@ -1247,12 +1247,12 @@ function createdPopupData(data, groupname = "") {
 
   $("#blockContact").click(function () {
     $("#blockPopup").off("click");
-    $("#blockPopup").click(function () {
+    $("#blockPopup").click(async function () {
       var dataObj = {
         commandType: "BlockContact",
         Data: {
           blockid: data.joinedusers[0].userid,
-          userid: JSON.parse(getCookie()).userID
+          userid: JSON.parse(await getCookie()).userID
         },
       };
       server.sendCommand(JSON.stringify(dataObj));
@@ -1274,7 +1274,7 @@ function scheduleMeeting() {
       "src",
       selectedRowData.groupIcon == "" || selectedRowData.groupIcon == null
         ? "modules/images/default_user.svg"
-        : "uploads/" + selectedRowData.groupIcon
+        : fileUploadPath + selectedRowData.groupIcon
     );
   $("#scheduleMeeting")
     .find("#scheduleDataName")
@@ -1443,7 +1443,6 @@ function scheduleMeetingSubmit() {
 }
 
 async function fillDashboardDetails() {
-  debugger
   var UserDetails = await getCookie();
   if (UserDetails.length == 0)
     location.href = "./index.html";
@@ -1466,8 +1465,8 @@ async function fillDashboardDetails() {
       UserDetails.profilePic != undefined &&
       UserDetails.profilePic != ""
     ) {
-      $(".Img_ProfilePic").attr("src", "uploads/" + UserDetails.profilePic);
-      $(".pro-img").attr("src", "uploads/" + UserDetails.profilePic);
+      $(".Img_ProfilePic").attr("src", fileUploadPath + UserDetails.profilePic);
+      $(".pro-img").attr("src", fileUploadPath + UserDetails.profilePic);
     }
 
     $("#ContactVisibilityToggle,#ContactVisibilityToggleMobile").prop("checked", UserDetails.isVisible);
@@ -1480,7 +1479,6 @@ async function fillDashboardDetails() {
     missedCallNotification = UserDetails.Notifications.MissedCall;
 
   } else {
-    debugger
     location.href = "./dashboard.html";
   }
 }
@@ -1527,7 +1525,7 @@ function callHistoryPopupData(data, groupname = "") {
       "src",
       selectedRowData.groupIcon == "" || selectedRowData.groupIcon == null
         ? "modules/images/default_user.svg"
-        : "uploads/" + selectedRowData.groupIcon
+        : fileUploadPath + selectedRowData.groupIcon
     );
 
   if (selectedRowData.status == "Active") {
@@ -1609,12 +1607,12 @@ function callHistoryPopupData(data, groupname = "") {
   });
 }
 
-function unBlockContact(userID) {
+async function unBlockContact(userID) {
   var dataObj = {
     commandType: "UnblockContact",
     Data: {
       unblockId: userID,
-      userid: JSON.parse(getCookie()).userID
+      userid: JSON.parse(await getCookie()).userID
     },
   };
   server.sendCommand(JSON.stringify(dataObj));

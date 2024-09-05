@@ -20,7 +20,7 @@ function EditGroupInit(participant) {
       <div class="col-md-9 col-sm-8 col-8">
       <div class="user-profile-container">
       <div class="user-profile-image">
-      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : "uploads/" + element.profileImg}
+      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : fileUploadPath + element.profileImg}
       />
       ${(element.status == "Active") ? '<div class="online-status-icon online-view"></div>' : ''}
       </div>
@@ -83,7 +83,7 @@ function toggleButtontext() {
 
 $("#groupIcon").change(function () {
   var form = new FormData();
-  ApiURL = window.location.origin + "/uploadfile"
+  ApiURL = apiUri + "uploadfile"
   form.append("Picture", $('#groupIcon')[0].files[0]);
   var settings = {
     "url": ApiURL,
@@ -99,7 +99,7 @@ $("#groupIcon").change(function () {
     console.log(response);
     response = JSON.parse(response)
     if (response.success) {
-      $("#groupImg").attr("src", "uploads/" + response.filename);
+      $("#groupImg").attr("src", fileUploadPath + response.filename);
       IconName = response.filename;
     }
   });
@@ -107,94 +107,97 @@ $("#groupIcon").change(function () {
 
 
 function Bindparticipant(participant) {
-
-  var list = "";
+  debugger
+  var list;
   if (participant !== null || participant !== undefined) {
-    participant.forEach((element) => {
-      if (element.userid == JSON.parse(getCookie()).userID) return
-      list += `<li>
-      <div class="row">
-      <div class="col-md-9 col-sm-8 col-8">
-      <div class="user-profile-container">
-      <div class="user-profile-image">
-      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : "uploads/" + element.profileImg}
-      />
-      ${(element.status == "Active") ? '<div class="online-status-icon online-view"></div>' : ''}
-      </div>
-      <div class="user-profile-details">
-      <h6>${element.name}</h6>
-      <p class="user-email">
-      ${element.email}
-      </p>
-      </div>
-      </div>
-      </div>
-      <div class="col-md-3 col-sm-4 col-4">
-      <div class="call-join-btn-container">
-      
-      <button class="remove-btn" onclick="AddToGroup('${element.userid}')">
-      <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="22"
-      height="22"
-      viewBox="0 0 22 22">
-      <defs>
-      <style>
-      .remove-btn-icon-a {
-        fill: #fff;
-        stroke-width: 0.4px;
-        opacity: 0;
+    participant.forEach(async (element) => {
+      if (element.userid == JSON.parse(await getCookie()).userID) {
+        return
+      } else {
+        list += `<li>
+        <div class="row">
+        <div class="col-md-9 col-sm-8 col-8">
+        <div class="user-profile-container">
+        <div class="user-profile-image">
+        <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : fileUploadPath + element.profileImg}
+        />
+        ${(element.status == "Active") ? '<div class="online-status-icon online-view"></div>' : ''}
+        </div>
+        <div class="user-profile-details">
+        <h6>${element.name}</h6>
+        <p class="user-email">
+        ${element.email}
+        </p>
+        </div>
+        </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-4">
+        <div class="call-join-btn-container">
+        
+        <button class="remove-btn" onclick="AddToGroup('${element.userid}')">
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 22 22">
+        <defs>
+        <style>
+        .remove-btn-icon-a {
+          fill: #fff;
+          stroke-width: 0.4px;
+          opacity: 0;
+        }
+        
+        .remove-btn-icon-a,
+        .remove-btn-icon-b {
+          stroke: #808486;
+        }
+        
+        .remove-btn-icon-b,
+        .remove-btn-icon-d {
+          fill: none;
+        }
+        
+        .remove-btn-icon-b {
+          stroke-width: 1.5px;
+        }
+        
+        .remove-btn-icon-c {
+          stroke: none;
+        }
+        </style>
+        </defs>
+        <g class="remove-btn-icon-a">
+        <rect
+        class="remove-btn-icon-c"
+        width="22"
+        height="22" />
+        <rect
+        class="remove-btn-icon-d"
+        x="0.2"
+        y="0.2"
+        width="21.6"
+        height="21.6" />
+        </g>
+        <g
+        transform="translate(11.122 1.407) rotate(45)"
+        class="remove-btn-icon-rotate">
+        <line
+        class="remove-btn-icon-b"
+        y2="13.739"
+        transform="translate(6.869)" />
+        <line
+        class="remove-btn-icon-b"
+        y2="13.739"
+        transform="translate(13.739 6.869) rotate(90)" />
+        </g>
+        </svg>
+        </button>
+        </div>
+        </div>
+        </div>
+        </li>`;
       }
-      
-      .remove-btn-icon-a,
-      .remove-btn-icon-b {
-        stroke: #808486;
-      }
-      
-      .remove-btn-icon-b,
-      .remove-btn-icon-d {
-        fill: none;
-      }
-      
-      .remove-btn-icon-b {
-        stroke-width: 1.5px;
-      }
-      
-      .remove-btn-icon-c {
-        stroke: none;
-      }
-      </style>
-      </defs>
-      <g class="remove-btn-icon-a">
-      <rect
-      class="remove-btn-icon-c"
-      width="22"
-      height="22" />
-      <rect
-      class="remove-btn-icon-d"
-      x="0.2"
-      y="0.2"
-      width="21.6"
-      height="21.6" />
-      </g>
-      <g
-      transform="translate(11.122 1.407) rotate(45)"
-      class="remove-btn-icon-rotate">
-      <line
-      class="remove-btn-icon-b"
-      y2="13.739"
-      transform="translate(6.869)" />
-      <line
-      class="remove-btn-icon-b"
-      y2="13.739"
-      transform="translate(13.739 6.869) rotate(90)" />
-      </g>
-      </svg>
-      </button>
-      </div>
-      </div>
-      </div>
-      </li>`;
     });
   }
   $('#ParticipantsList').empty().append(list);
@@ -207,8 +210,8 @@ function Bindparticipant(participant) {
 }
 
 
-$(".main-form-btn").click(function () {
-  var UserDetails = getCookie();
+$(".main-form-btn").click(async function () {
+  var UserDetails = await getCookie();
   if (UserDetails != undefined) {
     UserDetails = JSON.parse(UserDetails);
     var CreatedUserDetails = {
@@ -253,6 +256,6 @@ function bindGroupData(RoomDetails) {
   Bindparticipant(RoomDetails.joinedusers);
   SearchParticipants("");
   if (RoomDetails.groupIcon != "" && RoomDetails.groupIcon != null) {
-    $("#groupImg").attr("src", "uploads/" + RoomDetails.groupIcon);
+    $("#groupImg").attr("src", fileUploadPath + RoomDetails.groupIcon);
   }
 }

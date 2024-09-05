@@ -1,5 +1,6 @@
 const apiUri = 'https://vps271818.vps.ovh.ca:3024/';
 const server = new window.conference(apiUri.replace('https', 'wss'));
+const fileUploadPath = apiUri + "uploads/";
 
 let producer = null;
 let roomObj = null;
@@ -99,10 +100,9 @@ let currentURL = window.location.href;
 
 
 server.connect().then((events) => {
-  events.on(callbackEvents.WebSocketConnected, function (data) {
+  events.on(callbackEvents.WebSocketConnected, async function (data) {
     ConsoleEvent(data.Event, data);
     updateUserClientId(data.Data.ClientId);
-
     if (currentURL.includes("create_group.html")) {
       SearchParticipants("");
     } else if (currentURL.includes("dashboard.html")) {
@@ -115,7 +115,7 @@ server.connect().then((events) => {
         commandType: "EditGroup",
         Data: {
           room_id: url.searchParams.get("roomid"),
-          userid: JSON.parse(getCookie()).userID,
+          userid: JSON.parse(await getCookie()).userID,
         },
       };
       server.sendCommand(JSON.stringify(dataObj));
@@ -294,8 +294,8 @@ server.connect().then((events) => {
     pong(data.Data.pingTime);
   });
 
-  events.on(callbackEvents.SearchParticipantsSuccess, function (data) {
-    var _userid = getCookieDetails("userID");
+  events.on(callbackEvents.SearchParticipantsSuccess, async function (data) {
+    var _userid = await getCookieDetails("userID");
     var index = data.Data.UserList.findIndex((o) => o.userid === _userid);
     if (index > -1) {
       data.Data.UserList.splice(index, 1);
@@ -1752,15 +1752,15 @@ function LoginFormValidation() {
   });
 }
 
-function SearchParticipants(Search_Key) {
-  var userId = getuserid();
+async function SearchParticipants(Search_Key) {
+  var userId = await getuserid();
   var data = { SearchKey: Search_Key, UserId: userId };
   var dataObj = { commandType: "SearchParticipants", Data: data };
   server.sendCommand(JSON.stringify(dataObj));
 }
 
-function DashboardParticipantsList(Search_Key) {
-  var userId = getuserid();
+async function DashboardParticipantsList(Search_Key) {
+  var userId = await getuserid();
   var data = { SearchKey: Search_Key, UserId: userId };
   var dataObj = { commandType: "DashboardParticipantsList", Data: data };
   server.sendCommand(JSON.stringify(dataObj));

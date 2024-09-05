@@ -5,7 +5,7 @@ let IconName = null;
 // let room_id = parseInt(Math.floor(Math.random() * 100000000000000000 + 100000000000))
 let room_id = makeUniqueRoom();
 let url = window.location.href.split("schedule_meeting.html");
-$("#scheduleUrl").val(`${url[0]}Join.html?Rid=${room_id}&RU=aHR0cHM6Ly9sdWNlbnRzdXJnaWNhbC5jb20vbG9naW4&Uid=Guest`);
+$("#scheduleUrl").val(`${apiUri}Join.html?Rid=${room_id}&RU=aHR0cHM6Ly9sdWNlbnRzdXJnaWNhbC5jb20vbG9naW4&Uid=Guest`);
 $("#Usersearch").keyup(function () {
     SearchParticipants(this.value);
 });
@@ -22,7 +22,7 @@ function CreateGroupInit(participant) {
       <div class="col-md-9 col-sm-8 col-8">
       <div class="user-profile-container">
       <div class="user-profile-image">
-      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : "uploads/" + element.profileImg}
+      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : fileUploadPath + element.profileImg}
       />
       ${(element.status == "Active") ? '<div class="online-status-icon online-view"></div>' : ''}
       </div>
@@ -113,7 +113,7 @@ function Bindparticipant(participant) {
       <div class="col-md-9 col-sm-8 col-8">
       <div class="user-profile-container">
       <div class="user-profile-image">
-      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : "uploads/" + element.profileImg}
+      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : fileUploadPath + element.profileImg}
       />
       ${(element.status == "Active") ? '<div class="online-status-icon online-view"></div>' : ''}
       </div>
