@@ -299,7 +299,7 @@ $(".chat-send-btn").click(async function () {
   Promise.all(fetchPromises).then(() => {
     $(".attachedFilesUl").empty();
 
-    ApiURL = window.location.origin + "/uploadAttachments";
+    ApiURL = apiUri + "uploadAttachments";
     var settings = {
       url: ApiURL,
       method: "POST",
@@ -400,7 +400,7 @@ function bindChat(Data) {
 
   const istSendTime = new Date(Data.sendTime);
   const senderPic = !(Data.senderPic == null || Data.senderPic == "")
-    ? `uploads/${Data.senderPic}`
+    ? `${fileUploadPath}${Data.senderPic}`
     : "modules/images/default_user.svg";
 
   bindRecieverChat(Data.sender, Data, senderPic, istSendTime);
@@ -410,7 +410,7 @@ function bindChat(Data) {
   DocImgClick();
 }
 
-function bindChatHistory(Data) {
+async function bindChatHistory(Data) {
   let chatDate = new Date(Data.chatHistory[0].sendTime).toLocaleDateString(
     "en-GB",
     { year: "numeric", month: "short", day: "numeric" }
@@ -445,13 +445,13 @@ function bindChatHistory(Data) {
     const istSendTime = new Date(chat.sendTime);
 
     let senderPic = !(chat.sendUserPic == null || chat.sendUserPic == "")
-      ? `uploads/${chat.sendUserPic}`
+      ? `${fileUploadPath}/${chat.sendUserPic}`
       : "modules/images/default_user.svg";
 
     if (chat.sendUserId == JSON.parse(await getCookie()).userID) {
-      bindSenderChat(chat.files, chat.message, istSendTime, chat.groupId);
+      let bindSenderChatResp = await bindSenderChat(chat.files, chat.message, istSendTime, chat.groupId);
     } else {
-      bindRecieverChat(chat.sendUserName, chat, senderPic, istSendTime);
+      let bindRecieverChatResp = await bindRecieverChat(chat.sendUserName, chat, senderPic, istSendTime);
     }
   });
 
@@ -465,15 +465,16 @@ function bindChatHistory(Data) {
   )
     $(".chat-ul").find(".chat-date-view:last p").text("Today");
 
-  DocImgClick();
+  await DocImgClick();
 }
 
 function DocImgClick() {
   $(".document-download").off("click");
 
   $(".document-download").click(function () {
+    debugger
     let a = document.createElement("a");
-    a.href = window.location.origin + "/uploads/" + $(this).prop("alt");
+    a.href = fileUploadPath + $(this).prop("alt");
     a.download = $(this).siblings("p").text();
     document.body.appendChild(a);
     a.click();
@@ -489,12 +490,14 @@ function DocImgClick() {
   });
 
   $(".attachemnt-download-btn-image-ul").off("click");
+  debugger
   $(".attachemnt-download-btn-image-ul").click(function () {
+    debugger
     let imageUl = $(this).siblings("ul").prop("id");
     let groupId = imageUl.slice(7, imageUl.length);
     chatImageDictionary[groupId].forEach((Image) => {
       let a = document.createElement("a");
-      a.href = window.location.origin + "/uploads/" + Image.file;
+      a.href = fileUploadPath + Image.file;
       a.download = Image.name;
       document.body.appendChild(a);
       a.click();
@@ -503,7 +506,7 @@ function DocImgClick() {
   });
   mobileViewChatBodyHeight();
 }
-function bindSenderChat(files, message, time, groupId) {
+async function bindSenderChat(files, message, time, groupId) {
   let imageExtensions = [
     ".apng",
     ".gif",
@@ -542,7 +545,7 @@ function bindSenderChat(files, message, time, groupId) {
             // return `<li><img src="/uploads/${file.file}" alt="${file.name}" /></li>`;
             if (imageCount < 5)
               return `<li><picture>
-                        <source srcset="/uploads/${file.file}" />
+                        <source srcset="${fileUploadPath}${file.file}" />
                         <img src="/modules/images/attachment.svg" alt="${file.name}" />
                       </picture></li>`;
             else return "";
@@ -568,9 +571,9 @@ function bindSenderChat(files, message, time, groupId) {
         (document) => `<li class="chat-sender" >
   <div class="chat-sender-message">
   <div class="attached-document-wrapper">
-  <img src="/modules/images/attachment.svg" alt="${document.name}" />
+  <img src="./modules/images/attachment.svg" alt="${document.name}" />
   <p>${document.name}</p>
-  <img class="document-download" src="/modules/images/download.svg" alt="${document.file
+  <img class="document-download" src="./modules/images/download.svg" alt="${document.file
           }" />
   </div><p class="chat-message-time">${time.toLocaleTimeString("en-US", {
             hour: "2-digit",
@@ -604,7 +607,7 @@ function mobileViewChatBodyHeight() {
     `${chatViewBodyHeight}px`
   );
 }
-function bindRecieverChat(sender, chat, senderPic, istSendTime) {
+async function bindRecieverChat(sender, chat, senderPic, istSendTime) {
   let imageExtensions = [
     ".apng",
     ".gif",
@@ -645,7 +648,7 @@ function bindRecieverChat(sender, chat, senderPic, istSendTime) {
             // return `<li><img src="/uploads/${file.file}" alt="${file.name}" /></li>`;
             if (imageCount < 5)
               return `<li><picture>
-                            <source srcset="/uploads/${file.file}" />
+                            <source srcset="${fileUploadPath}${file.file}" />
                             <img src="/modules/images/attachment.svg" alt="${file.name}" />
                           </picture></li>`;
             else return "";
@@ -655,7 +658,7 @@ function bindRecieverChat(sender, chat, senderPic, istSendTime) {
         .join("")}
               </ul> 
               <button class="btn p-0 border-0 attachemnt-download-btn attachemnt-download-btn-image-ul">
-                  <img  src="/modules/images/download.svg"/>
+                  <img  src="./modules/images/download.svg"/>
                 </button>
           </div> `
       : ""
@@ -813,7 +816,7 @@ async function raiseHand(user_id, user_name, status, profileImg) {
         <li id="rh-bubble-${user_id}">
             ${profileImg
         ? `<div class="rounded-circle d-flex justify-content-center align-items-center">
-                    <img src="uploads/${profileImg}" style="width: 48px; height: 48px" class="rounded-circle d-flex mb-1 justify-content-center align-items-center" alt="" />
+                    <img src="${fileUploadPath}/${profileImg}" style="width: 48px; height: 48px" class="rounded-circle d-flex mb-1 justify-content-center align-items-center" alt="" />
                 </div>`
         : `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 48px; height: 48px; background-color: ${backgroundColor}36;">
                     <h6 class="initials noselect" style="margin: 0; position: relative; color: ${backgroundColor};">
@@ -925,7 +928,7 @@ $(".chatAttachment").change(function () {
             )
             .append(
               $("<img>").attr({
-                src: "/modules/images/attachment.svg",
+                src: "./modules/images/attachment.svg",
                 width: 100,
                 height: 100,
                 alt: file.name,
@@ -1256,7 +1259,7 @@ function bindChatImagesCarousel(files) {
     $("#image-carousel .carousel-inner").append(
       `<div class="carousel-item ${imageCount > 0 ? "" : "active"}">
         <picture>
-          <source srcset="/uploads/${file.file}" />
+          <source srcset="${fileUploadPath}${file.file}" />
           <img src="/modules/images/attachment.svg" alt="${file.name}" />
         </picture>
       </div>`
@@ -1269,7 +1272,7 @@ function bindChatImagesCarousel(files) {
       }
        >
           <picture>
-            <source srcset="/uploads/${file.file}" />
+            <source srcset="${fileUploadPath}${file.file}" />
             <img src="/modules/images/attachment.svg" alt="${file.name}" />
           </picture>
         </li>`

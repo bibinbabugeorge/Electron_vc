@@ -1124,7 +1124,7 @@
             <div class="participant-pic">
             ${element.profileImg
           ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
-                  <img src="uploads/${element.profileImg}" alt="Profile Image" /> 
+                  <img src="${fileUploadPath}${element.profileImg}" alt="Profile Image" /> 
                  </div>`
           : `<div class="add-participant-pic position-relative border border-secondary rounded-circle" style=" background-color: ${backgroundColor}36; height:50px;width:50px;">
                     <h6 class="mb-0 noselect" style="text-indent: 0px; position: relative; color: ${backgroundColor}; left:15px; top: 15px;">
@@ -1213,7 +1213,7 @@
       _ParticipantListMob += `<li>
         ${element.profileImg
           ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
-          <img src="uploads/${element.profileImg}" alt="Profile Image" />
+          <img src="${fileUploadPath}${element.profileImg}" alt="Profile Image" />
         </div>`
           : `<div class="add-participant-pic position-relative border border-secondary rounded-circle"
           style=" background-color: ${backgroundColor}36; height:50px;width:50px;">
@@ -1310,7 +1310,7 @@
                  
                       ${element.profileImg
               ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
-              <img src="uploads/${element.profileImg}" alt="Profile Image" /> 
+              <img src="${fileUploadPath}${element.profileImg}" alt="Profile Image" /> 
               ${element.status === "Active"
                 ? '<div class="online-status-icon online-view" style="right: 0;left: 45px;top: 45px;bottom:0;"></div>'
                 : ""
@@ -1350,7 +1350,7 @@
                       <li>
                       ${element.profileImg
               ? `<div class="add-participant-pic position-relative border border-secondary rounded-circle">
-                <img src="uploads/${element.profileImg}" alt="Profile Image" />
+                <img src="${fileUploadPath}${element.profileImg}" alt="Profile Image" />
                 ${element.status === "Active"
                 ? '<div class="online-status-icon online-view" style="right: 0;left: 45px;top: 45px;bottom:0;"></div>'
                 : ""
@@ -4472,7 +4472,7 @@
                                 ${profileImg
                   ? `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center hand-raised-icon" data-username="avatar_${userid}"
                                         style="width: 122px; height: 122px;">
-                                        <img class="rounded-circle d-flex mb-1 justify-content-center align-items-center" style="width: 122px; height: 122px;" src="uploads/${profileImg}" alt="Profile Image" /> 
+                                        <img class="rounded-circle d-flex mb-1 justify-content-center align-items-center" style="width: 122px; height: 122px;" src="${fileUploadPath}${profileImg}" alt="Profile Image" /> 
                                         <img id="hand-raised${userid}" src="modules/images/audio_raise_hand.svg" class="audio-raise-hand d-none" />
                                     </div>`
                   : `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center" data-username="avatar_${userid}"

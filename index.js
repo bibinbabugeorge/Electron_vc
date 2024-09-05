@@ -1,5 +1,6 @@
 const apiUri = 'https://vps271818.vps.ovh.ca:3024/';
 const server = new window.conference(apiUri.replace('https', 'wss'));
+const fileUploadPath = apiUri + "uploads/";
 
 let producer = null;
 let roomObj = null;
@@ -99,7 +100,7 @@ let currentURL = window.location.href;
 
 
 server.connect().then((events) => {
-  events.on(callbackEvents.WebSocketConnected, function (data) {
+  events.on(callbackEvents.WebSocketConnected, async function (data) {
     ConsoleEvent(data.Event, data);
     updateUserClientId(data.Data.ClientId);
     if (currentURL.includes("create_group.html")) {
@@ -114,7 +115,7 @@ server.connect().then((events) => {
         commandType: "EditGroup",
         Data: {
           room_id: url.searchParams.get("roomid"),
-          userid: JSON.parse(getCookie()).userID,
+          userid: JSON.parse(await getCookie()).userID,
         },
       };
       server.sendCommand(JSON.stringify(dataObj));
