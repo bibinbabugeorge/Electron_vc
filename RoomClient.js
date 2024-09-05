@@ -1665,7 +1665,7 @@ class RoomClient {
               ${userinfo.profileImg
                 ? `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center hand-raised-icon" data-username="avatar_${userinfo.user_id}"
                       style="width: 122px; height: 122px;">
-                      <img class="rounded-circle d-flex mb-1 justify-content-center align-items-center" style="width: 122px; height: 122px;" src="uploads/${userinfo.profileImg}" alt="Profile Image" /> 
+                      <img class="rounded-circle d-flex mb-1 justify-content-center align-items-center" style="width: 122px; height: 122px;" src="${fileUploadPath}${userinfo.profileImg}" alt="Profile Image" /> 
                       <img id="hand-raised${userinfo.user_id}" src="modules/images/audio_raise_hand.svg" class="audio-raise-hand d-none" />
                   </div>`
                 : `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center" data-username="avatar_${userinfo.user_id

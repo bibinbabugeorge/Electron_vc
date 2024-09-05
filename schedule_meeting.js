@@ -22,7 +22,7 @@ function CreateGroupInit(participant) {
       <div class="col-md-9 col-sm-8 col-8">
       <div class="user-profile-container">
       <div class="user-profile-image">
-      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : "uploads/" + element.profileImg}
+      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : fileUploadPath + element.profileImg}
       />
       ${(element.status == "Active") ? '<div class="online-status-icon online-view"></div>' : ''}
       </div>
@@ -113,7 +113,7 @@ function Bindparticipant(participant) {
       <div class="col-md-9 col-sm-8 col-8">
       <div class="user-profile-container">
       <div class="user-profile-image">
-      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : "uploads/" + element.profileImg}
+      <img src=${element.profileImg == null || element.profileImg == "" ? "modules/images/default_user.svg" : fileUploadPath + element.profileImg}
       />
       ${(element.status == "Active") ? '<div class="online-status-icon online-view"></div>' : ''}
       </div>
