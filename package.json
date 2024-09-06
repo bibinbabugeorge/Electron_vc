@@ -10,7 +10,7 @@
   },
   "build": {
     "appId": "com.att.vc",
-    "productName": "EpicMeet",
+    "productName": "AppsConnect",
     "files": [
       "dist/**/*",
       "node_modules/**/*",
@@ -55,7 +55,7 @@
           ]
         }
       ],
-      "icon": "./assets/group_icon (1).ico"
+      "icon": "./assets/appsconnect_icon.ico"
     },
     "nsis": {
       "oneClick": false,
@@ -66,7 +66,7 @@
     }
   },
   "devDependencies": {
-    "electron": "^32.0.1",
+    "electron": "^32.0.2",
     "electron-builder": "^25.0.5"
   }
 }
