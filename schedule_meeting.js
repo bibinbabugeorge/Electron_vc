@@ -210,8 +210,8 @@ function Bindparticipant(participant) {
 }
 
 
-$(".main-form-btn").click(function () {
-    var UserDetails = getCookie();
+$(".main-form-btn").click(async function () {
+    var UserDetails = await getCookie();
     let date = `${$("#yearSelect").val()}-${$("#monthSelect").val().length == 1
         ? "0" + $("#monthSelect").val()
         : $("#monthSelect").val()
@@ -238,7 +238,7 @@ $(".main-form-btn").click(function () {
         status: "Active",
         lastActiveDate: new Date(),
         groupIcon: null,
-        host: JSON.parse(getCookie()).name,
+        host: JSON.parse(await getCookie()).name,
         url: $("#scheduleUrl").val(),
         date: `${date}T${$("#timeSelect").val()}:00.000+05:30`,
     }
