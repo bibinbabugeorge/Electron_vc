@@ -15,10 +15,46 @@
       "dist/**/*",
       "node_modules/**/*",
       "main.js",
-      "package.json"
+      "package.json",
+      "preload.js",
+      "confieranceroom.html",
+      "confieranceroom.js",
+      "create_group.html",
+      "CreateGroup.js",
+      "dashboard.html",
+      "dashboard.js",
+      "edit_group.html",
+      "EditGroup.js",
+      "forgot-password.html",
+      "guest_lobby.html",
+      "guest_lobby.js",
+      "help-feedback.html",
+      "index.html",
+      "index.js",
+      "Join.html",
+      "Join.js",
+      "main.js",
+      "RepoClient.js",
+      "reset-password.html",
+      "RoomClient.js",
+      "schedule_meeting.html",
+      "schedule_meeting.js",
+      "signup.html",
+      "splash.html",
+      "style.css",
+      "WaitingRoom.html",
+      "bundle.js",
+      "modules/**/*"
     ],
     "win": {
-      "target": "nsis",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
       "icon": "./assets/group_icon (1).ico"
     },
     "nsis": {
