@@ -4,15 +4,21 @@ var _UserId = null;
 let userType = "";
 
 function setCookie(UserDetail, expDays) {
-    let date = new Date();
-    date.setTime(date.getTime() + expDays * 24 * 60 * 60 * 1000);
-    const expires = "expires=" + date.toUTCString();
-    const UserDetails = "user_details=" + UserDetail;
-    document.cookie = UserDetails + "; " + expires + "; path=/";
+    window.electronAPI.setCookie({
+        url: 'http://localhost',
+        name: 'UserDetail',
+        value: UserDetail,
+        expirationDate: Math.floor(Date.now() / 1000) + 3600 // Expiration time set to 1 hour
+    });
 }
 
 function DeleteCookie() {
-    document.cookie = "user_details=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+    window.electronAPI.setCookie({
+        url: 'http://localhost',
+        name: 'UserDetail',
+        value: '',
+        expirationDate: Math.floor(Date.now() / 1000) - 3600 // Set expiration time to the past
+    });
 }
 
 function CleanBrowserStorage() {

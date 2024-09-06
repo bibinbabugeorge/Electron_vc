@@ -962,8 +962,8 @@ class RoomClient {
         var dataObj = {
           commandType: "ScreenShared",
           Data: {
-            userName: JSON.parse(getCookie()).name,
-            userId: JSON.parse(getCookie()).userID,
+            userName: JSON.parse(await getCookie()).name,
+            userId: JSON.parse(await getCookie()).userID,
             producerId: producer.id,
             roomId: localStorage.getItem("RoomId"),
           },
