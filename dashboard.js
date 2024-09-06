@@ -1079,7 +1079,7 @@ function callUser(userid, roomid, type) {
 }
 
 // function to make data binding into the popup that showing the corresponding user details
-function createdPopupData(data, groupname = "") {
+async function createdPopupData(data, groupname = "") {
   $("#favouriteContact").off("click");
   let userid;
   if (groupname == "" || groupname == null) {
@@ -1091,7 +1091,7 @@ function createdPopupData(data, groupname = "") {
     $('#blockContact').parent().hide();
     $("#EditGroup").parent().show();
     let ids = data.joinedusers.map((it) => it.userid);
-    ids.push(getCookieDetails("userID"));
+    ids.push(await getCookieDetails("userID"));
     userid = ids;
   }
 
