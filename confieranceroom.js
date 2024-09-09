@@ -411,6 +411,7 @@ function bindChat(Data) {
 }
 
 async function bindChatHistory(Data) {
+  let User_ID = JSON.parse(await getCookie()).userID;
   let chatDate = new Date(Data.chatHistory[0].sendTime).toLocaleDateString(
     "en-GB",
     { year: "numeric", month: "short", day: "numeric" }
@@ -448,7 +449,8 @@ async function bindChatHistory(Data) {
       ? `${fileUploadPath}/${chat.sendUserPic}`
       : "modules/images/default_user.svg";
 
-    if (chat.sendUserId == JSON.parse(await getCookie()).userID) {
+
+    if (chat.sendUserId == User_ID) {
       let bindSenderChatResp = await bindSenderChat(chat.files, chat.message, istSendTime, chat.groupId);
     } else {
       let bindRecieverChatResp = await bindRecieverChat(chat.sendUserName, chat, senderPic, istSendTime);
@@ -490,9 +492,7 @@ function DocImgClick() {
   });
 
   $(".attachemnt-download-btn-image-ul").off("click");
-  debugger
   $(".attachemnt-download-btn-image-ul").click(function () {
-    debugger
     let imageUl = $(this).siblings("ul").prop("id");
     let groupId = imageUl.slice(7, imageUl.length);
     chatImageDictionary[groupId].forEach((Image) => {
@@ -681,9 +681,9 @@ async function bindRecieverChat(sender, chat, senderPic, istSendTime) {
         (document) => `<li class="chat-receiver" >
   <div class="chat-receiver-message">
   <div class="attached-document-wrapper">
-  <img src="/modules/images/attachment.svg" alt="${document.name}" />
+  <img src="./modules/images/attachment.svg" alt="${document.name}" />
   <p>${document.name}</p>
-  <img class="document-download" src="/modules/images/download.svg" alt="${document.file
+  <img class="document-download" src="./modules/images/download.svg" alt="${document.file
           }" />
   </div><p class="chat-message-time">${istSendTime.toLocaleTimeString("en-US", {
             hour: "2-digit",
