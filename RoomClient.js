@@ -1871,7 +1871,8 @@ class RoomClient {
     const audio = !IS_MACOS
       ? {
         mandatory: {
-          chromeMediaSource: 'desktop'
+          echoCancellation: true,
+          chromeMediaSource: "desktop",
         }
       }
       : false;
