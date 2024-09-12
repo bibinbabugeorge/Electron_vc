@@ -195,9 +195,9 @@ $("#btnJoin").click(function () {
             $.ajax(settings).done(function (response) {
                 if (response.Message == "Operation Successful")
                     if (userType == "guest")
-                        location.href = "/guest_lobby.html";
+                        location.href = "./guest_lobby.html";
                     else
-                        location.href = "/confieranceroom.html";
+                        location.href = "./confieranceroom.html";
                 else
                     AppendErrorMessage("Login Failed");
             });

@@ -24,6 +24,11 @@ function createWindow() {
   setTimeout(function () {
     mainWindow.loadFile('index.html');  // Load the main content
   }, 5000);  // Adjust the time as needed
+
+  ipcMain.handle('capture-electron-page', async () => {
+    const image = await mainWindow.capturePage();
+    return image.toDataURL().split(',')[1]; // Send the image data as a PNG buffer
+  });
 }
 
 app.whenReady().then(createWindow);

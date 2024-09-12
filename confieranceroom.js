@@ -411,6 +411,7 @@ function bindChat(Data) {
 }
 
 async function bindChatHistory(Data) {
+  let User_ID = JSON.parse(await getCookie()).userID;
   let chatDate = new Date(Data.chatHistory[0].sendTime).toLocaleDateString(
     "en-GB",
     { year: "numeric", month: "short", day: "numeric" }
@@ -448,7 +449,8 @@ async function bindChatHistory(Data) {
       ? `${fileUploadPath}/${chat.sendUserPic}`
       : "modules/images/default_user.svg";
 
-    if (chat.sendUserId == JSON.parse(await getCookie()).userID) {
+
+    if (chat.sendUserId == User_ID) {
       let bindSenderChatResp = await bindSenderChat(chat.files, chat.message, istSendTime, chat.groupId);
     } else {
       let bindRecieverChatResp = await bindRecieverChat(chat.sendUserName, chat, senderPic, istSendTime);
@@ -490,9 +492,7 @@ function DocImgClick() {
   });
 
   $(".attachemnt-download-btn-image-ul").off("click");
-  debugger
   $(".attachemnt-download-btn-image-ul").click(function () {
-    debugger
     let imageUl = $(this).siblings("ul").prop("id");
     let groupId = imageUl.slice(7, imageUl.length);
     chatImageDictionary[groupId].forEach((Image) => {
@@ -681,9 +681,9 @@ async function bindRecieverChat(sender, chat, senderPic, istSendTime) {
         (document) => `<li class="chat-receiver" >
   <div class="chat-receiver-message">
   <div class="attached-document-wrapper">
-  <img src="/modules/images/attachment.svg" alt="${document.name}" />
+  <img src="./modules/images/attachment.svg" alt="${document.name}" />
   <p>${document.name}</p>
-  <img class="document-download" src="/modules/images/download.svg" alt="${document.file
+  <img class="document-download" src="./modules/images/download.svg" alt="${document.file
           }" />
   </div><p class="chat-message-time">${istSendTime.toLocaleTimeString("en-US", {
             hour: "2-digit",
@@ -1068,123 +1068,245 @@ let endTime = null;
 let startTime = null;
 let finalStream = null;
 
-$(".record-btn").click(() => {
+// $(".record-btn").click(() => {
+//   if (!$(".record-btn").hasClass("active")) {
+//     const displayMediaOptions = {
+//       preferCurrentTab: true,
+//       audio: { echoCancellation: false },
+//       video: { cursor: "never" },
+//     };
+
+//     navigator.mediaDevices
+//       .getDisplayMedia(displayMediaOptions)
+//       .then((stream) => {
+//         $(".record-btn").toggleClass("active");
+//         recordingActive = true;
+//         desktopStream = stream;
+
+//         if (IsAudioopen) {
+//           let screenAudioStream = new MediaStream();
+//           screenAudioStream.addTrack(desktopStream.getAudioTracks()[0]);
+
+//           const audioContext = new AudioContext();
+//           roomObj.audioContext = audioContext;
+//           let screenAudio =
+//             audioContext.createMediaStreamSource(screenAudioStream);
+//           let micAudio = audioContext.createMediaStreamSource(audioStream);
+//           destAudio = audioContext.createMediaStreamDestination();
+//           screenAudio.connect(destAudio);
+//           micAudio.connect(destAudio);
+
+//           finalStream = new MediaStream();
+//           finalStream.addTrack(desktopStream.getVideoTracks()[0]);
+//           finalStream.addTrack(destAudio.stream.getAudioTracks()[0]);
+//         } else {
+//           finalStream = desktopStream;
+//         }
+
+//         startTime = Date.now();
+//         const options = { mimeType: "video/webm; codecs=vp9,opus" };
+
+//         mediaRecorder = new MediaRecorder(finalStream, options);
+
+//         mediaRecorder.ondataavailable = handleDataAvailable;
+//         mediaRecorder.start();
+
+//         desktopStream.getVideoTracks()[0].onended = () => {
+//           $(".record-btn").click();
+//         };
+
+//         function handleDataAvailable(event) {
+//           if (event.data.size > 0) {
+//             recordedChunks.push(event.data);
+//             download()
+//               .then(function (data) {
+//                 recordingActive = false;
+//                 mediaRecorder = null;
+//                 recordedChunks = [];
+//                 endTime = null;
+//                 startTime = null;
+//                 finalStream = null;
+//               })
+//               .catch(function (error) {
+//                 console.error("Error downloading:", error);
+//               });
+//           }
+//         }
+//         function download() {
+//           return new Promise(function (resolve, reject) {
+//             const blob = new Blob(recordedChunks, {
+//               type: "video/webm",
+//             });
+//             let duration = endTime - startTime;
+//             ysFixWebmDuration(blob, duration, { logger: false })
+//               .then(function (fixedBlob) {
+//                 const url = URL.createObjectURL(fixedBlob);
+//                 const a = document.createElement("a");
+//                 document.body.appendChild(a);
+//                 a.style = "display: none";
+//                 a.href = url;
+//                 a.download = `${$(
+//                   "#callName"
+//                 ).text()}_${formatDateToDDMMYYYYHHMMSS()}.webm`;
+//                 a.click();
+//                 window.URL.revokeObjectURL(url);
+//                 resolve(true);
+//               })
+//               .catch(reject);
+//           });
+//         }
+//       });
+
+//     function setRecordTime() {
+//       const currentTime = new Date();
+//       const elapsedTime = currentTime - startTime;
+//       if (currentTime >= startTime) {
+//         const hours = Math.floor(elapsedTime / 3600000);
+//         const minutes = Math.floor((elapsedTime % 3600000) / 60000);
+//         const seconds = Math.floor((elapsedTime % 60000) / 1000);
+//         $(".record-active").html(
+//           `${hours > 9 ? hours : "0" + hours}:${minutes > 9 ? minutes : "0" + minutes
+//           }:${seconds > 9 ? seconds : "0" + seconds}`
+//         );
+//       }
+//       requestAnimationFrame(() => setRecordTime());
+//     }
+//     setRecordTime();
+//   } else {
+//     $(".record-btn").toggleClass("active");
+//     endTime = Date.now();
+//     mediaRecorder.stop();
+
+//     const tracks = desktopStream.getTracks();
+//     tracks.forEach((track) => {
+//       track.stop();
+//     });
+
+//     $(".record-active").html("00:00:00");
+//   }
+// });
+
+let canvas;
+let ctx;
+
+$(".record-btn").click(async () => {
   if (!$(".record-btn").hasClass("active")) {
-    const displayMediaOptions = {
-      preferCurrentTab: true,
-      audio: { echoCancellation: false },
-      video: { cursor: "never" },
-    };
+    // Reset recording chunks array
+    recordedChunks = [];
 
-    navigator.mediaDevices
-      .getDisplayMedia(displayMediaOptions)
-      .then((stream) => {
-        $(".record-btn").toggleClass("active");
-        recordingActive = true;
-        desktopStream = stream;
+    // Create the canvas for capturing frames
+    canvas = document.createElement('canvas');
+    ctx = canvas.getContext('2d');
 
-        if (IsAudioopen) {
-          let screenAudioStream = new MediaStream();
-          screenAudioStream.addTrack(desktopStream.getAudioTracks()[0]);
+    // Check if the operating system is macOS
+    const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin';
 
-          const audioContext = new AudioContext();
-          roomObj.audioContext = audioContext;
-          let screenAudio =
-            audioContext.createMediaStreamSource(screenAudioStream);
-          let micAudio = audioContext.createMediaStreamSource(audioStream);
-          destAudio = audioContext.createMediaStreamDestination();
-          screenAudio.connect(destAudio);
-          micAudio.connect(destAudio);
+    let audioStream;
+    try {
+      // Capture system audio or microphone audio (depending on your use case)
+      const audioConstraints = {
+        audio: true  // 'true' captures microphone/system audio
+      };
 
-          finalStream = new MediaStream();
-          finalStream.addTrack(desktopStream.getVideoTracks()[0]);
-          finalStream.addTrack(destAudio.stream.getAudioTracks()[0]);
-        } else {
-          finalStream = desktopStream;
-        }
+      // Get audio stream (this could be the system audio or microphone)
+      audioStream = await navigator.mediaDevices.getUserMedia(audioConstraints);
 
-        startTime = Date.now();
-        const options = { mimeType: "video/webm; codecs=vp9,opus" };
-
-        mediaRecorder = new MediaRecorder(finalStream, options);
-
-        mediaRecorder.ondataavailable = handleDataAvailable;
-        mediaRecorder.start();
-
-        desktopStream.getVideoTracks()[0].onended = () => {
-          $(".record-btn").click();
-        };
-
-        function handleDataAvailable(event) {
-          if (event.data.size > 0) {
-            recordedChunks.push(event.data);
-            download()
-              .then(function (data) {
-                recordingActive = false;
-                mediaRecorder = null;
-                recordedChunks = [];
-                endTime = null;
-                startTime = null;
-                finalStream = null;
-              })
-              .catch(function (error) {
-                console.error("Error downloading:", error);
-              });
-          }
-        }
-        function download() {
-          return new Promise(function (resolve, reject) {
-            const blob = new Blob(recordedChunks, {
-              type: "video/webm",
-            });
-            let duration = endTime - startTime;
-            ysFixWebmDuration(blob, duration, { logger: false })
-              .then(function (fixedBlob) {
-                const url = URL.createObjectURL(fixedBlob);
-                const a = document.createElement("a");
-                document.body.appendChild(a);
-                a.style = "display: none";
-                a.href = url;
-                a.download = `${$(
-                  "#callName"
-                ).text()}_${formatDateToDDMMYYYYHHMMSS()}.webm`;
-                a.click();
-                window.URL.revokeObjectURL(url);
-                resolve(true);
-              })
-              .catch(reject);
-          });
-        }
-      });
-
-    function setRecordTime() {
-      const currentTime = new Date();
-      const elapsedTime = currentTime - startTime;
-      if (currentTime >= startTime) {
-        const hours = Math.floor(elapsedTime / 3600000);
-        const minutes = Math.floor((elapsedTime % 3600000) / 60000);
-        const seconds = Math.floor((elapsedTime % 60000) / 1000);
-        $(".record-active").html(
-          `${hours > 9 ? hours : "0" + hours}:${minutes > 9 ? minutes : "0" + minutes
-          }:${seconds > 9 ? seconds : "0" + seconds}`
-        );
-      }
-      requestAnimationFrame(() => setRecordTime());
+    } catch (err) {
+      console.error("Error capturing audio:", err);
+      alert("Failed to capture audio. Please ensure you have the necessary permissions.");
+      return;
     }
-    setRecordTime();
-  } else {
-    $(".record-btn").toggleClass("active");
-    endTime = Date.now();
-    mediaRecorder.stop();
 
-    const tracks = desktopStream.getTracks();
-    tracks.forEach((track) => {
-      track.stop();
+    // Capture canvas video stream
+    const canvasVideoStream = canvas.captureStream();
+
+    // Create a new MediaStream combining audio and canvas video
+    const combinedStream = new MediaStream([
+      canvasVideoStream.getVideoTracks()[0], // Add canvas video
+      ...audioStream.getAudioTracks()        // Add system/microphone audio
+    ]);
+
+    // Setup MediaRecorder for recording the combined video and audio streams
+    mediaRecorder = new MediaRecorder(combinedStream, {
+      mimeType: 'video/webm'
     });
 
+    // Capture recorded video chunks
+    mediaRecorder.ondataavailable = event => {
+      if (event.data.size > 0) {
+        recordedChunks.push(event.data);
+      }
+    };
+
+    // When recording stops, download the file directly
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      const url = URL.createObjectURL(blob);
+
+      // Automatically download the video file
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = `${$("#callName").text()}_${formatDateToDDMMYYYYHHMMSS()}.webm`;
+      document.body.appendChild(a);
+      a.click(); // Trigger the download
+      window.URL.revokeObjectURL(url); // Clean up the URL
+    };
+
+    mediaRecorder.start(); // Start the recording
+
+    // Capture frames for the canvas
+    const captureFrames = async () => {
+      const base64Data = await window.electronAPI.captureElectronPage();
+      const img = new Image();
+      img.src = `data:image/png;base64,${base64Data}`;
+
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        if (mediaRecorder.state === 'recording') {
+          requestAnimationFrame(captureFrames); // Keep capturing frames
+        }
+      };
+    };
+
+    captureFrames(); // Begin capturing frames
+
+    $(".record-btn").toggleClass("active");
+
+    // Timer function for showing recording time
+    const startTime = new Date();
+    const setRecordTime = () => {
+      const currentTime = new Date();
+      const elapsedTime = currentTime - startTime;
+      const hours = Math.floor(elapsedTime / 3600000);
+      const minutes = Math.floor((elapsedTime % 3600000) / 60000);
+      const seconds = Math.floor((elapsedTime % 60000) / 1000);
+      $(".record-active").html(
+        `${hours > 9 ? hours : "0" + hours}:${minutes > 9 ? minutes : "0" + minutes}:${seconds > 9 ? seconds : "0" + seconds}`
+      );
+      if ($(".record-btn").hasClass("active")) {
+        requestAnimationFrame(setRecordTime);
+      }
+    };
+    setRecordTime();
+
+  } else {
+    // Stop the recording
+    $(".record-btn").toggleClass("active");
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop(); // Trigger the onstop event for download
+    }
+
+    // Reset the recording timer display
     $(".record-active").html("00:00:00");
   }
 });
+
+
+
 
 function formatDateToDDMMYYYYHHMMSS() {
   // Convert milliseconds to a Date object
