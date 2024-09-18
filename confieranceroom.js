@@ -1353,12 +1353,14 @@ $(".record-btn").click(async () => {
       alert("Failed to capture system audio.");
       return;
     }
+    let systemAudioSource;
     const canvasVideoStream = canvas.captureStream();
     // Combine microphone and system audio using AudioContext
     const audioContext = new AudioContext();
     const micAudioSource = audioContext.createMediaStreamSource(micAudioStream);
-    const systemAudioSource = audioContext.createMediaStreamSource(desktopStream);
-
+    if (!IS_MACOS) {
+      systemAudioSource = audioContext.createMediaStreamSource(desktopStream);
+    }
     const destination = audioContext.createMediaStreamDestination();
 
     // Connect both streams to the destination
