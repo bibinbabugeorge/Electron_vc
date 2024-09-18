@@ -89,6 +89,15 @@
           "path": "AppsConnect.app"
         }
       ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "icon": "./assets/appsconnect_icon.png",
+      "category": "Utility"
     }
   },
   "devDependencies": {
