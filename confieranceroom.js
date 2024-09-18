@@ -1320,16 +1320,15 @@ $(".record-btn").click(async () => {
       micAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (err) {
       console.error("Error capturing microphone audio:", err);
-      alert("Failed to capture microphone audio. Please ensure you have the necessary permissions.");
       return;
     }
 
     // Capture system audio (for the call audio)
     let desktopStream;
+    const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin';
     try {
       const sources = await window.electronAPI.getSources();
       const source = sources.find(src => src.name === 'Entire screen'); // Adjust this based on your call window title
-      const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin';
       const audio = !IS_MACOS
         ? {
           mandatory: {
@@ -1350,7 +1349,6 @@ $(".record-btn").click(async () => {
       desktopStream = await navigator.mediaDevices.getUserMedia(constraints);
     } catch (err) {
       console.error("Error capturing system audio:", err);
-      alert("Failed to capture system audio.");
       return;
     }
     let systemAudioSource;
@@ -1358,14 +1356,12 @@ $(".record-btn").click(async () => {
     // Combine microphone and system audio using AudioContext
     const audioContext = new AudioContext();
     const micAudioSource = audioContext.createMediaStreamSource(micAudioStream);
+    const destination = audioContext.createMediaStreamDestination();
+    micAudioSource.connect(destination);
     if (!IS_MACOS) {
       systemAudioSource = audioContext.createMediaStreamSource(desktopStream);
+      systemAudioSource.connect(destination);
     }
-    const destination = audioContext.createMediaStreamDestination();
-
-    // Connect both streams to the destination
-    micAudioSource.connect(destination);
-    systemAudioSource.connect(destination);
 
     const finalStream = new MediaStream();
     finalStream.addTrack(canvasVideoStream.getVideoTracks()[0]); // Add canvas video
