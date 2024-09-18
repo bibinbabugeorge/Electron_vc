@@ -1067,248 +1067,14 @@ let recordedChunks = [];
 let endTime = null;
 let startTime = null;
 let finalStream = null;
-
-// $(".record-btn").click(() => {
-//   if (!$(".record-btn").hasClass("active")) {
-//     const displayMediaOptions = {
-//       preferCurrentTab: true,
-//       audio: { echoCancellation: false },
-//       video: { cursor: "never" },
-//     };
-
-//     navigator.mediaDevices
-//       .getDisplayMedia(displayMediaOptions)
-//       .then((stream) => {
-//         $(".record-btn").toggleClass("active");
-//         recordingActive = true;
-//         desktopStream = stream;
-
-//         if (IsAudioopen) {
-//           let screenAudioStream = new MediaStream();
-//           screenAudioStream.addTrack(desktopStream.getAudioTracks()[0]);
-
-//           const audioContext = new AudioContext();
-//           roomObj.audioContext = audioContext;
-//           let screenAudio =
-//             audioContext.createMediaStreamSource(screenAudioStream);
-//           let micAudio = audioContext.createMediaStreamSource(audioStream);
-//           destAudio = audioContext.createMediaStreamDestination();
-//           screenAudio.connect(destAudio);
-//           micAudio.connect(destAudio);
-
-//           finalStream = new MediaStream();
-//           finalStream.addTrack(desktopStream.getVideoTracks()[0]);
-//           finalStream.addTrack(destAudio.stream.getAudioTracks()[0]);
-//         } else {
-//           finalStream = desktopStream;
-//         }
-
-//         startTime = Date.now();
-//         const options = { mimeType: "video/webm; codecs=vp9,opus" };
-
-//         mediaRecorder = new MediaRecorder(finalStream, options);
-
-//         mediaRecorder.ondataavailable = handleDataAvailable;
-//         mediaRecorder.start();
-
-//         desktopStream.getVideoTracks()[0].onended = () => {
-//           $(".record-btn").click();
-//         };
-
-//         function handleDataAvailable(event) {
-//           if (event.data.size > 0) {
-//             recordedChunks.push(event.data);
-//             download()
-//               .then(function (data) {
-//                 recordingActive = false;
-//                 mediaRecorder = null;
-//                 recordedChunks = [];
-//                 endTime = null;
-//                 startTime = null;
-//                 finalStream = null;
-//               })
-//               .catch(function (error) {
-//                 console.error("Error downloading:", error);
-//               });
-//           }
-//         }
-//         function download() {
-//           return new Promise(function (resolve, reject) {
-//             const blob = new Blob(recordedChunks, {
-//               type: "video/webm",
-//             });
-//             let duration = endTime - startTime;
-//             ysFixWebmDuration(blob, duration, { logger: false })
-//               .then(function (fixedBlob) {
-//                 const url = URL.createObjectURL(fixedBlob);
-//                 const a = document.createElement("a");
-//                 document.body.appendChild(a);
-//                 a.style = "display: none";
-//                 a.href = url;
-//                 a.download = `${$(
-//                   "#callName"
-//                 ).text()}_${formatDateToDDMMYYYYHHMMSS()}.webm`;
-//                 a.click();
-//                 window.URL.revokeObjectURL(url);
-//                 resolve(true);
-//               })
-//               .catch(reject);
-//           });
-//         }
-//       });
-
-//     function setRecordTime() {
-//       const currentTime = new Date();
-//       const elapsedTime = currentTime - startTime;
-//       if (currentTime >= startTime) {
-//         const hours = Math.floor(elapsedTime / 3600000);
-//         const minutes = Math.floor((elapsedTime % 3600000) / 60000);
-//         const seconds = Math.floor((elapsedTime % 60000) / 1000);
-//         $(".record-active").html(
-//           `${hours > 9 ? hours : "0" + hours}:${minutes > 9 ? minutes : "0" + minutes
-//           }:${seconds > 9 ? seconds : "0" + seconds}`
-//         );
-//       }
-//       requestAnimationFrame(() => setRecordTime());
-//     }
-//     setRecordTime();
-//   } else {
-//     $(".record-btn").toggleClass("active");
-//     endTime = Date.now();
-//     mediaRecorder.stop();
-
-//     const tracks = desktopStream.getTracks();
-//     tracks.forEach((track) => {
-//       track.stop();
-//     });
-
-//     $(".record-active").html("00:00:00");
-//   }
-// });
-
 let canvas;
 let ctx;
-
-// $(".record-btn").click(async () => {
-//   if (!$(".record-btn").hasClass("active")) {
-//     // Reset recording chunks array
-//     recordedChunks = [];
-
-//     // Create the canvas for capturing frames
-//     canvas = document.createElement('canvas');
-//     ctx = canvas.getContext('2d');
-
-//     // Check if the operating system is macOS
-//     const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin';
-
-//     let audioStream;
-//     try {
-//       // Capture system audio or microphone audio (depending on your use case)
-//       const audioConstraints = {
-//         audio: true  // 'true' captures microphone/system audio
-//       };
-
-//       // Get audio stream (this could be the system audio or microphone)
-//       audioStream = await navigator.mediaDevices.getUserMedia(audioConstraints);
-
-//     } catch (err) {
-//       console.error("Error capturing audio:", err);
-//       alert("Failed to capture audio. Please ensure you have the necessary permissions.");
-//       return;
-//     }
-
-//     // Capture canvas video stream
-//     const canvasVideoStream = canvas.captureStream();
-
-//     // Create a new MediaStream combining audio and canvas video
-//     const combinedStream = new MediaStream([
-//       canvasVideoStream.getVideoTracks()[0], // Add canvas video
-//       ...audioStream.getAudioTracks()        // Add system/microphone audio
-//     ]);
-
-//     // Setup MediaRecorder for recording the combined video and audio streams
-//     mediaRecorder = new MediaRecorder(combinedStream, {
-//       mimeType: 'video/webm'
-//     });
-
-//     // Capture recorded video chunks
-//     mediaRecorder.ondataavailable = event => {
-//       if (event.data.size > 0) {
-//         recordedChunks.push(event.data);
-//       }
-//     };
-
-//     // When recording stops, download the file directly
-//     mediaRecorder.onstop = () => {
-//       const blob = new Blob(recordedChunks, { type: 'video/webm' });
-//       const url = URL.createObjectURL(blob);
-
-//       // Automatically download the video file
-//       const a = document.createElement('a');
-//       a.style.display = 'none';
-//       a.href = url;
-//       a.download = `${$("#callName").text()}_${formatDateToDDMMYYYYHHMMSS()}.webm`;
-//       document.body.appendChild(a);
-//       a.click(); // Trigger the download
-//       window.URL.revokeObjectURL(url); // Clean up the URL
-//     };
-
-//     mediaRecorder.start(); // Start the recording
-
-//     // Capture frames for the canvas
-//     const captureFrames = async () => {
-//       const base64Data = await window.electronAPI.captureElectronPage();
-//       const img = new Image();
-//       img.src = `data:image/png;base64,${base64Data}`;
-
-//       img.onload = () => {
-//         canvas.width = img.width;
-//         canvas.height = img.height;
-//         ctx.drawImage(img, 0, 0);
-
-//         if (mediaRecorder.state === 'recording') {
-//           requestAnimationFrame(captureFrames); // Keep capturing frames
-//         }
-//       };
-//     };
-
-//     captureFrames(); // Begin capturing frames
-
-//     $(".record-btn").toggleClass("active");
-
-//     // Timer function for showing recording time
-//     const startTime = new Date();
-//     const setRecordTime = () => {
-//       const currentTime = new Date();
-//       const elapsedTime = currentTime - startTime;
-//       const hours = Math.floor(elapsedTime / 3600000);
-//       const minutes = Math.floor((elapsedTime % 3600000) / 60000);
-//       const seconds = Math.floor((elapsedTime % 60000) / 1000);
-//       $(".record-active").html(
-//         `${hours > 9 ? hours : "0" + hours}:${minutes > 9 ? minutes : "0" + minutes}:${seconds > 9 ? seconds : "0" + seconds}`
-//       );
-//       if ($(".record-btn").hasClass("active")) {
-//         requestAnimationFrame(setRecordTime);
-//       }
-//     };
-//     setRecordTime();
-
-//   } else {
-//     // Stop the recording
-//     $(".record-btn").toggleClass("active");
-//     if (mediaRecorder && mediaRecorder.state === 'recording') {
-//       mediaRecorder.stop(); // Trigger the onstop event for download
-//     }
-
-//     // Reset the recording timer display
-//     $(".record-active").html("00:00:00");
-//   }
-// });
 
 $(".record-btn").click(async () => {
   if (!$(".record-btn").hasClass("active")) {
     // Reset recording chunks array
     recordedChunks = [];
+    recordingActive = true;
 
     // Create the canvas for capturing frames
     canvas = document.createElement('canvas');
@@ -1320,16 +1086,15 @@ $(".record-btn").click(async () => {
       micAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (err) {
       console.error("Error capturing microphone audio:", err);
-      alert("Failed to capture microphone audio. Please ensure you have the necessary permissions.");
       return;
     }
 
     // Capture system audio (for the call audio)
     let desktopStream;
+    const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin';
     try {
       const sources = await window.electronAPI.getSources();
       const source = sources.find(src => src.name === 'Entire screen'); // Adjust this based on your call window title
-      const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin';
       const audio = !IS_MACOS
         ? {
           mandatory: {
@@ -1350,7 +1115,6 @@ $(".record-btn").click(async () => {
       desktopStream = await navigator.mediaDevices.getUserMedia(constraints);
     } catch (err) {
       console.error("Error capturing system audio:", err);
-      alert("Failed to capture system audio.");
       return;
     }
     let systemAudioSource;
@@ -1358,14 +1122,13 @@ $(".record-btn").click(async () => {
     // Combine microphone and system audio using AudioContext
     const audioContext = new AudioContext();
     const micAudioSource = audioContext.createMediaStreamSource(micAudioStream);
+    const destination = audioContext.createMediaStreamDestination();
+    micAudioSource.connect(destination);
+
     if (!IS_MACOS) {
       systemAudioSource = audioContext.createMediaStreamSource(desktopStream);
+      systemAudioSource.connect(destination);
     }
-    const destination = audioContext.createMediaStreamDestination();
-
-    // Connect both streams to the destination
-    micAudioSource.connect(destination);
-    systemAudioSource.connect(destination);
 
     const finalStream = new MediaStream();
     finalStream.addTrack(canvasVideoStream.getVideoTracks()[0]); // Add canvas video
@@ -1442,8 +1205,6 @@ $(".record-btn").click(async () => {
     $(".record-active").html("00:00:00");
   }
 });
-
-
 
 function formatDateToDDMMYYYYHHMMSS() {
   // Convert milliseconds to a Date object
