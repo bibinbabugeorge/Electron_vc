@@ -67,32 +67,36 @@
     "mac": {
       "identity": "Apple Development: app@appsteantechnologies.com",
       "target": [
-        "dmg",
-        "zip"
+        "dmg"
       ],
-      "icon": "./assets/appsconnect_icon.icns"
+      "icon": "./assets/appsconnect_icon.icns",
+      "category": "public.app-category.utilities"
     },
     "dmg": {
-      "background": "./assets/appsconnect_icon.png",
+      "background": "./assets/appsconnect_background.png",
+      "icon": "./assets/appsconnect_icon.icns",
       "iconSize": 100,
+      "window": {
+        "width": 544,
+        "height": 408
+      },
       "contents": [
         {
-          "x": 130,
-          "y": 220,
-          "type": "file",
-          "path": "/Applications"
+          "x": 145,
+          "y": 255
         },
         {
-          "x": 410,
-          "y": 220,
+          "x": 400,
+          "y": 255,
           "type": "link",
-          "path": "AppsConnect.app"
+          "path": "/Applications"
         }
       ]
     }
   },
   "devDependencies": {
     "electron": "^32.0.2",
-    "electron-builder": "^25.0.5"
+    "electron-builder": "^25.0.5",
+    "electron-notarize": "^1.2.2"
   }
 }
