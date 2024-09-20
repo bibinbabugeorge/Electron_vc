@@ -65,7 +65,7 @@
       "createStartMenuShortcut": true
     },
     "mac": {
-      "identity": "Apple Development: app@appsteantechnologies.com",
+      "identity": "Apple Development: mailto:app@appsteantechnologies.com",
       "target": [
         "dmg"
       ],
@@ -92,11 +92,19 @@
           "path": "/Applications"
         }
       ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "icon": "./assets/appsconnect_icon.png",
+      "category": "Utility"
     }
   },
   "devDependencies": {
     "electron": "^32.0.2",
-    "electron-builder": "^25.0.5",
-    "electron-notarize": "^1.2.2"
+    "electron-builder": "^25.0.5"
   }
 }
