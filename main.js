@@ -7,9 +7,9 @@ function createWindow() {
     height: 800,
     show: false,
     //frame: false,    //hiding frame 
-    //autoHideMenuBar: true,  // hide menu bar
+    autoHideMenuBar: true,  // hide menu bar
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'), // Preload script
+      preload: path.join(__dirname, 'preload'), // Preload script
       nodeIntegration: true,
       contextIsolation: true,
       enableRemoteModule: false,

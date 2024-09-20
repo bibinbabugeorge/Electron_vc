@@ -4236,7 +4236,7 @@
 
       if (
         deviceScreenWidth < 768 &&
-        element.userid == getCookieDetails("userID") &&
+        element.userid == await getCookieDetails("userID") &&
         participantList.length > 1
       ) {
         // return;
@@ -4257,7 +4257,7 @@
           let backgroundColor = await getcolor(firstNumber);
 
           if (
-            element.userid != getCookieDetails("userID") &&
+            element.userid != await getCookieDetails("userID") &&
             element.name != "You" &&
             !calling
           ) {
@@ -4588,7 +4588,7 @@
         let backgroundColor = await getcolor(firstNumber);
 
         if (isConnecting != "Connecting...")
-          if (element.userid != getCookieDetails("userID") && name != "You") {
+          if (element.userid != await getCookieDetails("userID") && name != "You") {
             var ulToastr = $(".participants-raise-hand-popup");
             ulToastr.append(`<li id="er-toastr-${element.substring(
               7,

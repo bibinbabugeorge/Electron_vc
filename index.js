@@ -440,7 +440,7 @@ server.connect().then((events) => {
     );
   });
 
-  events.on(callbackEvents.producerPaused, function (data) {
+  events.on(callbackEvents.producerPaused, async function (data) {
     if (data.Data.kind == "audio") {
       var audioButton = document.getElementById(
         `audio_${data.Data.producerUserId}`
@@ -456,7 +456,7 @@ server.connect().then((events) => {
         $(audioButton).addClass("Active");
         audioButton.disabled = true;
       }
-      var UserDetail = JSON.parse(getCookie());
+      var UserDetail = JSON.parse(await getCookie());
       if (data.Data.producerUserId == UserDetail.userID) {
         var audioButton = document.getElementById(
           `audio_Master${data.Data.producerUserId}`
@@ -481,7 +481,7 @@ server.connect().then((events) => {
         videoButton.disabled = true;
       }
 
-      var UserDetail = JSON.parse(getCookie());
+      var UserDetail = JSON.parse(await getCookie());
       if (data.Data.producerUserId == UserDetail.userID) {
         var videoButton = document.getElementById(
           `video_Master${data.Data.producerUserId}`
@@ -491,7 +491,7 @@ server.connect().then((events) => {
       }
     }
   });
-  events.on(callbackEvents.producerResumed, function (data) {
+  events.on(callbackEvents.producerResumed, async function (data) {
     if (data.Data.kind == "audio") {
       var audioButton = document.getElementById(
         `audio_${data.Data.producerUserId}`
@@ -507,7 +507,7 @@ server.connect().then((events) => {
         $(audioButton).removeClass("Active");
         audioButton.disabled = false;
       }
-      var UserDetail = JSON.parse(getCookie());
+      var UserDetail = JSON.parse(await getCookie());
       if (data.Data.producerUserId == UserDetail.userID) {
         var audioButton = document.getElementById(
           `audio_Master${data.Data.producerUserId}`
@@ -532,7 +532,7 @@ server.connect().then((events) => {
         videoButton.disabled = false;
       }
 
-      var UserDetail = JSON.parse(getCookie());
+      var UserDetail = JSON.parse(await getCookie());
       if (data.Data.producerUserId == UserDetail.userID) {
         var videoButton = document.getElementById(
           `video_Master${data.Data.producerUserId}`
@@ -635,11 +635,11 @@ server.connect().then((events) => {
     ConsoleEvent(data.Event, data);
   });
 
-  events.on(callbackEvents.RoomBannerUpdate, function (data) {
+  events.on(callbackEvents.RoomBannerUpdate, async function (data) {
     ConsoleEvent(data.Event, data);
     if (data.Data.RoomType == "personal") {
       $("#callName,#callNameMob").html(
-        JSON.parse(getCookie()).name == RoomName[0].name
+        JSON.parse(await getCookie()).name == RoomName[0].name
           ? RoomName[1].name
           : RoomName[0].name
       );
@@ -852,7 +852,7 @@ async function RequestToJoin(clientid, userid) {
   console.log(participant, "participant");
   controlBuilder.CreateAvatar(participant, true);
 
-  var UserDetail = getCookie();
+  var UserDetail = await getCookie();
   UserDetail = UserDetail != undefined ? JSON.parse(UserDetail) : null;
   var dataObj = {
     commandType: "RequestToJoin",
@@ -975,12 +975,16 @@ function setCookie(UserDetail, expDays) {
 }
 
 function DeleteCookie() {
-  document.cookie =
-    "user_details=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+  window.electronAPI.setCookie({
+    url: 'http://localhost',
+    name: 'UserDetail',
+    value: '',
+    expirationDate: Math.floor(Date.now() / 1000) - 3600 // Set expiration time to the past
+  });
 }
 
-function getclientid() {
-  var UserDetails = getCookie();
+async function getclientid() {
+  var UserDetails = await getCookie();
   if (UserDetails != undefined) {
     UserDetails = JSON.parse(UserDetails);
     return UserDetails.clientID;
@@ -1600,7 +1604,7 @@ function ResetCommand() {
   return false;
 }
 
-function FeedbackCommand() {
+async function FeedbackCommand() {
   var feedbackText = $("#feedbackText").html().trim();
   var noNbsp = feedbackText.replace(/&nbsp;/g, "").replace(/\s+/g, "");
   if (noNbsp != "") {
@@ -1608,8 +1612,8 @@ function FeedbackCommand() {
 
     const Data = {
       feedbackText: feedbackText,
-      name: JSON.parse(getCookie()).name,
-      email: JSON.parse(getCookie()).email,
+      name: JSON.parse(await getCookie()).name,
+      email: JSON.parse(await getCookie()).email,
     };
     var repoObj = new RepoClient(server);
     repoObj.ServerEventCall("HelpFeedback", Data);
@@ -2340,13 +2344,13 @@ async function switchFsUser(userId) {
 
 $("#ContactVisibilityToggle,#ContactVisibilityToggleMobile").on(
   "change",
-  function () {
+  async function () {
     var isChecked = $(this).prop("checked");
     var dataObj = {
       commandType: "ContactVisibility",
       Data: {
         IsVisible: isChecked,
-        userid: JSON.parse(getCookie()).userID,
+        userid: JSON.parse(await getCookie()).userID,
       },
     };
     server.sendCommand(JSON.stringify(dataObj));
@@ -2354,14 +2358,14 @@ $("#ContactVisibilityToggle,#ContactVisibilityToggleMobile").on(
 );
 
 function setupNotificationToggle(selector, type) {
-  $(selector).on("change", function () {
+  $(selector).on("change", async function () {
     var isChecked = $(this).prop("checked");
     var dataObj = {
       commandType: "NotificationSettings",
       Data: {
         type: type,
         notificationSettings: isChecked,
-        userid: JSON.parse(getCookie()).userID,
+        userid: JSON.parse(await getCookie()).userID,
       },
     };
     server.sendCommand(JSON.stringify(dataObj));
