@@ -341,7 +341,7 @@ server.connect().then((events) => {
     if (JSON.parse(await getCookie()).email.includes("guest")) Logout();
     let url = localStorage.getItem("ReturnURL");
     if (url == null) location.href = "./dashboard.html";
-    else location.href = "/Join.html";
+    else location.href = "./Join.html";
   });
 
   events.on(callbackEvents.CreateWebRtcTransportSuccess, function (data) {
@@ -671,7 +671,7 @@ server.connect().then((events) => {
       $("#toastrDiv").fadeOut("slow", function () {
         $("#toastrDiv").remove();
       });
-      location.href = "/index.html";
+      location.href = "./index.html";
     }, 3000);
   });
 
@@ -686,7 +686,7 @@ server.connect().then((events) => {
   });
 
   events.on(callbackEvents.ForgotPassword, function (data) {
-    location.href = "/forgot-password.html";
+    location.href = "./forgot-password.html";
   });
   events.on(callbackEvents.Logout, function (data) {
     Logout();
@@ -828,7 +828,7 @@ server.connect().then((events) => {
 
 function GuestRequestResponse(data) {
   if (data.resType == "admit") {
-    location.href = "/confieranceroom.html";
+    location.href = "./confieranceroom.html";
   } else {
     localStorage.removeItem("RoomId");
     $(".guest-h1").text("Sorry!");
