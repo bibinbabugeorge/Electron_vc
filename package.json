@@ -9,7 +9,7 @@
     "dist": "electron-builder"
   },
   "build": {
-    "appId": "com.appsteam.epicmeet",
+    "appId": "com.appsteam.appsconnect",
     "productName": "AppsConnect",
     "files": [
       "dist/**/*",
@@ -65,7 +65,7 @@
       "createStartMenuShortcut": true
     },
     "mac": {
-      "identity": "Apple Development: mailto:app@appsteantechnologies.com",
+      "identity": "Apple Development: app@appsteantechnologies.com",
       "target": [
         "dmg"
       ],
