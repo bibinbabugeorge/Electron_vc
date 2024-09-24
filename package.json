@@ -1,7 +1,7 @@
 {
   "main": "main.js",
   "name": "appsconnect",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Video calling application",
   "author": "Appsteam Technologies",
   "scripts": {
@@ -45,6 +45,11 @@
       "WaitingRoom.html",
       "bundle.js",
       "modules/**/*"
+    ],
+    "publish": [ {
+      "provider": "generic",
+      "url": "http://vps271818.vps.ovh.ca:3024/executables/"
+    }
     ],
     "win": {
       "target": [
