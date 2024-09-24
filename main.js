@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, session } = require('electron');
 const path = require('node:path');
+const { autoUpdater } = require('electron-updater'); // Import electron-updater
 
 let mainWindow;
 
@@ -32,12 +33,45 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;  // Dereference the window object on close
   });
+
+  // Check for updates after the window has been created
+  autoUpdater.checkForUpdatesAndNotify();
 }
 
 // Ensure handlers are registered only once when the app starts
 ipcMain.handle('capture-electron-page', async () => {
   const image = await mainWindow.capturePage();
-  return image.toDataURL().split(',')[1]; // Send the image data as a PNG buffer
+  return image.toDataURL().split(',')[1];
+}); // Send the image data as a PNG buffer
+// Auto Updater event listeners
+autoUpdater.on('update-available', () => {
+  console.log('Update available.');
+  // You can add code to notify the user about the update
+});
+
+autoUpdater.on('update-downloaded', () => {
+  console.log('Update downloaded; will install now');
+  // Automatically install and restart the app
+  autoUpdater.quitAndInstall();
+});
+
+autoUpdater.on('error', (error) => {
+  console.error('Update error:', error);
+});
+
+
+app.whenReady().then(createWindow);
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
 });
 
 ipcMain.on('set-cookie', (event, cookieDetails) => {
