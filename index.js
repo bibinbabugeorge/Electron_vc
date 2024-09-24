@@ -1936,8 +1936,8 @@ async function enumerateDevices() {
         let el = null;
         let mel = null;
         if ("audioinput" === device.kind) {
-          // el = audioSelect;
-          // mel = audioSelectMobile;
+          el = audioSelect;
+          mel = audioSelectMobile;
           audioDevices.push({
             deviceId: device.deviceId,
             label: device.label,
