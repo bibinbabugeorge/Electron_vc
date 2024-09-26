@@ -1,4 +1,4 @@
-const apiUri = 'https://vps271818.vps.ovh.ca:3024/';
+const apiUri = window.env.Dev_url;
 const server = new window.conference(apiUri.replace('https', 'wss'));
 const fileUploadPath = apiUri + "uploads/";
 

@@ -9,7 +9,7 @@
     "dist": "electron-builder"
   },
   "build": {
-    "appId": "com.appsteam.epicmeet",
+    "appId": "com.appsteam.appsconnect",
     "productName": "AppsConnect",
     "files": [
       "dist/**/*",
@@ -44,7 +44,11 @@
       "style.css",
       "WaitingRoom.html",
       "bundle.js",
-      "modules/**/*"
+      "modules/**/*",
+      "build/**/*",
+      "certificates/**/*",
+      "assets/**/*",
+      "dist/**/*"
     ],
     "win": {
       "target": [
@@ -65,12 +69,17 @@
       "createStartMenuShortcut": true
     },
     "mac": {
-      "identity": "Apple Development: app@appsteantechnologies.com",
+      "identity": "Apps Team Technologies Private Limited (67TA844NHW)",
       "target": [
         "dmg"
       ],
       "icon": "./assets/appsconnect_icon.icns",
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "entitlements": "./build/entitlements.plist",
+      "entitlementsInherit": "./build/entitlements.plist",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "provisioningProfile" : "./certificates/AppsConnectProfile.provisionprofile"
     },
     "dmg": {
       "background": "./assets/appsconnect_background.png",
@@ -97,6 +106,10 @@
   "devDependencies": {
     "electron": "^32.0.2",
     "electron-builder": "^25.0.5",
-    "electron-notarize": "^1.2.2"
+    "electron-notarize": "^1.2.2",
+    "electron-osx-sign": "^0.6.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
   }
 }
