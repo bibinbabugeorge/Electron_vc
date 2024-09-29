@@ -1,8 +1,9 @@
-const { app, BrowserWindow, ipcMain, session } = require('electron');
+const { app, BrowserWindow, ipcMain, session, Notification, Screen } = require('electron');
 const path = require('node:path');
 const { autoUpdater } = require('electron-updater'); // Import electron-updater
 
 let mainWindow;
+let notificationWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -36,6 +37,28 @@ function createWindow() {
 
   // Check for updates after the window has been created
   autoUpdater.checkForUpdatesAndNotify();
+}
+
+function createNotificationWindow() {
+  notificationWindow = new BrowserWindow({
+    width: 300,
+    height: 150,  // Adjusted height for proper content display
+    frame: false,
+    alwaysOnTop: true,
+    transparent: true,
+    skipTaskbar: true,  // Remove from taskbar
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'), // Load the preload script
+      nodeIntegration: false,  // For security reasons
+      contextIsolation: true,  // Ensure context isolation
+    }
+  });
+
+  notificationWindow.loadFile('notification.html');
+
+  notificationWindow.on('closed', () => {
+    notificationWindow = null;
+  });
 }
 
 // Ensure handlers are registered only once when the app starts
@@ -111,6 +134,29 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
+// Handle notification actions from the notification window
+ipcMain.on('show-notification', () => {
+  if (!notificationWindow) {
+    createNotificationWindow();
+  } else {
+    notificationWindow.show();
+  }
+});
+
+ipcMain.on('notification-response', (event, response) => {
+  if (response === 'accept') {
+    mainWindow.webContents.send('notification-action', 'accept');
+  } else if (response === 'reject') {
+    mainWindow.webContents.send('notification-action', 'reject');
+  }
+
+  // Hide the notification window after button click
+  if (notificationWindow) {
+    notificationWindow.hide();
+  }
+});
+
 
 // Recreate window if the app is clicked on the dock and no windows are open
 app.on('activate', () => {

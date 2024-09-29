@@ -2,6 +2,17 @@ const apiUri = 'https://vps271818.vps.ovh.ca:3024/';
 const server = new window.conference(apiUri.replace('https', 'wss'));
 const fileUploadPath = apiUri + "uploads/";
 
+// Listen for actions from the main process
+window.electronAPI.onNotificationAction((event, action) => {
+  console.log('Received action:', action); // For debugging
+  if (action === 'accept') {
+    RejectCallRequest(); // Call the function
+  } else if (action === 'reject') {
+    console.log('Call rejected');
+  }
+});
+
+
 let producer = null;
 let roomObj = null;
 consoleEvent = true;
@@ -183,7 +194,8 @@ server.connect().then((events) => {
         );
       }
       localStorage.setItem("RoomId", data.Data.RoomId);
-      $("#incoming-popup").show();
+      window.electronAPI.showNotification();
+      //$("#incoming-popup").show();
       // $('#exampleModal').modal('show');
       playringTone(true, data.Data.UserDetails.name);
     }
@@ -2008,7 +2020,7 @@ function JoinRoomRequest(type) {
 
 function RejectCallRequest() {
   callPopup = false;
-  $("#incoming-popup").hide();
+  //$("#incoming-popup").hide();
   playringTone(false);
 
   var dataObj = {

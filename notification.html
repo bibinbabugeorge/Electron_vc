@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Notification</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        #notification {
+            border-radius: 5px;
+            background: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="notification">
+        <h3>New Message</h3>
+        <p>You have a new message!</p>
+        <button class="button" id="acceptBtn" onclick="RejectCallRequest()">Accept</button>
+        <button class="button" id="rejectBtn">Reject</button>
+    </div>
+
+    <script>
+        // Send the response via the exposed API in preload.js
+        document.getElementById('acceptBtn').addEventListener('click', () => {
+            window.electronAPI.sendResponse('accept');
+            window.close();
+        });
+
+        document.getElementById('rejectBtn').addEventListener('click', () => {
+            window.electronAPI.sendResponse('reject');
+            window.close();
+        });
+    </script>
+    <script src="index.js"></script>
+</body>
+
+</html>
