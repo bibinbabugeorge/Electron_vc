@@ -1,10 +1,11 @@
-const { app, BrowserWindow, ipcMain, session, Notification, Screen } = require('electron');
+const { app, BrowserWindow, ipcMain, session, Notification, Screen, Tray, Menu } = require('electron');
 const path = require('node:path');
 const { autoUpdater } = require('electron-updater');
 require('dotenv').config({ path: path.join(__dirname, 'modules/.env') });
 
 let mainWindow;
 let notificationWindow;
+let tray = null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -18,7 +19,7 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: true,
       enableRemoteModule: false,
-      //devTools: false    //disble dev tools 
+      //devTools: false    //disable dev tools 
     }
   });
 
@@ -35,7 +36,11 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
-  // Check for updates after the window has been created
+  mainWindow.on('close', (event) => {
+    event.preventDefault(); // Prevent the window from closing
+    mainWindow.hide(); // Hide the window instead
+  });
+
   autoUpdater.checkForUpdatesAndNotify();
 }
 
@@ -62,6 +67,53 @@ function createNotificationWindow() {
   });
 }
 
+function createTray() {
+  // Ensure that the tray is created only once
+  if (tray === null) {
+    tray = new Tray(path.join(__dirname, 'assets/appsconnect_icon.png'));
+
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Show App',
+        click: function () {
+          if (!mainWindow) {
+            createWindow();
+          } else {
+            mainWindow.show();
+            mainWindow.loadFile('dashboard.html');
+          }
+        }
+      },
+      {
+        label: 'Quit',
+        click: function () {
+          app.quit();
+        }
+      }
+    ]);
+
+    tray.setToolTip('AppsConnect');
+    tray.setContextMenu(contextMenu);
+
+    tray.on('click', () => {
+      if (!mainWindow) {
+        createWindow();
+      } else {
+        mainWindow.show();
+        mainWindow.loadFile('dashboard.html');
+      }
+    });
+  }
+}
+app.on('before-quit', () => {
+  if (notificationWindow) {
+    notificationWindow.close(); // Close the notification window if it's open
+  }
+  if (tray) {
+    tray.destroy(); // Destroy the tray icon
+    tray = null;
+  }
+});
 // Auto Updater event listeners
 autoUpdater.on('update-available', () => {
   console.log('Update available.');
@@ -76,7 +128,10 @@ autoUpdater.on('error', (error) => {
   console.error('Update error:', error);
 });
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
+  createTray(); // Call tray creation only once after app is ready
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -117,15 +172,6 @@ ipcMain.handle('get-sources', async () => {
 ipcMain.handle('getOperatingSystem', async () => {
   const Os = await process.platform;
   return Os;
-});
-
-app.whenReady().then(createWindow);
-
-// Handle macOS-specific behavior
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
 });
 
 // Ensure handlers are registered only once when the app starts
