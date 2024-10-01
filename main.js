@@ -52,7 +52,7 @@ function createNotificationWindow() {
     alwaysOnTop: true,
     transparent: true,
     skipTaskbar: true,
-    //resizable: false,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -203,7 +203,17 @@ ipcMain.on('notification-response', (event, response) => {
   // Hide the notification window after button click
   if (notificationWindow) {
     notificationWindow.hide();
+    mainWindow.loadFile('confieranceroom.html');
   }
+});
+
+ipcMain.on('navigate-to-room', (event, roomType) => {
+  if (mainWindow.isMinimized()) {
+    mainWindow.restore(); // Restore the window if it's minimized
+  }
+  mainWindow.show();
+  mainWindow.focus(); 
+  mainWindow.loadFile('confieranceroom.html');
 });
 
 // Recreate window if the app is clicked on the dock and no windows are open
