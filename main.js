@@ -47,7 +47,7 @@ function createNotificationWindow() {
     alwaysOnTop: true,
     transparent: true,
     skipTaskbar: true,
-    resizable: false,  // Prevent window resizing
+    //resizable: false,  // Prevent window resizing
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'), // Load the preload script
       nodeIntegration: false,  // For security reasons
@@ -57,6 +57,7 @@ function createNotificationWindow() {
   });
 
   notificationWindow.loadFile('notification.html');
+  notificationWindow.webContents.openDevTools();
 
   notificationWindow.on('closed', () => {
     notificationWindow = null;
@@ -139,12 +140,13 @@ app.on('window-all-closed', () => {
 });
 
 // Handle notification actions from the notification window
-ipcMain.on('show-notification', () => {
+ipcMain.on('show-notification', (event, CallerDetails) => {
   if (!notificationWindow) {
     createNotificationWindow();
   } else {
     notificationWindow.show();
   }
+  notificationWindow.webContents.send('update-notification', CallerDetails);
 });
 
 // Handle the notification response

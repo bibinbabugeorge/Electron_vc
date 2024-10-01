@@ -87,11 +87,10 @@
       <!-- Close Button -->
       <button class="close-btn" id="closeBtn">&times;</button>
       <div class="incoming-call-content">
-        <h3>New Message</h3>
-        <img src="modules/images/default_user.svg" alt="Caller Image" id="CallerImg"
+        <img src="" alt="Caller Image" id="CallerImg"
           class="border border-secondary rounded-circle" style="width: 80px;" />
         <p>You have an incoming call</p>
-        <h3>Bibin Babu George</h3>
+        <h3 id="incomingCallername"></h3>
         <div class="incoming-call-actions">
           <button class="button" id="rejectBtn">
             <img src="modules/images/incoming_stop_icon.svg" alt="Reject Call" />
@@ -108,6 +107,8 @@
   </div>
 
   <script>
+    const apiUri = 'https://vps271818.vps.ovh.ca:3024/';
+    const filePath = apiUri + "uploads/";
     // Close button functionality
     document.getElementById('closeBtn').addEventListener('click', () => {
       window.electronAPI.sendResponse('reject');
@@ -130,13 +131,14 @@
       window.close();
     });
 
-    // Get height and width of the notification container
-    const notificationWrapper = document.getElementById('incomingCallWrapper');
-    const height = notificationWrapper.clientHeight;
-    const width = notificationWrapper.clientWidth;
+    window.electronAPI.receive('update-notification', (userDetails) => {
+      const callerName = document.getElementById('incomingCallername');
+      const callerImage = document.getElementById('CallerImg');
 
-    console.log('Notification Height:', height, 'px');
-    console.log('Notification Width:', width, 'px');
+      // Update the text of the caller's name and image src dynamically
+      callerName.textContent = userDetails.name || 'Unknown Caller';
+      callerImage.src = filePath + userDetails.profilePic || 'modules/images/default_user.svg';
+    });
   </script>
 </body>
 

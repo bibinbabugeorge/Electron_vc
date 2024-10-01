@@ -196,9 +196,7 @@ server.connect().then((events) => {
         );
       }
       localStorage.setItem("RoomId", data.Data.RoomId);
-      window.electronAPI.showNotification();
-      //$("#incoming-popup").show();
-      // $('#exampleModal').modal('show');
+      window.electronAPI.showNotification(data.Data.UserDetails);
       playringTone(true, data.Data.UserDetails.name);
     }
   });

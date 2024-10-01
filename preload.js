@@ -13,6 +13,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
   captureElectronPage: () => ipcRenderer.invoke('capture-electron-page'),
   onNotificationAction: (callback) => ipcRenderer.on('notification-action', (event, action) => callback(action)),
   sendResponse: (response) => ipcRenderer.send('notification-response', response),
-  showNotification: () => ipcRenderer.send('show-notification'),
-  closeNotificationWindow: () => ipcRenderer.send('close-notification-window')
+  showNotification: (CallerDetails) => ipcRenderer.send('show-notification', CallerDetails),
+  closeNotificationWindow: () => ipcRenderer.send('close-notification-window'),
+  receive: (channel, func) => {
+    const validChannels = ['update-notification'];
+    if (validChannels.includes(channel)) {
+      ipcRenderer.on(channel, (event, ...args) => func(...args));
+    }
+  }
 });
