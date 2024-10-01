@@ -46,13 +46,13 @@ function createWindow() {
 
 function createNotificationWindow() {
   notificationWindow = new BrowserWindow({
-    width: 265,
-    height: 265,
+    width: 300,
+    height: 300,
     frame: false,
     alwaysOnTop: true,
     transparent: true,
     skipTaskbar: true,
-    resizable: false,
+    //resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
