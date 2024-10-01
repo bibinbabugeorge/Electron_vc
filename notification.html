@@ -107,7 +107,7 @@
   </div>
 
   <script>
-    const apiUri = 'https://vps271818.vps.ovh.ca:3024/';
+    const apiUri = window.env.Server_Url;
     const filePath = apiUri + "uploads/";
     // Close button functionality
     document.getElementById('closeBtn').addEventListener('click', () => {

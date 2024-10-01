@@ -4,7 +4,7 @@ contextBridge.exposeInMainWorld('electron', {
   conference: (url) => ipcRenderer.send('start-conference', url)
 });
 
-
+// for ipc handler and renderer communication
 contextBridge.exposeInMainWorld('electronAPI', {
   setCookie: (cookieDetails) => ipcRenderer.send('set-cookie', cookieDetails),
   getCookies: () => ipcRenderer.invoke('get-cookies'),
@@ -21,4 +21,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
       ipcRenderer.on(channel, (event, ...args) => func(...args));
     }
   }
+});
+
+// Loading enviornmental variables form env file
+contextBridge.exposeInMainWorld('env', {
+  Server_Url: process.env.Server_Url
 });

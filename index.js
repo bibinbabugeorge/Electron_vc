@@ -1,4 +1,4 @@
-const apiUri = 'https://vps271818.vps.ovh.ca:3024/';
+const apiUri = window.env.Server_Url;
 const server = new window.conference(apiUri.replace('https', 'wss'));
 const fileUploadPath = apiUri + "uploads/";
 
@@ -982,7 +982,7 @@ function setCookie(UserDetail, expDays) {
     url: 'http://localhost',
     name: 'UserDetail',
     value: UserDetail,
-    expirationDate: expiryDate 
+    expirationDate: expiryDate
   });
 }
 
