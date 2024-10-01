@@ -2,54 +2,50 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Notification</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 10px;
-            overflow: hidden;
-        }
-
-        #notification {
-            border-radius: 5px;
-            background: white;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .button {
-            background-color: #007bff;
-            color: white;
-            padding: 5px 10px;
-            margin: 5px;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Notification</title>
 </head>
 
 <body>
-    <div id="notification">
+  <div id="notification">
+    <div class="incoming-call-wrapper">
+      <div class="incoming-call-content">
         <h3>New Message</h3>
-        <p>You have a new message!</p>
-        <button class="button" id="acceptBtn" onclick="RejectCallRequest()">Accept</button>
-        <button class="button" id="rejectBtn">Reject</button>
+        <img src="modules/images/default_user.svg" alt="" id="CallerImg"
+          class="border border-secondary rounded-circle" />
+        <p>You have an incoming call</p>
+        <div class="incoming-call-actions">
+          <button class="button" id="rejectBtn">
+            <img src="modules/images/incoming_stop_icon.svg" alt="" />
+          </button>
+          <button class="button" id="audioBtn">
+            <img src="modules/images/incoming_audio_icon.svg" alt="" />
+          </button>
+          <button class="button" id="videoBtn">
+            <img src="modules/images/incoming_video_icon.svg" alt="" />
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // Send the response via the exposed API in preload.js
-        document.getElementById('acceptBtn').addEventListener('click', () => {
-            window.electronAPI.sendResponse('accept');
-            window.close();
-        });
+  <script>
+    // Event listeners for the new buttons
+    document.getElementById('rejectBtn').addEventListener('click', () => {
+      window.electronAPI.sendResponse('reject');
+      window.close();
+    });
 
-        document.getElementById('rejectBtn').addEventListener('click', () => {
-            window.electronAPI.sendResponse('reject');
-            window.close();
-        });
-    </script>
-    <script src="index.js"></script>
+    document.getElementById('audioBtn').addEventListener('click', () => {
+      window.electronAPI.sendResponse('audio');
+      window.close();
+    });
+
+    document.getElementById('videoBtn').addEventListener('click', () => {
+      window.electronAPI.sendResponse('video');
+      window.close();
+    });
+  </script>
 </body>
 
 </html>

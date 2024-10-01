@@ -3,15 +3,17 @@ const server = new window.conference(apiUri.replace('https', 'wss'));
 const fileUploadPath = apiUri + "uploads/";
 
 // Listen for actions from the main process
+// Handle the notification action from the main process
 window.electronAPI.onNotificationAction((event, action) => {
   console.log('Received action:', action); // For debugging
-  if (action === 'accept') {
-    RejectCallRequest(); // Call the function
-  } else if (action === 'reject') {
-    console.log('Call rejected');
+  if (event === 'reject') {
+    RejectCallRequest(); // Call the function to reject the call
+  } else if (event === 'audio') {
+    JoinRoomRequest('audio'); // Join the room with audio only
+  } else if (event === 'video') {
+    JoinRoomRequest('video'); // Join the room with video
   }
 });
-
 
 let producer = null;
 let roomObj = null;
@@ -931,7 +933,7 @@ function playringTone(ring, name = null) {
       if (callPopup && missedCallNotification) {
         DesktopNotification(`Missed a call from ${name}`);
       }
-    }, 20000);
+    }, 200000);
     if (MeetingInvitationNotification)
       DesktopNotification(`Incoming call from ${name}`);
   } else {

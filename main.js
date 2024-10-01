@@ -51,6 +51,7 @@ function createNotificationWindow() {
       preload: path.join(__dirname, 'preload.js'), // Load the preload script
       nodeIntegration: false,  // For security reasons
       contextIsolation: true,  // Ensure context isolation
+      devTools: true
     }
   });
 
@@ -144,11 +145,14 @@ ipcMain.on('show-notification', () => {
   }
 });
 
+// Handle the notification response
 ipcMain.on('notification-response', (event, response) => {
-  if (response === 'accept') {
-    mainWindow.webContents.send('notification-action', 'accept');
-  } else if (response === 'reject') {
+  if (response === 'reject') {
     mainWindow.webContents.send('notification-action', 'reject');
+  } else if (response === 'audio') {
+    mainWindow.webContents.send('notification-action', 'audio');
+  } else if (response === 'video') {
+    mainWindow.webContents.send('notification-action', 'video');
   }
 
   // Hide the notification window after button click
@@ -156,6 +160,7 @@ ipcMain.on('notification-response', (event, response) => {
     notificationWindow.hide();
   }
 });
+
 
 
 // Recreate window if the app is clicked on the dock and no windows are open

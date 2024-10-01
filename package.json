@@ -46,10 +46,11 @@
       "bundle.js",
       "modules/**/*"
     ],
-    "publish": [ {
-      "provider": "generic",
-      "url": "http://vps271818.vps.ovh.ca:3024/executables/"
-    }
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://vps271818.vps.ovh.ca:3024/executables/"
+      }
     ],
     "win": {
       "target": [
@@ -109,10 +110,12 @@
     }
   },
   "devDependencies": {
-    "electron": "^32.0.2",
+    "electron": "^32.1.2",
     "electron-builder": "^25.0.5"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
+    "electron-auto-launch": "^5.0.7",
     "electron-updater": "^6.3.4"
   }
 }
