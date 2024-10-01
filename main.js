@@ -1,8 +1,10 @@
 const { app, BrowserWindow, ipcMain, session } = require('electron');
 const path = require('node:path');
 
+let mainWindow;
+
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 800,
     show: false,
@@ -16,28 +18,26 @@ function createWindow() {
       //devTools: false    //disble dev tools 
     }
   });
+
   mainWindow.loadFile('splash.html');
+
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
   });
-  //mainWindow.webContents.openDevTools();
+
   setTimeout(function () {
     mainWindow.loadFile('index.html');  // Load the main content
   }, 5000);  // Adjust the time as needed
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;  // Dereference the window object on close
+  });
 }
 
-app.whenReady().then(createWindow);
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+// Ensure handlers are registered only once when the app starts
+ipcMain.handle('capture-electron-page', async () => {
+  const image = await mainWindow.capturePage();
+  return image.toDataURL().split(',')[1]; // Send the image data as a PNG buffer
 });
 
 ipcMain.on('set-cookie', (event, cookieDetails) => {
@@ -67,4 +67,20 @@ ipcMain.handle('get-sources', async () => {
 ipcMain.handle('getOperatingSystem', async () => {
   const Os = await process.platform;
   return Os;
-})
+});
+
+app.whenReady().then(createWindow);
+
+// Handle macOS-specific behavior
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+// Recreate window if the app is clicked on the dock and no windows are open
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
+});

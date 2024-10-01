@@ -686,10 +686,7 @@ class RoomClient {
             selectedScreenId = null;
             document.querySelector('.share-btn').disabled = true;
           } else {
-            // Remove the 'selected' class from all screen elements
             document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
-
-            // Add the 'selected' class to the clicked element
             element.classList.add('selected');
             selectedScreenId = id;
             document.querySelector('.share-btn').disabled = false;
@@ -738,7 +735,8 @@ class RoomClient {
 
         document.querySelector('.share-btn').addEventListener('click', async () => {
           if (selectedScreenId) {
-            await this.handleOptionClick(selectedScreenId, type);
+            let ScreenShareAudio = document.getElementById('ScreenShareAudio');
+            await this.handleOptionClick(selectedScreenId, type, ScreenShareAudio);
             $('#sharePopup').hide();
             // Reset after sharing
             selectedScreenId = null;
@@ -771,6 +769,8 @@ class RoomClient {
 
       if (stream.getAudioTracks()[0] != undefined && type == mediaType.screen)
         sysAudio = true;
+
+
 
       if (!jsonConfig.MultipleCamera) {
         if (type == mediaType.screen) {
@@ -1857,7 +1857,7 @@ class RoomClient {
     });
   }
 
-  async handleOptionClick(selectedOption, type) {
+  async handleOptionClick(selectedOption, type, ScreenShareAudio) {
     let params = null;
     let sysAudioParams = null;
     let screenParams = null;
@@ -1871,7 +1871,8 @@ class RoomClient {
     const audio = !IS_MACOS
       ? {
         mandatory: {
-          chromeMediaSource: 'desktop'
+          echoCancellation: true,
+          chromeMediaSource: "desktop",
         }
       }
       : false;
@@ -1885,15 +1886,12 @@ class RoomClient {
       }
     };
 
-    // if (stream) {
-    //   stream.getTracks().forEach(track => track.stop());
-    // }
-
     currentStream = await navigator.mediaDevices.getUserMedia(constraints);
-    //currentStream = stream;
-
-    if (currentStream.getAudioTracks()[0] != undefined && type == mediaType.screen)
+    if (ScreenShareAudio.checked) {
       sysAudio = true;
+    } else {
+      sysAudio = false;
+    }
 
     if (!jsonConfig.MultipleCamera) {
       if (type == mediaType.screen) {
