@@ -41,12 +41,13 @@ function createWindow() {
 
 function createNotificationWindow() {
   notificationWindow = new BrowserWindow({
-    width: 300,
-    height: 150,  // Adjusted height for proper content display
+    width: 265,
+    height: 265,  // Set exact height for proper content display
     frame: false,
     alwaysOnTop: true,
     transparent: true,
-    skipTaskbar: true,  // Remove from taskbar
+    skipTaskbar: true,
+    resizable: false,  // Prevent window resizing
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'), // Load the preload script
       nodeIntegration: false,  // For security reasons
@@ -67,6 +68,7 @@ ipcMain.handle('capture-electron-page', async () => {
   const image = await mainWindow.capturePage();
   return image.toDataURL().split(',')[1];
 }); // Send the image data as a PNG buffer
+
 // Auto Updater event listeners
 autoUpdater.on('update-available', () => {
   console.log('Update available.');
@@ -160,8 +162,6 @@ ipcMain.on('notification-response', (event, response) => {
     notificationWindow.hide();
   }
 });
-
-
 
 // Recreate window if the app is clicked on the dock and no windows are open
 app.on('activate', () => {

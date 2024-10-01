@@ -3,26 +3,104 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notification</title>
+  <style>
+    /* General body styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+      /* Semi-transparent background */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      /* Prevent scrollbars */
+    }
+
+    /* Notification container */
+    .incoming-call-wrapper {
+      height: 97%;
+      width: 97%;
+      position: relative;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      overflow: hidden;
+      /* Prevent scrollbars inside the container */
+    }
+
+    /* Close button style */
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #888;
+    }
+
+    .close-btn:hover {
+      color: #333;
+    }
+
+    /* Styling for content */
+    .incoming-call-content h3 {
+      margin-top: 0;
+    }
+
+    .incoming-call-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .button img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .p {
+      word-wrap: break-word;
+    }
+  </style>
+
 </head>
 
 <body>
   <div id="notification">
-    <div class="incoming-call-wrapper">
+    <div class="incoming-call-wrapper" id="incomingCallWrapper">
+      <!-- Close Button -->
+      <button class="close-btn" id="closeBtn">&times;</button>
       <div class="incoming-call-content">
         <h3>New Message</h3>
-        <img src="modules/images/default_user.svg" alt="" id="CallerImg"
-          class="border border-secondary rounded-circle" />
+        <img src="modules/images/default_user.svg" alt="Caller Image" id="CallerImg"
+          class="border border-secondary rounded-circle" style="width: 80px;" />
         <p>You have an incoming call</p>
+        <h3>Bibin Babu George</h3>
         <div class="incoming-call-actions">
           <button class="button" id="rejectBtn">
-            <img src="modules/images/incoming_stop_icon.svg" alt="" />
+            <img src="modules/images/incoming_stop_icon.svg" alt="Reject Call" />
           </button>
           <button class="button" id="audioBtn">
-            <img src="modules/images/incoming_audio_icon.svg" alt="" />
+            <img src="modules/images/incoming_audio_icon.svg" alt="Accept Audio" />
           </button>
           <button class="button" id="videoBtn">
-            <img src="modules/images/incoming_video_icon.svg" alt="" />
+            <img src="modules/images/incoming_video_icon.svg" alt="Accept Video" />
           </button>
         </div>
       </div>
@@ -30,7 +108,13 @@
   </div>
 
   <script>
-    // Event listeners for the new buttons
+    // Close button functionality
+    document.getElementById('closeBtn').addEventListener('click', () => {
+      window.electronAPI.sendResponse('reject');
+      window.close();
+    });
+
+    // Event listeners for the other buttons
     document.getElementById('rejectBtn').addEventListener('click', () => {
       window.electronAPI.sendResponse('reject');
       window.close();
@@ -45,6 +129,14 @@
       window.electronAPI.sendResponse('video');
       window.close();
     });
+
+    // Get height and width of the notification container
+    const notificationWrapper = document.getElementById('incomingCallWrapper');
+    const height = notificationWrapper.clientHeight;
+    const width = notificationWrapper.clientWidth;
+
+    console.log('Notification Height:', height, 'px');
+    console.log('Notification Width:', width, 'px');
   </script>
 </body>
 

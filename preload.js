@@ -13,5 +13,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   captureElectronPage: () => ipcRenderer.invoke('capture-electron-page'),
   onNotificationAction: (callback) => ipcRenderer.on('notification-action', (event, action) => callback(action)),
   sendResponse: (response) => ipcRenderer.send('notification-response', response),
-  showNotification: () => ipcRenderer.send('show-notification')
+  showNotification: () => ipcRenderer.send('show-notification'),
+  closeNotificationWindow: () => ipcRenderer.send('close-notification-window')
 });
