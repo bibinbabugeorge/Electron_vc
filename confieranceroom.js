@@ -269,7 +269,20 @@ function filterCallParticipantsMobile(searchKey) {
 }
 
 var chatUl = $(".chat-ul");
-$(".chat-send-btn").click(async function () {
+// Trigger send on button click
+$(".chat-send-btn").click(function () {
+  handleSendChat();
+});
+
+// Trigger send on Enter key press
+$(".chat-text-area").keypress(function (event) {
+  if (event.which == 13 && !event.shiftKey) { // Check if Enter key is pressed without Shift
+    event.preventDefault(); // Prevent default behavior (adding new line)
+    handleSendChat();
+  }
+});
+
+async function handleSendChat() {
   if (($(".chat-text-area").eq(1).val() == "" && $(".chat-text-area").eq(0).val() == "") && $(".attachedFilesUl li").length == 0)
     return;
 
@@ -317,16 +330,26 @@ $(".chat-send-btn").click(async function () {
       }
     });
   });
-});
+};
 
 async function sendChat(files) {
   const message = $(".chat-text-area").val();
-  if ($(".chat-ul").find(".chat-date-view:last p").text() != "Today")
+  function getFormattedDate() {
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    return new Date().toLocaleDateString('en-GB', options); // e.g., "23 Sept 2024"
+  }
+
+  const lastDateText = $(".chat-ul .chat-date-view:last p").first().text().trim().toLowerCase();
+  const todayFormatted = getFormattedDate().toLowerCase(); // "23 Sept 2024"
+
+  // Update the condition
+  if (lastDateText !== todayFormatted && lastDateText !== "today") {
     chatUl.append(`<li class="chat-date-view">
                     <div>
                       <p>Today</p>
                     </div>
                   </li>`);
+  }
 
   var time = new Date();
 
@@ -928,7 +951,7 @@ $(".chatAttachment").change(function () {
             )
             .append(
               $("<img>").attr({
-                src: "./modules/images/attachment.svg",
+                src: "modules/images/attachment.svg",
                 width: 100,
                 height: 100,
                 alt: file.name,

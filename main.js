@@ -1,7 +1,10 @@
-const { app, BrowserWindow, ipcMain, session } = require('electron');
+const { app, BrowserWindow, ipcMain, session, Notification, Screen } = require('electron');
 const path = require('node:path');
+const { autoUpdater } = require('electron-updater');
+require('dotenv').config({ path: path.join(__dirname, 'modules/.env') });
 
 let mainWindow;
+let notificationWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -26,18 +29,65 @@ function createWindow() {
   });
 
   setTimeout(function () {
-    mainWindow.loadFile('index.html');  // Load the main content
-  }, 5000);  // Adjust the time as needed
+    mainWindow.loadFile('index.html');
+  }, 5000);
 
   mainWindow.on('closed', () => {
-    mainWindow = null;  // Dereference the window object on close
+    mainWindow = null;
+  });
+  // Check for updates after the window has been created
+  autoUpdater.checkForUpdatesAndNotify();
+}
+
+function createNotificationWindow() {
+  notificationWindow = new BrowserWindow({
+    width: 265,
+    height: 265,
+    frame: false,
+    alwaysOnTop: true,
+    transparent: true,
+    skipTaskbar: true,
+    resizable: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: false,
+      contextIsolation: true,
+      devTools: true
+    }
+  });
+
+  notificationWindow.loadFile('notification.html');
+  notificationWindow.on('closed', () => {
+    notificationWindow = null;
   });
 }
 
-// Ensure handlers are registered only once when the app starts
-ipcMain.handle('capture-electron-page', async () => {
-  const image = await mainWindow.capturePage();
-  return image.toDataURL().split(',')[1]; // Send the image data as a PNG buffer
+// Auto Updater event listeners
+autoUpdater.on('update-available', () => {
+  console.log('Update available.');
+});
+
+autoUpdater.on('update-downloaded', () => {
+  console.log('Update downloaded; will install now');
+  autoUpdater.quitAndInstall();
+});
+
+autoUpdater.on('error', (error) => {
+  console.error('Update error:', error);
+});
+
+app.whenReady().then(createWindow);
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
 });
 
 ipcMain.on('set-cookie', (event, cookieDetails) => {
@@ -75,6 +125,38 @@ app.whenReady().then(createWindow);
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
+  }
+});
+
+// Ensure handlers are registered only once when the app starts
+ipcMain.handle('capture-electron-page', async () => {
+  const image = await mainWindow.capturePage();
+  return image.toDataURL().split(',')[1];
+});
+
+// Handle notification actions from the notification window
+ipcMain.on('show-notification', (event, CallerDetails) => {
+  if (!notificationWindow) {
+    createNotificationWindow();
+  } else {
+    notificationWindow.show();
+  }
+  notificationWindow.webContents.send('update-notification', CallerDetails);
+});
+
+// Handle the notification response
+ipcMain.on('notification-response', (event, response) => {
+  if (response === 'reject') {
+    mainWindow.webContents.send('notification-action', 'reject');
+  } else if (response === 'audio') {
+    mainWindow.webContents.send('notification-action', 'audio');
+  } else if (response === 'video') {
+    mainWindow.webContents.send('notification-action', 'video');
+  }
+
+  // Hide the notification window after button click
+  if (notificationWindow) {
+    notificationWindow.hide();
   }
 });
 
