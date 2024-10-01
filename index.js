@@ -793,7 +793,7 @@ server.connect().then((events) => {
         );
       }
       localStorage.setItem("RoomId", data.Data.RoomId);
-      $("#incoming-popup").show();
+      window.electronAPI.showNotification(data.Data.UserDetails);
       playringTone(true, data.Data.UserDetails.name);
       DashboardParticipantsList("");
     }
@@ -2020,7 +2020,6 @@ function JoinRoomRequest(type) {
 
 function RejectCallRequest() {
   callPopup = false;
-  //$("#incoming-popup").hide();
   playringTone(false);
 
   var dataObj = {
