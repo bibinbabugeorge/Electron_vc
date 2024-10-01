@@ -1,7 +1,7 @@
 {
   "main": "main.js",
   "name": "appsconnect",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Video calling application",
   "author": "Appsteam Technologies",
   "scripts": {
@@ -9,7 +9,7 @@
     "dist": "electron-builder"
   },
   "build": {
-    "appId": "com.appsteam.epicmeet",
+    "appId": "com.appsteam.appsconnect",
     "productName": "AppsConnect",
     "files": [
       "dist/**/*",
@@ -46,6 +46,12 @@
       "bundle.js",
       "modules/**/*"
     ],
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://vps271818.vps.ovh.ca:3024/executables/"
+      }
+    ],
     "win": {
       "target": [
         {
@@ -65,7 +71,7 @@
       "createStartMenuShortcut": true
     },
     "mac": {
-      "identity": "Apple Development: mailto:app@appsteantechnologies.com",
+      "identity": "Apple Development: app@appsteantechnologies.com",
       "target": [
         "dmg"
       ],
@@ -104,7 +110,12 @@
     }
   },
   "devDependencies": {
-    "electron": "^32.0.2",
+    "electron": "^32.1.2",
     "electron-builder": "^25.0.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "electron-auto-launch": "^5.0.7",
+    "electron-updater": "^6.3.4"
   }
 }

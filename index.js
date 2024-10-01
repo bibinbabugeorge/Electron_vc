@@ -1,6 +1,19 @@
-const apiUri = 'https://vps271818.vps.ovh.ca:3024/';
+const apiUri = window.env.Server_Url;
 const server = new window.conference(apiUri.replace('https', 'wss'));
 const fileUploadPath = apiUri + "uploads/";
+
+// Listen for actions from the main process
+// Handle the notification action from the main process
+window.electronAPI.onNotificationAction((event, action) => {
+  console.log('Received action:', action); // For debugging
+  if (event === 'reject') {
+    RejectCallRequest(); // Call the function to reject the call
+  } else if (event === 'audio') {
+    JoinRoomRequest('audio'); // Join the room with audio only
+  } else if (event === 'video') {
+    JoinRoomRequest('video'); // Join the room with video
+  }
+});
 
 let producer = null;
 let roomObj = null;
@@ -183,8 +196,7 @@ server.connect().then((events) => {
         );
       }
       localStorage.setItem("RoomId", data.Data.RoomId);
-      $("#incoming-popup").show();
-      // $('#exampleModal').modal('show');
+      window.electronAPI.showNotification(data.Data.UserDetails);
       playringTone(true, data.Data.UserDetails.name);
     }
   });
@@ -781,7 +793,7 @@ server.connect().then((events) => {
         );
       }
       localStorage.setItem("RoomId", data.Data.RoomId);
-      $("#incoming-popup").show();
+      window.electronAPI.showNotification(data.Data.UserDetails);
       playringTone(true, data.Data.UserDetails.name);
       DashboardParticipantsList("");
     }
@@ -919,7 +931,7 @@ function playringTone(ring, name = null) {
       if (callPopup && missedCallNotification) {
         DesktopNotification(`Missed a call from ${name}`);
       }
-    }, 20000);
+    }, 200000);
     if (MeetingInvitationNotification)
       DesktopNotification(`Incoming call from ${name}`);
   } else {
@@ -964,13 +976,13 @@ function acknowledgeUserStatus() {
 }
 
 function setCookie(UserDetail, expDays) {
-  //sessionStorage.setItem('user_details=', UserDetail);
-
+  const oneMonthInSeconds = 30 * 24 * 60 * 60; // Approximate seconds in a month
+  const expiryDate = Math.floor(Date.now() / 1000) + oneMonthInSeconds;
   window.electronAPI.setCookie({
     url: 'http://localhost',
     name: 'UserDetail',
     value: UserDetail,
-    expirationDate: Math.floor(Date.now() / 1000) + 3600 // Expiration time set to 1 hour
+    expirationDate: expiryDate
   });
 }
 
@@ -1936,8 +1948,8 @@ async function enumerateDevices() {
         let el = null;
         let mel = null;
         if ("audioinput" === device.kind) {
-          // el = audioSelect;
-          // mel = audioSelectMobile;
+          el = audioSelect;
+          mel = audioSelectMobile;
           audioDevices.push({
             deviceId: device.deviceId,
             label: device.label,
@@ -2008,7 +2020,6 @@ function JoinRoomRequest(type) {
 
 function RejectCallRequest() {
   callPopup = false;
-  $("#incoming-popup").hide();
   playringTone(false);
 
   var dataObj = {
