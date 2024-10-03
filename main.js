@@ -203,7 +203,7 @@ ipcMain.on('notification-response', (event, response) => {
   // Hide the notification window after button click
   if (notificationWindow) {
     notificationWindow.hide();
-    mainWindow.loadFile('confieranceroom.html');
+    //mainWindow.loadFile('confieranceroom.html');
   }
 });
 
