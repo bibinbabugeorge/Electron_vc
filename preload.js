@@ -20,7 +20,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     if (validChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => func(...args));
     }
-  }
+  },
+  send: (channel, data) => ipcRenderer.send(channel, data)
 });
 
 // Loading enviornmental variables form env file
