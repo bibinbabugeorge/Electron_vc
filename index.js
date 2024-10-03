@@ -2015,7 +2015,7 @@ function JoinRoomRequest(type) {
   } else {
     localStorage.setItem("video", true);
   }
-  location.href = "./confieranceroom.html"; //To be Noted name
+  window.electronAPI.send('navigate-to-room', type);
 }
 
 function RejectCallRequest() {
