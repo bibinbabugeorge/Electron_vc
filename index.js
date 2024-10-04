@@ -943,6 +943,11 @@ function playringTone(ring, name = null) {
 }
 
 async function DesktopNotification(body) {
+  let CallerData = await getCookie();
+  let Ostype = await window.electronAPI.getOperatingSystem();
+  if(Ostype = "darwin"){
+    window.electronAPI.showDesktopNotification(CallerData);
+  }else{
   let iconpath = apiUri + "modules/images/appsconnect_icon.png"
   if (!("Notification" in window)) {
     // Check if the browser supports notifications
@@ -961,6 +966,7 @@ async function DesktopNotification(body) {
       }
     });
   }
+}
 }
 
 function Logout() {

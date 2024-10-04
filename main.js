@@ -77,7 +77,7 @@ function createNotificationWindow() {
 // -------------------- Tray Creation -------------------- //
 
 function createTray() {
-  if (tray === null) {
+  if (tray === null) { 
     if(process.platform === "darwin"){
       trayIcon = nativeImage.createFromPath(path.join(__dirname, 'assets/appsconnect_icon.png'));
       trayIcon = trayIcon.resize({ width: 16, height: 16 });
@@ -170,6 +170,22 @@ ipcMain.on('show-notification', (event, CallerDetails) => {
   }
   notificationWindow.webContents.send('update-notification', CallerDetails);
 });
+//show desktop notification for mac
+ipcMain.on('show-desktop-notification', async (event, CallerDetails) => {
+  const iconPath = path.join(__dirname, 'assets/appsconnect_icon.png'); // Your icon path
+  const notification = new Notification({
+    title: "", // Keep it empty to minimize the title display
+    body: CallerDetails.message || "You have a new notification", // Default message
+    icon: iconPath, // Your icon path
+  });
+
+  notification.show();
+
+  // Optionally, handle notification clicks
+  notification.on('click', () => {
+    console.log('Notification clicked');
+  });
+});
 
 // Handle notification response
 ipcMain.on('notification-response', (event, response) => {
@@ -197,9 +213,6 @@ ipcMain.on('navigate-to-room', (event, roomType) => {
   mainWindow.loadFile('confieranceroom.html');
 });
 
-ipcMain.handle('get-iconpath', async () => {
-  return path.join(__dirname, 'assets/appsconnect_icon.png');
-});
 
 // -------------------- App Lifecycle -------------------- //
 
