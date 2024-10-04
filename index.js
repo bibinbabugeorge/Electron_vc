@@ -942,20 +942,21 @@ function playringTone(ring, name = null) {
   }
 }
 
-function DesktopNotification(body) {
+async function DesktopNotification(body) {
+  let iconpath = apiUri + "modules/images/appsconnect_icon.png"
   if (!("Notification" in window)) {
     // Check if the browser supports notifications
   } else if (Notification.permission === "granted") {
-    const notification = new Notification("Apps Connect", {
+    const notification = new Notification("", {
       body: body,
-      icon: "https://epic.appsteamtechnologies.com/web_custom/static/src/img/favicon.ico",
+      icon: iconpath
     });
   } else if (Notification.permission !== "denied") {
     Notification.requestPermission().then((permission) => {
       if (permission === "granted") {
-        const notification = new Notification("Apps Connect", {
+        const notification = new Notification("", {
           body: body,
-          icon: "https://epic.appsteamtechnologies.com/web_custom/static/src/img/favicon.ico",
+          icon: iconpath
         });
       }
     });

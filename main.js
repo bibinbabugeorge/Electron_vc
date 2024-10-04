@@ -190,8 +190,13 @@ ipcMain.on('navigate-to-room', (event, roomType) => {
   mainWindow.loadFile('confieranceroom.html');
 });
 
+ipcMain.handle('get-iconpath', async () => {
+  return path.join(__dirname, 'assets/appsconnect_icon.png');
+});
+
 // -------------------- App Lifecycle -------------------- //
 
+app.setAppUserModelId("AppsConnect");
 // Event: App ready
 app.whenReady().then(async () => {
   await checkCookieExpiration();
