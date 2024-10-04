@@ -1,5 +1,5 @@
 // Import required modules
-const { app, BrowserWindow, ipcMain, session, Notification, Screen, Tray, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, session, Notification, Screen, Tray, Menu, nativeImage } = require('electron');
 const path = require('node:path');
 const { autoUpdater } = require('electron-updater');
 require('dotenv').config({ path: path.join(__dirname, 'modules/.env') });
@@ -8,6 +8,7 @@ require('dotenv').config({ path: path.join(__dirname, 'modules/.env') });
 let mainWindow;
 let notificationWindow;
 let tray = null;
+let trayIcon = null;
 
 // -------------------- Window Creation Functions -------------------- //
 
@@ -77,7 +78,13 @@ function createNotificationWindow() {
 
 function createTray() {
   if (tray === null) {
-    tray = new Tray(path.join(__dirname, 'assets/appsconnect_icon.png'));
+    if(process.platform === "darwin"){
+      trayIcon = nativeImage.createFromPath(path.join(__dirname, 'assets/appsconnect_icon.png'));
+      trayIcon = trayIcon.resize({ width: 16, height: 16 });
+    }else{
+      trayIcon = path.join(__dirname, 'assets/appsconnect_icon.png');
+    }
+    tray = new Tray(trayIcon)
 
     const contextMenu = Menu.buildFromTemplate([
       {
@@ -214,9 +221,18 @@ app.on('window-all-closed', () => {
 // Event: Recreate window if no windows are open
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createWindow(); // Create window if no windows are open
+  } else {
+    // Show the main window if it's hidden or minimized
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore(); // Restore if minimized
+    } else if (!mainWindow.isVisible()) {
+      mainWindow.show(); // Show if it's hidden
+    }
+    mainWindow.focus(); // Focus the window
   }
 });
+
 
 // Handle before quit
 app.on('before-quit', () => {
