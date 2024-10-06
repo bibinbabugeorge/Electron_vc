@@ -78,10 +78,10 @@ function createNotificationWindow() {
 
 function createTray() {
   if (tray === null) { 
-    if(process.platform === "darwin"){
+    if (process.platform === "darwin") {
       trayIcon = nativeImage.createFromPath(path.join(__dirname, 'assets/appsconnect_icon.png'));
       trayIcon = trayIcon.resize({ width: 16, height: 16 });
-    }else{
+    } else {
       trayIcon = path.join(__dirname, 'assets/appsconnect_icon.png');
     }
     tray = new Tray(trayIcon)
@@ -165,11 +165,21 @@ ipcMain.handle('capture-electron-page', async () => {
 ipcMain.on('show-notification', (event, CallerDetails) => {
   if (!notificationWindow) {
     createNotificationWindow();
+    notificationWindow.once('ready-to-show', () => {
+      notificationWindow.webContents.send('update-notification', CallerDetails);
+    });
   } else {
+    notificationWindow.webContents.send('update-notification', CallerDetails);
+  }
+});
+
+ipcMain.on('show-notification-window', () => {
+  if (notificationWindow) {
     notificationWindow.show();
   }
-  notificationWindow.webContents.send('update-notification', CallerDetails);
 });
+
+
 //show desktop notification for mac
 ipcMain.on('show-desktop-notification', async (event, CallerDetails) => {
   const iconPath = path.join(__dirname, 'assets/appsconnect_icon.png'); // Your icon path

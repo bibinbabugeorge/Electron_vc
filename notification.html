@@ -83,8 +83,8 @@
       <!-- Close Button -->
       <button class="close-btn" id="closeBtn">&times;</button>
       <div class="incoming-call-content">
-        <img src="" alt="Caller Image" id="CallerImg"
-          class="border border-secondary rounded-circle" style="width: 80px;" />
+        <img src="" alt="Caller Image" id="CallerImg" class="border border-secondary rounded-circle"
+          style="width: 80px;" />
         <p>You have an incoming call</p>
         <h3 id="incomingCallername"></h3>
         <div class="incoming-call-actions">
@@ -131,10 +131,20 @@
       const callerName = document.getElementById('incomingCallername');
       const callerImage = document.getElementById('CallerImg');
 
-      // Update the text of the caller's name and image src dynamically
+      // Update the text of the caller's name
       callerName.textContent = userDetails.name || 'Unknown Caller';
-      callerImage.src = filePath + userDetails.profilePic || 'modules/images/default_user.svg';
+
+      // Check if profilePic exists, else set to default image
+      if (userDetails.profilePic) {
+        callerImage.src = filePath + userDetails.profilePic;
+      } else {
+        callerImage.src = 'modules/images/default_user.svg';
+      }
+
+      // Show the notification window after updating the DOM
+      window.electronAPI.send('show-notification-window');
     });
+
   </script>
 </body>
 
