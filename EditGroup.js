@@ -106,12 +106,12 @@ $("#groupIcon").change(function () {
 });
 
 
-function Bindparticipant(participant) {
-  debugger
-  var list;
+async function Bindparticipant(participant) {
+  var list = "";
+  let UserFromCookie = JSON.parse(await getCookie()).userID;
   if (participant !== null || participant !== undefined) {
-    participant.forEach(async (element) => {
-      if (element.userid == JSON.parse(await getCookie()).userID) {
+    participant.forEach((element) => {
+      if (element.userid == UserFromCookie) {
         return
       } else {
         list += `<li>

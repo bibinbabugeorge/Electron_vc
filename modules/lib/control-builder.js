@@ -1385,6 +1385,14 @@
                       </li>`;
         });
       }
+    } else {
+      list = `
+        <div class="participant-not-found-div">
+          </br>
+          <h6 style="color: black;">No results found</h6>
+        </div>
+        <ul id="participantsListView">
+        </ul>`
     }
 
     await $("#addParticipantsList").empty().append(list);

@@ -44,6 +44,7 @@
       "style.css",
       "WaitingRoom.html",
       "bundle.js",
+      "notification.html",
       "modules/**/*"
     ],
     "publish": [

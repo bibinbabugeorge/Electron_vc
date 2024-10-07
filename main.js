@@ -1,25 +1,29 @@
-const { app, BrowserWindow, ipcMain, session, Notification, Screen, Tray, Menu } = require('electron');
+// Import required modules
+const { app, BrowserWindow, ipcMain, session, Notification, Screen, Tray, Menu, nativeImage } = require('electron');
 const path = require('node:path');
 const { autoUpdater } = require('electron-updater');
 require('dotenv').config({ path: path.join(__dirname, 'modules/.env') });
 
+// Variables to hold window instances
 let mainWindow;
 let notificationWindow;
 let tray = null;
+let trayIcon = null;
 
+// -------------------- Window Creation Functions -------------------- //
+
+// Create the main window
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 800,
     show: false,
-    //frame: false,    //hiding frame 
-    autoHideMenuBar: true,  // hide menu bar
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload'), // Preload script
       nodeIntegration: true,
       contextIsolation: true,
       enableRemoteModule: false,
-      //devTools: false    //disable dev tools 
     }
   });
 
@@ -36,6 +40,7 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+
   mainWindow.on('close', (event) => {
     event.preventDefault(); // Prevent the window from closing
     mainWindow.hide(); // Hide the window instead
@@ -44,6 +49,7 @@ function createWindow() {
   autoUpdater.checkForUpdatesAndNotify();
 }
 
+// Create the notification window
 function createNotificationWindow() {
   notificationWindow = new BrowserWindow({
     width: 300,
@@ -62,15 +68,23 @@ function createNotificationWindow() {
   });
 
   notificationWindow.loadFile('notification.html');
+
   notificationWindow.on('closed', () => {
     notificationWindow = null;
   });
 }
 
+// -------------------- Tray Creation -------------------- //
+
 function createTray() {
-  // Ensure that the tray is created only once
-  if (tray === null) {
-    tray = new Tray(path.join(__dirname, 'assets/appsconnect_icon.png'));
+  if (tray === null) { 
+    if (process.platform === "darwin") {
+      trayIcon = nativeImage.createFromPath(path.join(__dirname, 'assets/appsconnect_icon.png'));
+      trayIcon = trayIcon.resize({ width: 16, height: 16 });
+    } else {
+      trayIcon = path.join(__dirname, 'assets/appsconnect_icon.png');
+    }
+    tray = new Tray(trayIcon)
 
     const contextMenu = Menu.buildFromTemplate([
       {
@@ -105,16 +119,157 @@ function createTray() {
     });
   }
 }
+
+// -------------------- IPC and Event Listeners -------------------- //
+
+// Handle setting a cookie
+ipcMain.on('set-cookie', (event, cookieDetails) => {
+  session.defaultSession.cookies.set(cookieDetails, (error) => {
+    if (error) {
+      console.error('Error setting cookie:', error);
+    } else {
+      console.log('Cookie set successfully');
+    }
+  });
+});
+
+// Handle getting cookies
+ipcMain.handle('get-cookies', async () => {
+  const cookies = await session.defaultSession.cookies.get({});
+  return cookies;
+});
+
+// Handle getting desktop and window sources
+ipcMain.handle('get-sources', async () => {
+  const { desktopCapturer } = require('electron');
+  const sources = await desktopCapturer.getSources({ types: ['screen', 'window'], thumbnailSize: { width: 854, height: 600 } });
+  return sources.map(source => {
+    source.thumbnailURL = source.thumbnail.toDataURL();
+    return source;
+  });
+});
+
+// Get operating system platform
+ipcMain.handle('getOperatingSystem', async () => {
+  const Os = await process.platform;
+  return Os;
+});
+
+// Capture Electron window page
+ipcMain.handle('capture-electron-page', async () => {
+  const image = await mainWindow.capturePage();
+  return image.toDataURL().split(',')[1];
+});
+
+// Handle showing notification
+ipcMain.on('show-notification', (event, CallerDetails) => {
+  if (!notificationWindow) {
+    createNotificationWindow();
+    notificationWindow.once('ready-to-show', () => {
+      notificationWindow.webContents.send('update-notification', CallerDetails);
+    });
+  } else {
+    notificationWindow.webContents.send('update-notification', CallerDetails);
+  }
+});
+
+ipcMain.on('show-notification-window', () => {
+  if (notificationWindow) {
+    notificationWindow.show();
+  }
+});
+
+
+//show desktop notification for mac
+ipcMain.on('show-desktop-notification', async (event, CallerDetails) => {
+  const iconPath = path.join(__dirname, 'assets/appsconnect_icon.png'); // Your icon path
+  const notification = new Notification({
+    title: "", // Keep it empty to minimize the title display
+    body: CallerDetails.message || "You have a new notification", // Default message
+    icon: iconPath, // Your icon path
+  });
+
+  notification.show();
+
+  // Optionally, handle notification clicks
+  notification.on('click', () => {
+    console.log('Notification clicked');
+  });
+});
+
+// Handle notification response
+ipcMain.on('notification-response', (event, response) => {
+  if (response === 'reject') {
+    mainWindow.webContents.send('notification-action', 'reject');
+  } else if (response === 'audio') {
+    mainWindow.webContents.send('notification-action', 'audio');
+  } else if (response === 'video') {
+    mainWindow.webContents.send('notification-action', 'video');
+  }
+
+  // Hide notification window after button click
+  if (notificationWindow) {
+    notificationWindow.hide();
+  }
+});
+
+// Handle navigating to room
+ipcMain.on('navigate-to-room', (event, roomType) => {
+  if (mainWindow.isMinimized()) {
+    mainWindow.restore();
+  }
+  mainWindow.show();
+  mainWindow.focus();
+  mainWindow.loadFile('confieranceroom.html');
+});
+
+
+// -------------------- App Lifecycle -------------------- //
+
+app.setAppUserModelId("AppsConnect");
+// Event: App ready
+app.whenReady().then(async () => {
+  await checkCookieExpiration();
+  createWindow();
+  createTray();
+});
+
+// Event: All windows closed
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
+
+// Event: Recreate window if no windows are open
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow(); // Create window if no windows are open
+  } else {
+    // Show the main window if it's hidden or minimized
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore(); // Restore if minimized
+    } else if (!mainWindow.isVisible()) {
+      mainWindow.show(); // Show if it's hidden
+    }
+    mainWindow.focus(); // Focus the window
+  }
+});
+
+
+// Handle before quit
 app.on('before-quit', () => {
   if (notificationWindow) {
-    notificationWindow.close(); // Close the notification window if it's open
+    notificationWindow.close();
   }
   if (tray) {
-    tray.destroy(); // Destroy the tray icon
+    tray.destroy();
     tray = null;
   }
 });
-// Auto Updater event listeners
+
+// -------------------- Auto Updater Event Listeners -------------------- //
+
 autoUpdater.on('update-available', () => {
   console.log('Update available.');
 });
@@ -128,97 +283,17 @@ autoUpdater.on('error', (error) => {
   console.error('Update error:', error);
 });
 
-app.whenReady().then(() => {
-  createWindow();
-  createTray(); // Call tray creation only once after app is ready
-});
+// -------------------- Other Functions -------------------- //
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
-
-ipcMain.on('set-cookie', (event, cookieDetails) => {
-  session.defaultSession.cookies.set(cookieDetails, (error) => {
-    if (error) {
-      console.error('Error setting cookie:', error);
-    } else {
-      console.log('Cookie set successfully');
-    }
-  });
-});
-
-ipcMain.handle('get-cookies', async () => {
+async function checkCookieExpiration() {
   const cookies = await session.defaultSession.cookies.get({});
-  return cookies;
-});
+  if (cookies.length === 0) return;  // Exit if no cookies found
 
-ipcMain.handle('get-sources', async () => {
-  const { desktopCapturer } = require('electron');
-  const sources = await desktopCapturer.getSources({ types: ['screen', 'window'], thumbnailSize: { width: 854, height: 600 } });
-  return sources.map(source => {
-    source.thumbnailURL = source.thumbnail.toDataURL();
-    return source;
-  });
-});
+  const cookie = cookies[0];
+  const currentDate = new Date().toDateString();
+  const expirationDate = new Date(cookie.expirationDate * 1000).toDateString();
 
-ipcMain.handle('getOperatingSystem', async () => {
-  const Os = await process.platform;
-  return Os;
-});
-
-// Ensure handlers are registered only once when the app starts
-ipcMain.handle('capture-electron-page', async () => {
-  const image = await mainWindow.capturePage();
-  return image.toDataURL().split(',')[1];
-});
-
-// Handle notification actions from the notification window
-ipcMain.on('show-notification', (event, CallerDetails) => {
-  if (!notificationWindow) {
-    createNotificationWindow();
-  } else {
-    notificationWindow.show();
+  if (currentDate === expirationDate) {
+    await session.defaultSession.clearStorageData({ storages: ['cookies'] });
   }
-  notificationWindow.webContents.send('update-notification', CallerDetails);
-});
-
-// Handle the notification response
-ipcMain.on('notification-response', (event, response) => {
-  if (response === 'reject') {
-    mainWindow.webContents.send('notification-action', 'reject');
-  } else if (response === 'audio') {
-    mainWindow.webContents.send('notification-action', 'audio');
-  } else if (response === 'video') {
-    mainWindow.webContents.send('notification-action', 'video');
-  }
-
-  // Hide the notification window after button click
-  if (notificationWindow) {
-    notificationWindow.hide();
-    //mainWindow.loadFile('confieranceroom.html');
-  }
-});
-
-ipcMain.on('navigate-to-room', (event, roomType) => {
-  if (mainWindow.isMinimized()) {
-    mainWindow.restore(); // Restore the window if it's minimized
-  }
-  mainWindow.show();
-  mainWindow.focus(); 
-  mainWindow.loadFile('confieranceroom.html');
-});
-
-// Recreate window if the app is clicked on the dock and no windows are open
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
+}
