@@ -33,8 +33,12 @@ function createWindow() {
     mainWindow.show();
   });
 
-  setTimeout(function () {
-    mainWindow.loadFile('index.html');
+  setTimeout(() => {
+    if (mainWindow) {
+      mainWindow.loadFile('index.html');
+    } else {
+      console.error('Error: mainWindow is not initialized.');
+    }
   }, 5000);
 
   mainWindow.on('closed', () => {
@@ -77,7 +81,7 @@ function createNotificationWindow() {
 // -------------------- Tray Creation -------------------- //
 
 function createTray() {
-  if (tray === null) { 
+  if (tray === null) {
     if (process.platform === "darwin") {
       trayIcon = nativeImage.createFromPath(path.join(__dirname, 'assets/appsconnect_icon.png'));
       trayIcon = trayIcon.resize({ width: 16, height: 16 });
@@ -174,10 +178,13 @@ ipcMain.on('show-notification', (event, CallerDetails) => {
 });
 
 ipcMain.on('show-notification-window', () => {
-  if (notificationWindow) {
-    notificationWindow.show();
-  }
+  setTimeout(() => {
+    if (notificationWindow) {
+      notificationWindow.close(); // Close only if it's still valid
+    }
+  }, 15000); // 15 seconds
 });
+
 
 
 //show desktop notification for mac
