@@ -141,8 +141,11 @@
         callerImage.src = 'modules/images/default_user.svg';
       }
 
-      // Show the notification window after updating the DOM
-      window.electronAPI.send('show-notification-window');
+      setTimeout(() => {
+        // Show the notification window after updating the DOM
+        window.electronAPI.send('show-notification-window');
+      }, 5000);
+
     });
 
   </script>

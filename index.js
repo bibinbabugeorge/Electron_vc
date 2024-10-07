@@ -761,7 +761,7 @@ server.connect().then((events) => {
     }
   });
 
-  events.on(callbackEvents.DashboardParticipantsListSuccess, function (data) {
+  events.on(callbackEvents.DashboardParticipantsListSuccess, async function (data) {
     // Assign data.Data.RoomList to the global variable
     roomList = data.Data.RoomList;
 
@@ -770,7 +770,7 @@ server.connect().then((events) => {
 
     var dataObj = {
       commandType: "GetUserCallHistory",
-      Data: { UserId: getuserid() },
+      Data: { UserId: await getuserid() },
     };
     server.sendCommand(JSON.stringify(dataObj));
   });
@@ -975,8 +975,8 @@ function Logout() {
   location.href = "./index.html";
 }
 
-function acknowledgeUserStatus() {
-  var userId = getuserid();
+async function acknowledgeUserStatus() {
+  var userId = await getuserid();
   var data = { UserId: userId };
   var dataObj = { commandType: "AcknowledgeUserStatus", Data: data };
   server.sendCommand(JSON.stringify(dataObj));
@@ -1226,9 +1226,9 @@ function Login(username, room_id) {
   }
 }
 
-function JoinRoom(EventName, EventData) {
+async function JoinRoom(EventName, EventData) {
   ConsoleEvent(EventName, EventData);
-  var userId = getuserid();
+  var userId = await getuserid();
   roomObj.join(_username, userId, _roomId);
 }
 
