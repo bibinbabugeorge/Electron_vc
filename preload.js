@@ -14,6 +14,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onNotificationAction: (callback) => ipcRenderer.on('notification-action', (event, action) => callback(action)),
   sendResponse: (response) => ipcRenderer.send('notification-response', response),
   showNotification: (CallerDetails) => ipcRenderer.send('show-notification', CallerDetails),
+  showDesktopNotification: (CallerDetails) => ipcRenderer.send('show-desktop-notification', CallerDetails),
   closeNotificationWindow: () => ipcRenderer.send('close-notification-window'),
   receive: (channel, func) => {
     const validChannels = ['update-notification'];

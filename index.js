@@ -761,7 +761,7 @@ server.connect().then((events) => {
     }
   });
 
-  events.on(callbackEvents.DashboardParticipantsListSuccess, function (data) {
+  events.on(callbackEvents.DashboardParticipantsListSuccess, async function (data) {
     // Assign data.Data.RoomList to the global variable
     roomList = data.Data.RoomList;
 
@@ -770,7 +770,7 @@ server.connect().then((events) => {
 
     var dataObj = {
       commandType: "GetUserCallHistory",
-      Data: { UserId: getuserid() },
+      Data: { UserId: await getuserid() },
     };
     server.sendCommand(JSON.stringify(dataObj));
   });
@@ -942,24 +942,31 @@ function playringTone(ring, name = null) {
   }
 }
 
-function DesktopNotification(body) {
+async function DesktopNotification(body) {
+  let CallerData = await getCookie();
+  let Ostype = await window.electronAPI.getOperatingSystem();
+  if(Ostype = "darwin"){
+    window.electronAPI.showDesktopNotification(CallerData);
+  }else{
+  let iconpath = apiUri + "modules/images/appsconnect_icon.png"
   if (!("Notification" in window)) {
     // Check if the browser supports notifications
   } else if (Notification.permission === "granted") {
-    const notification = new Notification("Apps Connect", {
+    const notification = new Notification("", {
       body: body,
-      icon: "https://epic.appsteamtechnologies.com/web_custom/static/src/img/favicon.ico",
+      icon: iconpath
     });
   } else if (Notification.permission !== "denied") {
     Notification.requestPermission().then((permission) => {
       if (permission === "granted") {
-        const notification = new Notification("Apps Connect", {
+        const notification = new Notification("", {
           body: body,
-          icon: "https://epic.appsteamtechnologies.com/web_custom/static/src/img/favicon.ico",
+          icon: iconpath
         });
       }
     });
   }
+}
 }
 
 function Logout() {
@@ -968,8 +975,8 @@ function Logout() {
   location.href = "./index.html";
 }
 
-function acknowledgeUserStatus() {
-  var userId = getuserid();
+async function acknowledgeUserStatus() {
+  var userId = await getuserid();
   var data = { UserId: userId };
   var dataObj = { commandType: "AcknowledgeUserStatus", Data: data };
   server.sendCommand(JSON.stringify(dataObj));
@@ -1219,9 +1226,9 @@ function Login(username, room_id) {
   }
 }
 
-function JoinRoom(EventName, EventData) {
+async function JoinRoom(EventName, EventData) {
   ConsoleEvent(EventName, EventData);
-  var userId = getuserid();
+  var userId = await getuserid();
   roomObj.join(_username, userId, _roomId);
 }
 
