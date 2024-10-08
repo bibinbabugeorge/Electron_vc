@@ -1093,8 +1093,8 @@ let finalStream = null;
 let canvas;
 let ctx;
 
-$(".record-btn").click(async () => {
-  if (!$(".record-btn").hasClass("active")) {
+$(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(async () => {
+  if (!$(".record-btn,.mobile-view-record-btn").hasClass("active")) {
     // Reset recording chunks array
     recordedChunks = [];
     recordingActive = true;
@@ -1199,7 +1199,7 @@ $(".record-btn").click(async () => {
 
     mediaRecorder.start();
     captureFrames(); // Start capturing frames from the Electron page
-    $(".record-btn").toggleClass("active");
+    $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").toggleClass("active");
 
     // Timer function for showing recording time
     const startTime = new Date();
@@ -1212,7 +1212,7 @@ $(".record-btn").click(async () => {
       $(".record-active").html(
         `${hours > 9 ? hours : "0" + hours}:${minutes > 9 ? minutes : "0" + minutes}:${seconds > 9 ? seconds : "0" + seconds}`
       );
-      if ($(".record-btn").hasClass("active")) {
+      if ($(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").hasClass("active")) {
         requestAnimationFrame(setRecordTime);
       }
     };
@@ -1220,7 +1220,7 @@ $(".record-btn").click(async () => {
 
   } else {
     // Stop the recording
-    $(".record-btn").toggleClass("active");
+    $(".record-btn,.mobile-view-record-btn, .mobile-view-record-btn-start").toggleClass("active");
     if (mediaRecorder && mediaRecorder.state === 'recording') {
       mediaRecorder.stop();
     }

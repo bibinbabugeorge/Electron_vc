@@ -96,9 +96,10 @@ function createTray() {
         click: function () {
           if (!mainWindow) {
             createWindow();
-          } else {
+          } else if (!mainWindow.isVisible()) {
             mainWindow.show();
-            mainWindow.loadFile('dashboard.html');
+          } else {
+            mainWindow.focus(); // Bring the existing window to the front
           }
         }
       },
@@ -114,12 +115,15 @@ function createTray() {
     tray.setContextMenu(contextMenu);
 
     tray.on('click', () => {
+      if(process.platform == 'win32'){
       if (!mainWindow) {
         createWindow();
-      } else {
+      } else if (!mainWindow.isVisible()) {
         mainWindow.show();
-        mainWindow.loadFile('dashboard.html');
+      } else {
+        mainWindow.focus(); // Bring the existing window to the front
       }
+    } 
     });
   }
 }
@@ -166,18 +170,40 @@ ipcMain.handle('capture-electron-page', async () => {
 });
 
 // Handle showing notification
+// ipcMain.on('show-notification', (event, CallerDetails) => {
+//   if (!notificationWindow) {
+//     notificationWindow.webContents.send('update-notification', CallerDetails);
+//     notificationWindow.once('ready-to-show', () => {
+//       createNotificationWindow();
+//     });
+//   } else {
+//     notificationWindow.webContents.send('update-notification', CallerDetails);
+//   }
+// });
+
 ipcMain.on('show-notification', (event, CallerDetails) => {
   if (!notificationWindow) {
     createNotificationWindow();
-    notificationWindow.once('ready-to-show', () => {
+
+    // Load data into the notification window first, then show it
+    notificationWindow.webContents.once('did-finish-load', () => {
       notificationWindow.webContents.send('update-notification', CallerDetails);
     });
+    ipcMain.once('image-loaded', () => {
+      notificationWindow.show();
+    });
   } else {
+    // If the notification window already exists, just update the data and show it
     notificationWindow.webContents.send('update-notification', CallerDetails);
+    ipcMain.once('image-loaded', () => {
+      notificationWindow.show();
+    });
   }
 });
 
+
 ipcMain.on('show-notification-window', () => {
+  notificationWindow.show();
   setTimeout(() => {
     if (notificationWindow) {
       notificationWindow.close(); // Close only if it's still valid
@@ -191,8 +217,8 @@ ipcMain.on('show-notification-window', () => {
 ipcMain.on('show-desktop-notification', async (event, CallerDetails) => {
   const iconPath = path.join(__dirname, 'assets/appsconnect_icon.png'); // Your icon path
   const notification = new Notification({
-    title: "", // Keep it empty to minimize the title display
-    body: CallerDetails.message || "You have a new notification", // Default message
+    title: "AppsConnect", // Keep it empty to minimize the title display
+    body: CallerDetails || "You have a new notification", // Default message
     icon: iconPath, // Your icon path
   });
 
