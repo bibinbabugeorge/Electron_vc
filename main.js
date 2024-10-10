@@ -3,6 +3,9 @@ const { app, BrowserWindow, ipcMain, session, Notification, Screen, Tray, Menu, 
 const path = require('node:path');
 const { autoUpdater } = require('electron-updater');
 require('dotenv').config({ path: path.join(__dirname, 'modules/.env') });
+const fs = require('fs');
+const axios = require('axios');
+const https = require('https');
 
 // Variables to hold window instances
 let mainWindow;
@@ -115,15 +118,15 @@ function createTray() {
     tray.setContextMenu(contextMenu);
 
     tray.on('click', () => {
-      if(process.platform == 'win32'){
-      if (!mainWindow) {
-        createWindow();
-      } else if (!mainWindow.isVisible()) {
-        mainWindow.show();
-      } else {
-        mainWindow.focus(); // Bring the existing window to the front
+      if (process.platform == 'win32') {
+        if (!mainWindow) {
+          createWindow();
+        } else if (!mainWindow.isVisible()) {
+          mainWindow.show();
+        } else {
+          mainWindow.focus(); // Bring the existing window to the front
+        }
       }
-    } 
     });
   }
 }
@@ -256,6 +259,15 @@ ipcMain.on('navigate-to-room', (event, roomType) => {
   mainWindow.loadFile('confieranceroom.html');
 });
 
+ipcMain.handle('cache-images', async (event, images) => {
+  const result = await cacheImage(images);
+  return result;
+});
+
+ipcMain.handle('get-app-path', async () => {
+  const appPath = app.getPath('userData');
+  return appPath; // Return the application path
+});
 
 // -------------------- App Lifecycle -------------------- //
 
@@ -328,5 +340,55 @@ async function checkCookieExpiration() {
 
   if (currentDate === expirationDate) {
     await session.defaultSession.clearStorageData({ storages: ['cookies'] });
+  }
+}
+
+const axiosInstance = axios.create({
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false // Ignore SSL certificate verification
+  })
+});
+
+const cacheImage = async (imageUrls) => {
+  const cachePath = app.getPath('userData');
+  const cacheDir = path.join(cachePath, 'cache');
+
+  if (!fs.existsSync(cacheDir)) {
+    fs.mkdirSync(cacheDir);
+  }
+  try {
+    for (const imageUrl of imageUrls) {
+      try {
+        const apiUri = process.env.Server_Url;
+        const imageName = path.basename(imageUrl);
+        const filePath = path.join(cacheDir, imageName);
+
+        if (fs.existsSync(filePath)) {
+          continue; // Image already cached
+        }
+
+        // Download the image using axios with the custom agent
+        const response = await axiosInstance({
+          url: `${apiUri}uploads/${imageUrl}`,
+          method: 'GET',
+          responseType: 'stream',
+        });
+
+        const writer = fs.createWriteStream(filePath);
+        response.data.pipe(writer);
+
+        await new Promise((resolve, reject) => {
+          writer.on('finish', resolve);
+          writer.on('error', reject);
+        });
+
+      } catch (error) {
+        console.error(`Error downloading image: ${error.message}`);
+        throw error;
+      }
+    }
+    return "success"
+  } catch {
+    return "fail"
   }
 }

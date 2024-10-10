@@ -1049,11 +1049,12 @@ $("#groupIcon").change(function () {
     contentType: false,
     data: form,
   };
-
+  
   $.ajax(settings).done(async function (response) {
     console.log(response);
     response = JSON.parse(response);
     if (response.success) {
+      window.electronAPI.cacheImages(response.filename);
       $(".Img_ProfilePic").attr("src", fileUploadPath + response.filename);
       $(".pro-img").attr("src", fileUploadPath + response.filename);
 

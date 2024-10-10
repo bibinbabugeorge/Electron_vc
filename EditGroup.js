@@ -99,6 +99,7 @@ $("#groupIcon").change(function () {
     console.log(response);
     response = JSON.parse(response)
     if (response.success) {
+      window.electronAPI.cacheImages(response.filename);
       $("#groupImg").attr("src", fileUploadPath + response.filename);
       IconName = response.filename;
     }

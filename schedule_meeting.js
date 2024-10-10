@@ -92,11 +92,12 @@ $("#groupIcon").change(function () {
         "data": form
     };
 
-    $.ajax(settings).done(function (response) {
+    $.ajax(settings).done(async function (response) {
         console.log(response);
         response = JSON.parse(response)
         if (response.success) {
-            $("#groupImg").attr("src", "uploads/" + response.filename);
+            await window.electronAPI.cacheImages(response.filename);
+            $("#groupImg").attr("src", fileUploadPath + response.filename);
             IconName = response.filename;
         }
     });

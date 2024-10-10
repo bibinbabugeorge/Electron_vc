@@ -1,6 +1,17 @@
 const apiUri = window.env.Server_Url;
 const server = new window.conference(apiUri.replace('https', 'wss'));
-const fileUploadPath = apiUri + "uploads/";
+let fileUploadPath = '';
+
+// Get the app path and assign it to the fileUploadPath variable
+window.electronAPI.getAppPath()
+  .then(appPath => {
+    console.log('Retrieved App Path:', appPath); // Debug line
+    fileUploadPath = appPath + "/Cache/";
+    console.log('File Upload Path:', fileUploadPath);
+  })
+  .catch(err => {
+    console.error('Error getting app path:', err);
+  });
 
 // Listen for actions from the main process
 // Handle the notification action from the main process
@@ -764,9 +775,31 @@ server.connect().then((events) => {
   events.on(callbackEvents.DashboardParticipantsListSuccess, async function (data) {
     // Assign data.Data.RoomList to the global variable
     roomList = data.Data.RoomList;
+    const UserImages = [];
+    roomList.forEach(element => {
+      // Check if groupIcon is valid and not null, empty, or undefined
+      if (element.groupIcon && element.groupIcon !== '' && element.groupIcon !== null) {
+        UserImages.push(element.groupIcon);
+      }
 
-    if (window.location.href.includes("dashboard.html"))
-      dashboardInit(data.Data.RoomList);
+      if (element.joinedusers.length > 0) {
+        element.joinedusers.forEach(users => {
+          // Check if profileImg is valid and not null, empty, or undefined
+          if (users.profileImg && users.profileImg !== '' && users.profileImg !== null) {
+            UserImages.push(users.profileImg);
+          }
+        });
+      }
+    });
+    const result = await window.electronAPI.cacheImages(UserImages);
+    if (result === 'success') {
+      if (window.location.href.includes("dashboard.html"))
+        dashboardInit(data.Data.RoomList);
+    } else {
+      fileUploadPath = fileUploadPath = apiUri + "uploads/";
+      if (window.location.href.includes("dashboard.html"))
+        dashboardInit(data.Data.RoomList);
+    }
 
     var dataObj = {
       commandType: "GetUserCallHistory",
