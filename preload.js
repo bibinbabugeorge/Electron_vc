@@ -24,9 +24,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   send: (channel, data) => ipcRenderer.send(channel, data),
   getAppPath: () => ipcRenderer.invoke('get-app-path'),
-  cacheImages: async (imageUrls) => {
-    return await ipcRenderer.invoke('cache-images', imageUrls);
-  }
+  cacheImages: (imageUrls) => ipcRenderer.invoke('cache-images', imageUrls),
+  onImageCached: (callback) => ipcRenderer.on('image-cached', (event, data) => callback(data)),
+  onStoreImagePath: (callback) => ipcRenderer.on('store-image-path', (event, data) => callback(data))
 });
 
 // Loading enviornmental variables form env file

@@ -791,21 +791,25 @@ server.connect().then((events) => {
         });
       }
     });
-    const result = await window.electronAPI.cacheImages(UserImages);
-    if (result === 'success') {
-      if (window.location.href.includes("dashboard.html"))
-        dashboardInit(data.Data.RoomList);
-    } else {
-      fileUploadPath = fileUploadPath = apiUri + "uploads/";
-      if (window.location.href.includes("dashboard.html"))
-        dashboardInit(data.Data.RoomList);
-    }
-
+    window.electronAPI.cacheImages(UserImages);
+    if (window.location.href.includes("dashboard.html"))
+      dashboardInit(data.Data.RoomList);
     var dataObj = {
       commandType: "GetUserCallHistory",
       Data: { UserId: await getuserid() },
     };
     server.sendCommand(JSON.stringify(dataObj));
+  });
+
+  window.electronAPI.onImageCached(({ imageUrl, filePath }) => {
+    const imgElements = document.querySelectorAll(`img[data-actual-src="${imageUrl}"]`);
+    imgElements.forEach(img => {
+      img.src = `${filePath}?v=${new Date().getTime()}`; // Cache-busting
+    });
+  });
+
+  window.electronAPI.onStoreImagePath(({ imageUrl, filePath }) => {
+    localStorage.setItem(imageUrl, filePath);
   });
 
   events.on(callbackEvents.GetUserCallHistoryCallback, function (data) {
@@ -2494,3 +2498,16 @@ function pong(pingTime) {
   let latency = Date.now() - pingTime;
   console.log("Latency: " + latency + "ms");
 }
+
+function updateImages() {
+  const imgElements = document.querySelectorAll('img[data-actual-src]');
+  imgElements.forEach(img => {
+    const imageUrl = img.getAttribute('data-actual-src');
+    const filePath = localStorage.getItem(imageUrl);
+    if (filePath) {
+      img.src = `${filePath}?v=${new Date().getTime()}`; // Cache-busting
+    }
+  });
+}
+
+

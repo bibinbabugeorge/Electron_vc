@@ -48,6 +48,7 @@ async function dashboardInit(Roomlist) {
     //bindindividualCalls(individualCalls);
     bindGroupCalls(GroupCalls);
     bindFavouriteCalls(FavouriteContact);
+    updateImages();
   }
 
   var scheduleUl = $("#schedule-ul");
@@ -880,10 +881,9 @@ function bindRecentCalls(participant) {
                     <div class="col-lg-8 col-md-7 col-sm-8 col-7">
                     <div class="user-profile-container" data-bs-toggle="modal" data-bs-target="#profileView">
                     <div class="user-profile-image">
-                    <img class="user-big-icon rounded-circle" src=${element.joinedusers[0].profileImg == null
-            ? "modules/images/default_user.svg"
-            : fileUploadPath + element.joinedusers[0].profileImg
-          }>
+                    <img id="user-img-${element.joinedusers[0].profileImg}" class="user-big-icon rounded-circle" src="modules/images/default_user.svg"
+                    data-actual-src="${element.joinedusers[0].profileImg}">
+
                     ${element.joinedusers[0].status == "Active"
             ? '<div class="online-status-icon online-view"></div>'
             : ""
@@ -928,10 +928,10 @@ function bindRecentCalls(participant) {
                     <div class="col-lg-8 col-md-7 col-sm-8 col-7">
                     <div class="user-profile-container" data-bs-toggle="modal" data-bs-target="#profileView">
                     <div class="user-profile-image">
-                    <img class="user-big-icon rounded-circle"  src=${element.groupIcon == "" || element.groupIcon == null
-            ? "modules/images/group_icon.svg"
-            : fileUploadPath + element.groupIcon
-          }>
+
+                    <img id="user-img-${element.groupIcon}" class="user-big-icon rounded-circle" src="modules/images/group_icon.svg"
+                    data-actual-src="${element.groupIcon}">
+
                   ${element.status == "Active"
             ? '<div class="online-status-icon online-view"></div>'
             : ""
@@ -996,10 +996,8 @@ function bindGroupCalls(participant) {
                 <div class="col-lg-8 col-md-7 col-sm-8 col-7">
                 <div class="user-profile-container" data-bs-toggle="modal" data-bs-target="#profileView">
                 <div class="user-profile-image">
-                <img class="user-big-icon rounded-circle"  src=${element.groupIcon == null || element.groupIcon == ""
-          ? "modules/images/group_icon.svg"
-          : fileUploadPath + element.groupIcon
-        }>
+               <img id="user-img-${element.groupIcon}" class="user-big-icon rounded-circle" src="modules/images/group_icon.svg"
+                    data-actual-src="${element.groupIcon}">
               ${element.status == "Active"
           ? '<div class="online-status-icon online-view"></div>'
           : ""
@@ -1049,12 +1047,12 @@ $("#groupIcon").change(function () {
     contentType: false,
     data: form,
   };
-  
+
   $.ajax(settings).done(async function (response) {
     console.log(response);
     response = JSON.parse(response);
     if (response.success) {
-      window.electronAPI.cacheImages(response.filename);
+      const result = await window.electronAPI.cacheImages(response.filename);
       $(".Img_ProfilePic").attr("src", fileUploadPath + response.filename);
       $(".pro-img").attr("src", fileUploadPath + response.filename);
 

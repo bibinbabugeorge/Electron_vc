@@ -259,16 +259,20 @@ ipcMain.on('navigate-to-room', (event, roomType) => {
   mainWindow.loadFile('confieranceroom.html');
 });
 
-ipcMain.handle('cache-images', async (event, images) => {
-  const result = await cacheImage(images);
-  return result;
-});
+// ipcMain.handle('cache-images', async (event, images) => {
+//   const result = await cacheImage(images);
+//   return result;
+// });
 
 ipcMain.handle('get-app-path', async () => {
   const appPath = app.getPath('userData');
   return appPath; // Return the application path
 });
 
+ipcMain.handle('cache-images', async (event, imageUrls) => {
+  const result = await cacheImage(imageUrls, event.sender);
+  return result;
+});
 // -------------------- App Lifecycle -------------------- //
 
 app.setAppUserModelId("AppsConnect");
@@ -349,46 +353,91 @@ const axiosInstance = axios.create({
   })
 });
 
-const cacheImage = async (imageUrls) => {
+// const cacheImage = async (imageUrls) => {
+//   const cachePath = app.getPath('userData');
+//   const cacheDir = path.join(cachePath, 'cache');
+
+//   if (!fs.existsSync(cacheDir)) {
+//     fs.mkdirSync(cacheDir);
+//   }
+//   try {
+//     for (const imageUrl of imageUrls) {
+//       try {
+//         const apiUri = process.env.Server_Url;
+//         const imageName = path.basename(imageUrl);
+//         const filePath = path.join(cacheDir, imageName);
+
+//         if (fs.existsSync(filePath)) {
+//           continue; // Image already cached
+//         }
+
+//         // Download the image using axios with the custom agent
+//         const response = await axiosInstance({
+//           url: `${apiUri}uploads/${imageUrl}`,
+//           method: 'GET',
+//           responseType: 'stream',
+//         });
+
+//         const writer = fs.createWriteStream(filePath);
+//         response.data.pipe(writer);
+
+//         await new Promise((resolve, reject) => {
+//           writer.on('finish', resolve);
+//           writer.on('error', reject);
+//         });
+
+//       } catch (error) {
+//         console.error(`Error downloading image: ${error.message}`);
+//         throw error;
+//       }
+//     }
+//     return "success"
+//   } catch {
+//     return "fail"
+//   }
+// }
+
+const cacheImage = async (imageUrls, webContents) => {
   const cachePath = app.getPath('userData');
   const cacheDir = path.join(cachePath, 'cache');
 
   if (!fs.existsSync(cacheDir)) {
     fs.mkdirSync(cacheDir);
   }
-  try {
-    for (const imageUrl of imageUrls) {
-      try {
-        const apiUri = process.env.Server_Url;
-        const imageName = path.basename(imageUrl);
-        const filePath = path.join(cacheDir, imageName);
 
-        if (fs.existsSync(filePath)) {
-          continue; // Image already cached
-        }
+  for (const imageUrl of imageUrls) {
+    try {
+      const apiUri = process.env.Server_Url;
+      const imageName = path.basename(imageUrl);
+      const filePath = path.join(cacheDir, imageName);
 
-        // Download the image using axios with the custom agent
-        const response = await axiosInstance({
-          url: `${apiUri}uploads/${imageUrl}`,
-          method: 'GET',
-          responseType: 'stream',
-        });
-
-        const writer = fs.createWriteStream(filePath);
-        response.data.pipe(writer);
-
-        await new Promise((resolve, reject) => {
-          writer.on('finish', resolve);
-          writer.on('error', reject);
-        });
-
-      } catch (error) {
-        console.error(`Error downloading image: ${error.message}`);
-        throw error;
+      if (fs.existsSync(filePath)) {
+        webContents.send('image-cached', { imageUrl, filePath });
+        continue; // Image already cached
       }
+
+      const response = await axiosInstance({
+        url: `${apiUri}uploads/${imageUrl}`,
+        method: 'GET',
+        responseType: 'stream',
+      });
+
+      const writer = fs.createWriteStream(filePath);
+      response.data.pipe(writer);
+
+      await new Promise((resolve, reject) => {
+        writer.on('finish', () => {
+          webContents.send('image-cached', { imageUrl, filePath });
+          webContents.send('store-image-path', { imageUrl, filePath });
+          resolve();
+        });
+        writer.on('error', reject);
+      });
+
+    } catch (error) {
+      console.error(`Error downloading image: ${error.message}`);
     }
-    return "success"
-  } catch {
-    return "fail"
   }
+
+  return "success";
 }
