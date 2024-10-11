@@ -1052,9 +1052,8 @@ $("#groupIcon").change(function () {
     console.log(response);
     response = JSON.parse(response);
     if (response.success) {
-      const result = await window.electronAPI.cacheImages(response.filename);
-      $(".Img_ProfilePic").attr("src", fileUploadPath + response.filename);
-      $(".pro-img").attr("src", fileUploadPath + response.filename);
+      $(".Img_ProfilePic").attr("src", serverfileUploadPath + response.filename);
+      $(".pro-img").attr("src", serverfileUploadPath + response.filename);
 
       var data = {
         ProfileImg: response.filename,
@@ -1465,8 +1464,8 @@ async function fillDashboardDetails() {
       UserDetails.profilePic != undefined &&
       UserDetails.profilePic != ""
     ) {
-      $(".Img_ProfilePic").attr("src", fileUploadPath + UserDetails.profilePic);
-      $(".pro-img").attr("src", fileUploadPath + UserDetails.profilePic);
+      $(".Img_ProfilePic").attr("src", serverfileUploadPath + UserDetails.profilePic);
+      $(".pro-img").attr("src", serverfileUploadPath + UserDetails.profilePic);
     }
 
     $("#ContactVisibilityToggle,#ContactVisibilityToggleMobile").prop("checked", UserDetails.isVisible);

@@ -1,16 +1,12 @@
 const apiUri = window.env.Server_Url;
 const server = new window.conference(apiUri.replace('https', 'wss'));
+const serverfileUploadPath = apiUri + "uploads/";
 let fileUploadPath = '';
 
 // Get the app path and assign it to the fileUploadPath variable
 window.electronAPI.getAppPath()
   .then(appPath => {
-    console.log('Retrieved App Path:', appPath); // Debug line
     fileUploadPath = appPath + "/Cache/";
-    console.log('File Upload Path:', fileUploadPath);
-  })
-  .catch(err => {
-    console.error('Error getting app path:', err);
   });
 
 // Listen for actions from the main process

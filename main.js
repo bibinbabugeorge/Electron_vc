@@ -31,6 +31,7 @@ function createWindow() {
   });
 
   mainWindow.loadFile('splash.html');
+  //mainWindow.webContents.openDevTools();
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
@@ -186,6 +187,7 @@ ipcMain.handle('capture-electron-page', async () => {
 
 ipcMain.on('show-notification', (event, CallerDetails) => {
   if (!notificationWindow) {
+    CallerDetails.profilePic = app.getPath('userData') + '/cache/' + CallerDetails.profilePic;
     createNotificationWindow();
 
     // Load data into the notification window first, then show it
@@ -402,13 +404,17 @@ const cacheImage = async (imageUrls, webContents) => {
   const cacheDir = path.join(cachePath, 'cache');
 
   if (!fs.existsSync(cacheDir)) {
-    fs.mkdirSync(cacheDir);
+    fs.mkdirSync(cacheDir, { recursive: true });
   }
 
-  for (const imageUrl of imageUrls) {
+  for (let i = 0; i < imageUrls.length; i++) {
+    const imageUrl = imageUrls[i];
     try {
       const apiUri = process.env.Server_Url;
-      const imageName = path.basename(imageUrl);
+      
+      // Use URL object to handle image names safely
+      const imageUrlObject = new URL(imageUrl, apiUri);
+      const imageName = path.basename(imageUrlObject.pathname);
       const filePath = path.join(cacheDir, imageName);
 
       if (fs.existsSync(filePath)) {
@@ -421,7 +427,6 @@ const cacheImage = async (imageUrls, webContents) => {
         method: 'GET',
         responseType: 'stream',
       });
-
       const writer = fs.createWriteStream(filePath);
       response.data.pipe(writer);
 
@@ -440,4 +445,4 @@ const cacheImage = async (imageUrls, webContents) => {
   }
 
   return "success";
-}
+};
