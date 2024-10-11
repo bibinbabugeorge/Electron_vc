@@ -16,6 +16,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   showNotification: (CallerDetails) => ipcRenderer.send('show-notification', CallerDetails),
   showDesktopNotification: (CallerDetails) => ipcRenderer.send('show-desktop-notification', CallerDetails),
   closeNotificationWindow: () => ipcRenderer.send('close-notification-window'),
+
+  onStopCall: (callback) => ipcRenderer.on('stop-call', callback),
+  sendCallStopped: () => ipcRenderer.send('call-stopped'),
+
   receive: (channel, func) => {
     const validChannels = ['update-notification'];
     if (validChannels.includes(channel)) {
