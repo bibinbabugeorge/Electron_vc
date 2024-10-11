@@ -789,7 +789,7 @@ server.connect().then((events) => {
       if (data.Data.UserDetails.profilePic != null) {
         $("#CallerImg").attr(
           "src",
-          "uploads/" + data.Data.UserDetails.profilePic
+          fileUploadPath + data.Data.UserDetails.profilePic
         );
       }
       localStorage.setItem("RoomId", data.Data.RoomId);
@@ -931,7 +931,7 @@ function playringTone(ring, name = null) {
       if (callPopup && missedCallNotification) {
         DesktopNotification(`Missed a call from ${name}`);
       }
-    }, 200000);
+    }, 20000);
     if (MeetingInvitationNotification)
       DesktopNotification(`Incoming call from ${name}`);
   } else {
@@ -943,30 +943,29 @@ function playringTone(ring, name = null) {
 }
 
 async function DesktopNotification(body) {
-  let CallerData = await getCookie();
   let Ostype = await window.electronAPI.getOperatingSystem();
-  if(Ostype = "darwin"){
-    window.electronAPI.showDesktopNotification(CallerData);
-  }else{
-  let iconpath = apiUri + "modules/images/appsconnect_icon.png"
-  if (!("Notification" in window)) {
-    // Check if the browser supports notifications
-  } else if (Notification.permission === "granted") {
-    const notification = new Notification("", {
-      body: body,
-      icon: iconpath
-    });
-  } else if (Notification.permission !== "denied") {
-    Notification.requestPermission().then((permission) => {
-      if (permission === "granted") {
-        const notification = new Notification("", {
-          body: body,
-          icon: iconpath
-        });
-      }
-    });
+  if (Ostype == "darwin") {
+    window.electronAPI.showDesktopNotification(body);
+  } else {
+    let iconpath = apiUri + "modules/images/appsconnect_icon.png"
+    if (!("Notification" in window)) {
+      // Check if the browser supports notifications
+    } else if (Notification.permission === "granted") {
+      const notification = new Notification("AppsConnect", {
+        body: body,
+        icon: iconpath
+      });
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          const notification = new Notification("AppsConnect", {
+            body: body,
+            icon: iconpath
+          });
+        }
+      });
+    }
   }
-}
 }
 
 function Logout() {

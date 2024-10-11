@@ -400,7 +400,7 @@
     </g>
     <rect class="mobile-screen-record-c" width="10" height="10" rx="2" transform="translate(11 11)" />
     </svg>
-    05:23:45
+      <p class="mb-0 record-active" style="position: relative;bottom: 25px;left: 50px;font-size: 13px;font-weight: 400;color: #808486;">00:00:00</p>
     </button>`);
   }
 
