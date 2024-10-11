@@ -45,8 +45,9 @@ function createWindow() {
     mainWindow = null;
   });
 
-  mainWindow.on('close', (event) => {
+  mainWindow.on('close', async (event) => {
     event.preventDefault(); // Prevent the window from closing
+    await appQuit(); // removing user from call if user closes window in ongoing call
     mainWindow.hide(); // Hide the window instead
   });
 
@@ -115,15 +116,15 @@ function createTray() {
     tray.setContextMenu(contextMenu);
 
     tray.on('click', () => {
-      if(process.platform == 'win32'){
-      if (!mainWindow) {
-        createWindow();
-      } else if (!mainWindow.isVisible()) {
-        mainWindow.show();
-      } else {
-        mainWindow.focus(); // Bring the existing window to the front
+      if (process.platform == 'win32') {
+        if (!mainWindow) {
+          createWindow();
+        } else if (!mainWindow.isVisible()) {
+          mainWindow.show();
+        } else {
+          mainWindow.focus(); // Bring the existing window to the front
+        }
       }
-    } 
     });
   }
 }
@@ -170,17 +171,6 @@ ipcMain.handle('capture-electron-page', async () => {
 });
 
 // Handle showing notification
-// ipcMain.on('show-notification', (event, CallerDetails) => {
-//   if (!notificationWindow) {
-//     notificationWindow.webContents.send('update-notification', CallerDetails);
-//     notificationWindow.once('ready-to-show', () => {
-//       createNotificationWindow();
-//     });
-//   } else {
-//     notificationWindow.webContents.send('update-notification', CallerDetails);
-//   }
-// });
-
 ipcMain.on('show-notification', (event, CallerDetails) => {
   if (!notificationWindow) {
     createNotificationWindow();
@@ -304,21 +294,7 @@ app.on('before-quit', async (event) => {
     tray.destroy();
     tray = null;
   }
-
-  // Ensure the call is stopped before quitting the app
-  if (mainWindow) {
-    // Send the "stop-call" event to the renderer process (handled in conferenceroom.js)
-    mainWindow.webContents.send('stop-call');
-
-    // Wait for confirmation from the renderer process that the call has ended
-    ipcMain.once('call-stopped', () => {
-      // Once confirmed, quit the app
-      app.quit();
-    });
-  } else {
-    // If no mainWindow, quit immediately
-    app.quit();
-  }
+  await appQuit();
 });
 
 // -------------------- Auto Updater Event Listeners -------------------- //
@@ -348,5 +324,18 @@ async function checkCookieExpiration() {
 
   if (currentDate === expirationDate) {
     await session.defaultSession.clearStorageData({ storages: ['cookies'] });
+  }
+}
+
+async function appQuit() {
+  if (mainWindow) {
+    // Send the "stop-call" event to the renderer process (handled in conferenceroom.js)
+    mainWindow.webContents.send('stop-call');
+    ipcMain.once('call-stopped', () => {
+      // Once confirmed, quit the app
+      app.quit();
+    });
+  } else {
+    app.quit();
   }
 }
