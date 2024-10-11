@@ -133,19 +133,12 @@
 
       // Update the text of the caller's name
       callerName.textContent = userDetails.name || 'Unknown Caller';
-
-      // Check if profilePic exists, else set to default image
-      if (userDetails.profilePic) {
-        callerImage.src = filePath + userDetails.profilePic;
-      } else {
-        callerImage.src = 'modules/images/default_user.svg';
+      const img = new Image();
+      img.onload = () => {
+        callerImage.src = img.src;
+        window.electronAPI.send('image-loaded');
       }
-
-      setTimeout(() => {
-        // Show the notification window after updating the DOM
-        window.electronAPI.send('show-notification-window');
-      }, 5000);
-
+      img.src = userDetails.profilePic ? filePath + userDetails.profilePic : 'modules/images/default_user.svg';
     });
 
   </script>

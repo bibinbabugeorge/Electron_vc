@@ -51,7 +51,6 @@ async function dashboardInit(Roomlist) {
   }
 
   var scheduleUl = $("#schedule-ul");
-  debugger
   $("#schedule-meeting").show();
   $(".schedul-container li").hide();
   Roomlist.forEach((room) => {
