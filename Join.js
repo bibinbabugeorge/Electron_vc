@@ -4,11 +4,13 @@ var _UserId = null;
 let userType = "";
 
 function setCookie(UserDetail, expDays) {
+    const oneMonthInSeconds = 30 * 24 * 60 * 60; // Approximate seconds in a month
+    const expiryDate = Math.floor(Date.now() / 1000) + oneMonthInSeconds;
     window.electronAPI.setCookie({
         url: 'http://localhost',
         name: 'UserDetail',
         value: UserDetail,
-        expirationDate: Math.floor(Date.now() / 1000) + 3600 // Expiration time set to 1 hour
+        expirationDate: expiryDate
     });
 }
 

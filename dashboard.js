@@ -51,6 +51,7 @@ async function dashboardInit(Roomlist) {
   }
 
   var scheduleUl = $("#schedule-ul");
+  debugger
   $("#schedule-meeting").show();
   $(".schedul-container li").hide();
   Roomlist.forEach((room) => {
@@ -84,6 +85,7 @@ async function dashboardInit(Roomlist) {
         }
 
         if (new Date() > istTimestamp || !isToday(istTimestamp)) {
+          $("#schedule-meeting").show();
           return;
         }
 

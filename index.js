@@ -1,6 +1,19 @@
-const apiUri = 'https://vps271818.vps.ovh.ca:3024/';
+const apiUri = window.env.Server_Url;
 const server = new window.conference(apiUri.replace('https', 'wss'));
 const fileUploadPath = apiUri + "uploads/";
+
+// Listen for actions from the main process
+// Handle the notification action from the main process
+window.electronAPI.onNotificationAction((event, action) => {
+  console.log('Received action:', action); // For debugging
+  if (event === 'reject') {
+    RejectCallRequest(); // Call the function to reject the call
+  } else if (event === 'audio') {
+    JoinRoomRequest('audio'); // Join the room with audio only
+  } else if (event === 'video') {
+    JoinRoomRequest('video'); // Join the room with video
+  }
+});
 
 let producer = null;
 let roomObj = null;
@@ -183,8 +196,7 @@ server.connect().then((events) => {
         );
       }
       localStorage.setItem("RoomId", data.Data.RoomId);
-      $("#incoming-popup").show();
-      // $('#exampleModal').modal('show');
+      window.electronAPI.showNotification(data.Data.UserDetails);
       playringTone(true, data.Data.UserDetails.name);
     }
   });
@@ -749,7 +761,7 @@ server.connect().then((events) => {
     }
   });
 
-  events.on(callbackEvents.DashboardParticipantsListSuccess, function (data) {
+  events.on(callbackEvents.DashboardParticipantsListSuccess, async function (data) {
     // Assign data.Data.RoomList to the global variable
     roomList = data.Data.RoomList;
 
@@ -758,7 +770,7 @@ server.connect().then((events) => {
 
     var dataObj = {
       commandType: "GetUserCallHistory",
-      Data: { UserId: getuserid() },
+      Data: { UserId: await getuserid() },
     };
     server.sendCommand(JSON.stringify(dataObj));
   });
@@ -781,7 +793,7 @@ server.connect().then((events) => {
         );
       }
       localStorage.setItem("RoomId", data.Data.RoomId);
-      $("#incoming-popup").show();
+      window.electronAPI.showNotification(data.Data.UserDetails);
       playringTone(true, data.Data.UserDetails.name);
       DashboardParticipantsList("");
     }
@@ -919,7 +931,7 @@ function playringTone(ring, name = null) {
       if (callPopup && missedCallNotification) {
         DesktopNotification(`Missed a call from ${name}`);
       }
-    }, 20000);
+    }, 200000);
     if (MeetingInvitationNotification)
       DesktopNotification(`Incoming call from ${name}`);
   } else {
@@ -930,24 +942,31 @@ function playringTone(ring, name = null) {
   }
 }
 
-function DesktopNotification(body) {
+async function DesktopNotification(body) {
+  let CallerData = await getCookie();
+  let Ostype = await window.electronAPI.getOperatingSystem();
+  if(Ostype = "darwin"){
+    window.electronAPI.showDesktopNotification(CallerData);
+  }else{
+  let iconpath = apiUri + "modules/images/appsconnect_icon.png"
   if (!("Notification" in window)) {
     // Check if the browser supports notifications
   } else if (Notification.permission === "granted") {
-    const notification = new Notification("Apps Connect", {
+    const notification = new Notification("", {
       body: body,
-      icon: "https://epic.appsteamtechnologies.com/web_custom/static/src/img/favicon.ico",
+      icon: iconpath
     });
   } else if (Notification.permission !== "denied") {
     Notification.requestPermission().then((permission) => {
       if (permission === "granted") {
-        const notification = new Notification("Apps Connect", {
+        const notification = new Notification("", {
           body: body,
-          icon: "https://epic.appsteamtechnologies.com/web_custom/static/src/img/favicon.ico",
+          icon: iconpath
         });
       }
     });
   }
+}
 }
 
 function Logout() {
@@ -956,21 +975,21 @@ function Logout() {
   location.href = "./index.html";
 }
 
-function acknowledgeUserStatus() {
-  var userId = getuserid();
+async function acknowledgeUserStatus() {
+  var userId = await getuserid();
   var data = { UserId: userId };
   var dataObj = { commandType: "AcknowledgeUserStatus", Data: data };
   server.sendCommand(JSON.stringify(dataObj));
 }
 
 function setCookie(UserDetail, expDays) {
-  //sessionStorage.setItem('user_details=', UserDetail);
-
+  const oneMonthInSeconds = 30 * 24 * 60 * 60; // Approximate seconds in a month
+  const expiryDate = Math.floor(Date.now() / 1000) + oneMonthInSeconds;
   window.electronAPI.setCookie({
     url: 'http://localhost',
     name: 'UserDetail',
     value: UserDetail,
-    expirationDate: Math.floor(Date.now() / 1000) + 3600 // Expiration time set to 1 hour
+    expirationDate: expiryDate
   });
 }
 
@@ -1207,9 +1226,9 @@ function Login(username, room_id) {
   }
 }
 
-function JoinRoom(EventName, EventData) {
+async function JoinRoom(EventName, EventData) {
   ConsoleEvent(EventName, EventData);
-  var userId = getuserid();
+  var userId = await getuserid();
   roomObj.join(_username, userId, _roomId);
 }
 
@@ -1936,8 +1955,8 @@ async function enumerateDevices() {
         let el = null;
         let mel = null;
         if ("audioinput" === device.kind) {
-          // el = audioSelect;
-          // mel = audioSelectMobile;
+          el = audioSelect;
+          mel = audioSelectMobile;
           audioDevices.push({
             deviceId: device.deviceId,
             label: device.label,
@@ -2003,12 +2022,11 @@ function JoinRoomRequest(type) {
   } else {
     localStorage.setItem("video", true);
   }
-  location.href = "./confieranceroom.html"; //To be Noted name
+  window.electronAPI.send('navigate-to-room', type);
 }
 
 function RejectCallRequest() {
   callPopup = false;
-  $("#incoming-popup").hide();
   playringTone(false);
 
   var dataObj = {
