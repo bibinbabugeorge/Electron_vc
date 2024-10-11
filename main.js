@@ -258,13 +258,33 @@ app.on('activate', () => {
 
 
 // Handle before quit
-app.on('before-quit', () => {
+app.on('before-quit', async (event) => {
+  event.preventDefault(); // Prevent the app from quitting immediately
+
+  // Close notification window if it exists
   if (notificationWindow) {
     notificationWindow.close();
   }
+
+  // Destroy the tray if it exists
   if (tray) {
     tray.destroy();
     tray = null;
+  }
+
+  // Ensure the call is stopped before quitting the app
+  if (mainWindow) {
+    // Send the "stop-call" event to the renderer process (handled in conferenceroom.js)
+    mainWindow.webContents.send('stop-call');
+
+    // Wait for confirmation from the renderer process that the call has ended
+    ipcMain.once('call-stopped', () => {
+      // Once confirmed, quit the app
+      app.quit();
+    });
+  } else {
+    // If no mainWindow, quit immediately
+    app.quit();
   }
 });
 
