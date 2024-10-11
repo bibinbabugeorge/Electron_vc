@@ -62,14 +62,28 @@ $("#epic_CameraSwitch").click(function () {
   cameraSwitchReplace();
 });
 
-// function to stop call
-$("#epic_StopCall,#epic_StopCallMob").click(async function () {
+// Define a reusable stopCall function
+async function stopCall() {
   if (recordingActive) {
     endTime = Date.now();
     await mediaRecorder.stop();
   }
   await stopCallSwitch();
+}
+
+// Attach stopCall to button click events
+$("#epic_StopCall,#epic_StopCallMob").click(async function () {
+  await stopCall();
 });
+
+// Listen for the 'stop-call' event from the main process (via preload.js)
+window.electronAPI.onStopCall(async () => {
+  await stopCall();
+  // Send confirmation back to the main process that the call has stopped
+  window.electronAPI.sendCallStopped();
+});
+
+
 
 // function to toggle the share screen stream
 $("#epi_ShareScreenBtn, .mobile-view-share-btn").click(function () {
