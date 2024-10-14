@@ -77,7 +77,15 @@ function createNotificationWindow() {
   notificationWindow.on('closed', () => {
     notificationWindow = null;
   });
+
+  // Set a timeout to close the notification window after 20 seconds
+  setTimeout(() => {
+    if (notificationWindow) {
+      notificationWindow.close(); // Close only if it's still valid
+    }
+  }, 20000); // 20 seconds
 }
+
 
 // -------------------- Tray Creation -------------------- //
 

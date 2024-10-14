@@ -1158,13 +1158,25 @@ async function createdPopupData(data, groupname = "") {
     userid: userid,
   };
 
+  let popupimg;
+  if (groupname == "") {
+    if (data.joinedusers[0].profileImg == null || data.joinedusers[0].profileImg === '') {
+      popupimg = "modules/images/group_icon.svg";
+    } else {
+      popupimg = fileUploadPath + data.joinedusers[0].profileImg;
+    }
+  } else {
+    if (data.groupIcon == "" || data.groupIcon == null) {
+      popupimg = "modules/images/group_icon.svg"
+    } else {
+      popupimg = fileUploadPath + data.groupIcon
+    }
+  }
+
   $("#profileView")
     .find("#participantProfile")
     .attr(
-      "src",
-      data.groupIcon == "" || data.groupIcon == null
-        ? "modules/images/group_icon.svg"
-        : fileUploadPath + data.groupIcon
+      "src", popupimg
     );
 
   if (groupname == "") {
