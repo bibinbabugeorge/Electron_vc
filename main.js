@@ -78,12 +78,12 @@ function createNotificationWindow() {
     notificationWindow = null;
   });
 
-  // Set a timeout to close the notification window after 20 seconds
+  // Set a timeout to close the notification window after 30 seconds
   setTimeout(() => {
     if (notificationWindow) {
       notificationWindow.close(); // Close only if it's still valid
     }
-  }, 20000); // 20 seconds
+  }, 27000); // 27 seconds
 }
 
 
