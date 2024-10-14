@@ -47,7 +47,7 @@ function createWindow() {
 
   mainWindow.on('close', async (event) => {
     event.preventDefault(); // Prevent the window from closing
-    await appQuit(); // removing user from call if user closes window in ongoing call
+    await appQuit('close'); // removing user from call if user closes window in ongoing call
     mainWindow.hide(); // Hide the window instead
   });
 
@@ -106,8 +106,8 @@ function createTray() {
       },
       {
         label: 'Quit',
-        click: function () {
-          app.quit();
+        click: async function () {
+          await appQuit('quit');
         }
       }
     ]);
@@ -284,18 +284,17 @@ app.on('activate', () => {
 app.on('before-quit', async (event) => {
   event.preventDefault(); // Prevent the app from quitting immediately
 
-  // Close notification window if it exists
   if (notificationWindow) {
     notificationWindow.close();
   }
-
-  // Destroy the tray if it exists
   if (tray) {
     tray.destroy();
     tray = null;
   }
-  await appQuit();
+
+  await appQuit('quit'); // Ensure this doesn't cause a recursive call
 });
+
 
 // -------------------- Auto Updater Event Listeners -------------------- //
 
@@ -327,15 +326,16 @@ async function checkCookieExpiration() {
   }
 }
 
-async function appQuit() {
-  if (mainWindow) {
+async function appQuit(type) {
+  if (type === 'close' && mainWindow) {
     // Send the "stop-call" event to the renderer process (handled in conferenceroom.js)
     mainWindow.webContents.send('stop-call');
+
     ipcMain.once('call-stopped', () => {
-      // Once confirmed, quit the app
-      app.quit();
+      mainWindow.close(); // Quit the app once call-stopped is received
     });
-  } else {
-    app.quit();
+  } else if (type === 'quit') {
+    app.quit(); // Directly quit the app
   }
 }
+
