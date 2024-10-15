@@ -206,7 +206,7 @@ ipcMain.on('show-notification-window', () => {
     if (notificationWindow) {
       notificationWindow.close(); // Close only if it's still valid
     }
-  }, 15000); // 15 seconds
+  }, 29000); // 29 seconds
 });
 
 
