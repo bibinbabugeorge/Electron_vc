@@ -347,7 +347,13 @@ async function handleSendChat() {
 };
 
 async function sendChat(files) {
-  const message = $(".chat-text-area").val();
+  let message = '';
+  const messages = $(".chat-text-area").map((_, element) => $(element).val()).get();
+  messages.forEach(element => {
+    if (element != null && element != "") {
+      message = element;
+    }
+  });
   function getFormattedDate() {
     const options = { day: 'numeric', month: 'short', year: 'numeric' };
     return new Date().toLocaleDateString('en-GB', options); // e.g., "23 Sept 2024"

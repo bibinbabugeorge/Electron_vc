@@ -9,12 +9,27 @@ let mainWindow;
 let notificationWindow;
 let tray = null;
 let trayIcon = null;
+// ---------------------Single instance -------------------------------//
+// Single instance lock
+const gotTheLock = app.requestSingleInstanceLock();
 
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    // If a second instance is opened, focus on the existing mainWindow
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+}
 // -------------------- Window Creation Functions -------------------- //
 
 // Create the main window
 function createWindow() {
   mainWindow = new BrowserWindow({
+    title: 'AppsConnect',
     width: 800,
     height: 800,
     show: false,

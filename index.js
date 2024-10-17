@@ -928,7 +928,7 @@ function playringTone(ring, name = null) {
       playringTone(false);
       $("#incoming-popup").hide();
 
-      // Inner timeout for missed call notification (30 seconds after ringtone stops)
+      // Inner timeout for missed call notification (10 seconds after ringtone stops)
       setTimeout(function () {
         if (callPopup && missedCallNotification) {
           DesktopNotification(`Missed a call from ${name}`);
