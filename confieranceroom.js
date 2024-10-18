@@ -1113,13 +1113,147 @@ let finalStream = null;
 let canvas;
 let ctx;
 
+// $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(async () => {
+//   if (!$(".record-btn,.mobile-view-record-btn").hasClass("active")) {
+//     // Reset recording chunks array
+//     recordedChunks = [];
+//     recordingActive = true;
+
+//     // Create the canvas for capturing frames
+//     canvas = document.createElement('canvas');
+//     ctx = canvas.getContext('2d');
+
+//     // Capture microphone audio
+//     let micAudioStream;
+//     try {
+//       micAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+//     } catch (err) {
+//       console.error("Error capturing microphone audio:", err);
+//       return;
+//     }
+
+//     // Capture system audio (for the call audio)
+//     let desktopStream;
+//     const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin';
+//     try {
+//       const sources = await window.electronAPI.getSources();
+//       const source = sources.find(src => src.name === 'Entire screen'); // Adjust this based on your call window title
+//       const audio = !IS_MACOS
+//         ? {
+//           mandatory: {
+//             echoCancellation: true,
+//             chromeMediaSource: "desktop",
+//           }
+//         }
+//         : false;
+//       const constraints = {
+//         audio, // Set to true if you need audio
+//         video: {
+//           mandatory: {
+//             chromeMediaSource: 'desktop',
+//             chromeMediaSourceId: source.id // Use selectedOption as the screenId
+//           }
+//         }
+//       };
+//       desktopStream = await navigator.mediaDevices.getUserMedia(constraints);
+//     } catch (err) {
+//       console.error("Error capturing system audio:", err);
+//       return;
+//     }
+//     let systemAudioSource;
+//     const canvasVideoStream = canvas.captureStream();
+//     // Combine microphone and system audio using AudioContext
+//     const audioContext = new AudioContext();
+//     const micAudioSource = audioContext.createMediaStreamSource(micAudioStream);
+//     const destination = audioContext.createMediaStreamDestination();
+//     micAudioSource.connect(destination);
+//     if (!IS_MACOS) {
+//       systemAudioSource = audioContext.createMediaStreamSource(desktopStream);
+//       systemAudioSource.connect(destination);
+//       systemAudioSource.connect(destination);
+//     }
+
+//     const finalStream = new MediaStream();
+//     finalStream.addTrack(canvasVideoStream.getVideoTracks()[0]); // Add canvas video
+//     finalStream.addTrack(destination.stream.getAudioTracks()[0]); // Add combined audio (mic + system audio)
+
+//     // Setup MediaRecorder to record the final stream
+//     mediaRecorder = new MediaRecorder(finalStream, {
+//       mimeType: 'video/webm'
+//     });
+
+//     mediaRecorder.ondataavailable = event => {
+//       if (event.data.size > 0) {
+//         recordedChunks.push(event.data);
+//       }
+//     };
+//     const captureFrames = async () => {
+//       const base64Data = await window.electronAPI.captureElectronPage();
+//       const img = new Image();
+//       img.src = `data:image/png;base64,${base64Data}`;
+
+//       img.onload = () => {
+//         canvas.width = img.width;
+//         canvas.height = img.height;
+//         ctx.drawImage(img, 0, 0);
+
+//         if (mediaRecorder.state === 'recording') {
+//           requestAnimationFrame(captureFrames); // Keep capturing frames
+//         }
+//       };
+//     };
+
+
+//     mediaRecorder.onstop = () => {
+//       const blob = new Blob(recordedChunks, { type: 'video/webm' });
+//       const url = URL.createObjectURL(blob);
+
+//       const a = document.createElement('a');
+//       a.style.display = 'none';
+//       a.href = url;
+//       a.download = `${$("#callName").text()}_${formatDateToDDMMYYYYHHMMSS()}.webm`;
+//       document.body.appendChild(a);
+//       a.click();
+//       window.URL.revokeObjectURL(url);
+//     };
+
+//     mediaRecorder.start();
+//     captureFrames(); // Start capturing frames from the Electron page
+//     $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").toggleClass("active");
+
+//     // Timer function for showing recording time
+//     const startTime = new Date();
+//     const setRecordTime = () => {
+//       const currentTime = new Date();
+//       const elapsedTime = currentTime - startTime;
+//       const hours = Math.floor(elapsedTime / 3600000);
+//       const minutes = Math.floor((elapsedTime % 3600000) / 60000);
+//       const seconds = Math.floor((elapsedTime % 60000) / 1000);
+//       $(".record-active").html(
+//         `${hours > 9 ? hours : "0" + hours}:${minutes > 9 ? minutes : "0" + minutes}:${seconds > 9 ? seconds : "0" + seconds}`
+//       );
+//       if ($(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").hasClass("active")) {
+//         requestAnimationFrame(setRecordTime);
+//       }
+//     };
+//     setRecordTime();
+
+//   } else {
+//     // Stop the recording
+//     $(".record-btn,.mobile-view-record-btn, .mobile-view-record-btn-start").toggleClass("active");
+//     if (mediaRecorder && mediaRecorder.state === 'recording') {
+//       mediaRecorder.stop();
+//     }
+
+//     $(".record-active").html("00:00:00");
+//   }
+// });
+
 $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(async () => {
   if (!$(".record-btn,.mobile-view-record-btn").hasClass("active")) {
-    // Reset recording chunks array
     recordedChunks = [];
     recordingActive = true;
 
-    // Create the canvas for capturing frames
     canvas = document.createElement('canvas');
     ctx = canvas.getContext('2d');
 
@@ -1147,11 +1281,11 @@ $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(a
         }
         : false;
       const constraints = {
-        audio, // Set to true if you need audio
+        audio,
         video: {
           mandatory: {
             chromeMediaSource: 'desktop',
-            chromeMediaSourceId: source.id // Use selectedOption as the screenId
+            chromeMediaSourceId: source.id
           }
         }
       };
@@ -1160,24 +1294,22 @@ $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(a
       console.error("Error capturing system audio:", err);
       return;
     }
-    let systemAudioSource;
-    const canvasVideoStream = canvas.captureStream();
-    // Combine microphone and system audio using AudioContext
+
+    const canvasVideoStream = canvas.captureStream(30); // Limit frame rate to 30 FPS
     const audioContext = new AudioContext();
     const micAudioSource = audioContext.createMediaStreamSource(micAudioStream);
     const destination = audioContext.createMediaStreamDestination();
     micAudioSource.connect(destination);
+
     if (!IS_MACOS) {
-      systemAudioSource = audioContext.createMediaStreamSource(desktopStream);
-      systemAudioSource.connect(destination);
+      const systemAudioSource = audioContext.createMediaStreamSource(desktopStream);
       systemAudioSource.connect(destination);
     }
 
     const finalStream = new MediaStream();
-    finalStream.addTrack(canvasVideoStream.getVideoTracks()[0]); // Add canvas video
-    finalStream.addTrack(destination.stream.getAudioTracks()[0]); // Add combined audio (mic + system audio)
+    finalStream.addTrack(canvasVideoStream.getVideoTracks()[0]);
+    finalStream.addTrack(destination.stream.getAudioTracks()[0]);
 
-    // Setup MediaRecorder to record the final stream
     mediaRecorder = new MediaRecorder(finalStream, {
       mimeType: 'video/webm'
     });
@@ -1187,7 +1319,20 @@ $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(a
         recordedChunks.push(event.data);
       }
     };
+
+    // Frame capture logic with skipping if necessary
+    let lastFrameTime = 0;
+    const frameRate = 30; // Target frame rate
+    const frameInterval = 1000 / frameRate;
+
     const captureFrames = async () => {
+      const currentTime = performance.now();
+      if (currentTime - lastFrameTime < frameInterval) {
+        requestAnimationFrame(captureFrames);
+        return;
+      }
+      lastFrameTime = currentTime;
+
       const base64Data = await window.electronAPI.captureElectronPage();
       const img = new Image();
       img.src = `data:image/png;base64,${base64Data}`;
@@ -1198,16 +1343,14 @@ $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(a
         ctx.drawImage(img, 0, 0);
 
         if (mediaRecorder.state === 'recording') {
-          requestAnimationFrame(captureFrames); // Keep capturing frames
+          requestAnimationFrame(captureFrames);
         }
       };
     };
-
-
+    
     mediaRecorder.onstop = () => {
       const blob = new Blob(recordedChunks, { type: 'video/webm' });
       const url = URL.createObjectURL(blob);
-
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = url;
@@ -1218,7 +1361,8 @@ $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(a
     };
 
     mediaRecorder.start();
-    captureFrames(); // Start capturing frames from the Electron page
+    captureFrames();
+
     $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").toggleClass("active");
 
     // Timer function for showing recording time
@@ -1239,19 +1383,18 @@ $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(a
     setRecordTime();
 
   } else {
-    // Stop the recording
     $(".record-btn,.mobile-view-record-btn, .mobile-view-record-btn-start").toggleClass("active");
     if (mediaRecorder && mediaRecorder.state === 'recording') {
       mediaRecorder.stop();
     }
-
     $(".record-active").html("00:00:00");
   }
 });
 
+
 function formatDateToDDMMYYYYHHMMSS() {
   // Convert milliseconds to a Date object
-  const startDate = new Date(startTime);
+  const startDate = new Date();
 
   // Extract date components
   const day = ("0" + startDate.getDate()).slice(-2);
