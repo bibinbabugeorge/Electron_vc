@@ -928,12 +928,18 @@ function playringTone(ring, name = null) {
       playringTone(false);
       $("#incoming-popup").hide();
 
-      if (callPopup && missedCallNotification) {
-        DesktopNotification(`Missed a call from ${name}`);
-      }
-    }, 20000);
-    if (MeetingInvitationNotification)
-      DesktopNotification(`Incoming call from ${name}`);
+      // Inner timeout for missed call notification (10 seconds after ringtone stops)
+      setTimeout(function () {
+        if (callPopup && missedCallNotification) {
+          DesktopNotification(`Missed a call from ${name}`);
+        }
+      }, 10000); // 10 seconds after the ringtone stops
+
+    }, 30000); // Ringtone plays for 30 seconds
+    setTimeout(function () {
+      if (MeetingInvitationNotification)
+        DesktopNotification(`Incoming call from ${name}`);
+    }, 5000); // 5 seconds 
   } else {
     if (audio) {
       audio.pause();

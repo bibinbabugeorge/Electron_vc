@@ -1158,13 +1158,15 @@ async function createdPopupData(data, groupname = "") {
     userid: userid,
   };
 
+  let popupimg;
+  const defaultImg = groupname === "" ? "modules/images/default_user.svg" : "modules/images/group_icon.svg";
+  const profileImg = groupname === "" ? data.joinedusers[0].profileImg : data.groupIcon;
+  popupimg = profileImg ? fileUploadPath + profileImg : defaultImg;
+
   $("#profileView")
     .find("#participantProfile")
     .attr(
-      "src",
-      data.groupIcon == "" || data.groupIcon == null
-        ? "modules/images/group_icon.svg"
-        : fileUploadPath + data.groupIcon
+      "src", popupimg
     );
 
   if (groupname == "") {
@@ -1263,25 +1265,22 @@ async function createdPopupData(data, groupname = "") {
 
 // function to schedule the meeting with data from the selected individual or group
 function scheduleMeeting() {
-  // Get the current URL
-  const currentURL = window.location.href;
-
-  // Extract the base URL
-  const baseURL = currentURL.split('/').slice(0, 3).join('/');
+  let schePopupImg;
+  const isgroup = selectedRowData.participants > 2;
+  const defaultImg = isgroup ? "modules/images/group_icon.svg" : "modules/images/default_user.svg";
+  schePopupImg = selectedRowData.groupIcon == "" || selectedRowData.groupIcon == null ? defaultImg : fileUploadPath + selectedRowData.groupIcon;
 
   $("#scheduleMeeting")
     .find("#scheduleParticipantProfile")
     .attr(
       "src",
-      selectedRowData.groupIcon == "" || selectedRowData.groupIcon == null
-        ? "modules/images/default_user.svg"
-        : fileUploadPath + selectedRowData.groupIcon
+      schePopupImg
     );
   $("#scheduleMeeting")
     .find("#scheduleDataName")
     .text(`${selectedRowData.name}`);
   $("#scheduleUrl").val(
-    `${baseURL}Join.html?Rid=${selectedRowData.roomid}&RU=aHR0cHM6Ly9sdWNlbnRzdXJnaWNhbC5jb20vbG9naW4&Uid=Guest`
+    `${apiUri}Join.html?Rid=${selectedRowData.roomid}&RU=aHR0cHM6Ly9sdWNlbnRzdXJnaWNhbC5jb20vbG9naW4&Uid=Guest`
   );
 
   if (selectedRowData.status == "Active") {

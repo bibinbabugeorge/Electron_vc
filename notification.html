@@ -83,8 +83,8 @@
       <!-- Close Button -->
       <button class="close-btn" id="closeBtn">&times;</button>
       <div class="incoming-call-content">
-        <img src="" alt="Caller Image" id="CallerImg" class="border border-secondary rounded-circle"
-          style="width: 80px;" />
+        <img src="modules/images/default_user.svg" alt="Caller Image" id="CallerImg" data-src=""
+          class="border border-secondary rounded-circle" style="width: 80px; height: 80px; border-radius: 50%;" />
         <p>You have an incoming call</p>
         <h3 id="incomingCallername"></h3>
         <div class="incoming-call-actions">
@@ -133,14 +133,21 @@
 
       // Update the text of the caller's name
       callerName.textContent = userDetails.name || 'Unknown Caller';
+
+      // Set the data-src attribute to the original image path
+      callerImage.setAttribute('data-src', userDetails.profilePic ? filePath + userDetails.profilePic : '');
+
+      // Create a new image to ensure it's loaded before updating the src
       const img = new Image();
       img.onload = () => {
-        callerImage.src = img.src;
+        callerImage.src = img.src; // Update the caller image once loaded
         window.electronAPI.send('image-loaded');
       }
-      img.src = userDetails.profilePic ? filePath + userDetails.profilePic : 'modules/images/default_user.svg';
-    });
 
+      // Set the image source to data-src with cache-busting
+      const originalSrc = callerImage.getAttribute('data-src') + "?v=" + new Date().getTime();
+      img.src = originalSrc || 'modules/images/default_user.svg'; // Fallback to default if no original image
+    });
   </script>
 </body>
 

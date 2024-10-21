@@ -1,8 +1,8 @@
 {
   "main": "main.js",
-  "name": "appsconnect",
+  "name": "AppsConnect",
   "version": "1.0.1",
-  "description": "Video calling application",
+  "description": "AppsConnect",
   "author": "Appsteam Technologies",
   "scripts": {
     "start": "electron .",
@@ -12,6 +12,7 @@
     "appId": "com.appsteam.appsconnect",
     "productName": "AppsConnect",
     "files": [
+      "assets/**", 
       "dist/**/*",
       "node_modules/**/*",
       "main.js",
@@ -111,12 +112,12 @@
     }
   },
   "devDependencies": {
-    "electron": "^32.1.2",
-    "electron-builder": "^25.0.5"
+    "electron": "^33.0.1",
+    "electron-builder": "^25.1.8"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
     "electron-auto-launch": "^5.0.7",
-    "electron-updater": "^6.3.4"
+    "electron-updater": "^6.3.9"
   }
 }
