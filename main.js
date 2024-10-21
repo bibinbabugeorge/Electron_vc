@@ -9,12 +9,27 @@ let mainWindow;
 let notificationWindow;
 let tray = null;
 let trayIcon = null;
+// ---------------------Single instance -------------------------------//
+// Single instance lock
+const gotTheLock = app.requestSingleInstanceLock();
 
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    // If a second instance is opened, focus on the existing mainWindow
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+}
 // -------------------- Window Creation Functions -------------------- //
 
 // Create the main window
 function createWindow() {
   mainWindow = new BrowserWindow({
+    title: 'AppsConnect',
     width: 800,
     height: 800,
     show: false,
@@ -45,8 +60,9 @@ function createWindow() {
     mainWindow = null;
   });
 
-  mainWindow.on('close', (event) => {
+  mainWindow.on('close', async (event) => {
     event.preventDefault(); // Prevent the window from closing
+    await appQuit('close'); // removing user from call if user closes window in ongoing call
     mainWindow.hide(); // Hide the window instead
   });
 
@@ -76,7 +92,15 @@ function createNotificationWindow() {
   notificationWindow.on('closed', () => {
     notificationWindow = null;
   });
+
+  // Set a timeout to close the notification window after 30 seconds
+  setTimeout(() => {
+    if (notificationWindow) {
+      notificationWindow.close(); // Close only if it's still valid
+    }
+  }, 27000); // 27 seconds
 }
+
 
 // -------------------- Tray Creation -------------------- //
 
@@ -105,8 +129,8 @@ function createTray() {
       },
       {
         label: 'Quit',
-        click: function () {
-          app.quit();
+        click: async function () {
+          await appQuit('quit');
         }
       }
     ]);
@@ -115,15 +139,15 @@ function createTray() {
     tray.setContextMenu(contextMenu);
 
     tray.on('click', () => {
-      if(process.platform == 'win32'){
-      if (!mainWindow) {
-        createWindow();
-      } else if (!mainWindow.isVisible()) {
-        mainWindow.show();
-      } else {
-        mainWindow.focus(); // Bring the existing window to the front
+      if (process.platform == 'win32') {
+        if (!mainWindow) {
+          createWindow();
+        } else if (!mainWindow.isVisible()) {
+          mainWindow.show();
+        } else {
+          mainWindow.focus(); // Bring the existing window to the front
+        }
       }
-    } 
     });
   }
 }
@@ -170,17 +194,6 @@ ipcMain.handle('capture-electron-page', async () => {
 });
 
 // Handle showing notification
-// ipcMain.on('show-notification', (event, CallerDetails) => {
-//   if (!notificationWindow) {
-//     notificationWindow.webContents.send('update-notification', CallerDetails);
-//     notificationWindow.once('ready-to-show', () => {
-//       createNotificationWindow();
-//     });
-//   } else {
-//     notificationWindow.webContents.send('update-notification', CallerDetails);
-//   }
-// });
-
 ipcMain.on('show-notification', (event, CallerDetails) => {
   if (!notificationWindow) {
     createNotificationWindow();
@@ -208,7 +221,7 @@ ipcMain.on('show-notification-window', () => {
     if (notificationWindow) {
       notificationWindow.close(); // Close only if it's still valid
     }
-  }, 15000); // 15 seconds
+  }, 29000); // 29 seconds
 });
 
 
@@ -294,32 +307,17 @@ app.on('activate', () => {
 app.on('before-quit', async (event) => {
   event.preventDefault(); // Prevent the app from quitting immediately
 
-  // Close notification window if it exists
   if (notificationWindow) {
     notificationWindow.close();
   }
-
-  // Destroy the tray if it exists
   if (tray) {
     tray.destroy();
     tray = null;
   }
 
-  // Ensure the call is stopped before quitting the app
-  if (mainWindow) {
-    // Send the "stop-call" event to the renderer process (handled in conferenceroom.js)
-    mainWindow.webContents.send('stop-call');
-
-    // Wait for confirmation from the renderer process that the call has ended
-    ipcMain.once('call-stopped', () => {
-      // Once confirmed, quit the app
-      app.quit();
-    });
-  } else {
-    // If no mainWindow, quit immediately
-    app.quit();
-  }
+  await appQuit('quit'); // Ensure this doesn't cause a recursive call
 });
+
 
 // -------------------- Auto Updater Event Listeners -------------------- //
 
@@ -350,3 +348,17 @@ async function checkCookieExpiration() {
     await session.defaultSession.clearStorageData({ storages: ['cookies'] });
   }
 }
+
+async function appQuit(type) {
+  if (type === 'close' && mainWindow) {
+    // Send the "stop-call" event to the renderer process (handled in conferenceroom.js)
+    mainWindow.webContents.send('stop-call');
+
+    ipcMain.once('call-stopped', () => {
+      mainWindow.close(); // Quit the app once call-stopped is received
+    });
+  } else if (type === 'quit') {
+    app.quit(); // Directly quit the app
+  }
+}
+
