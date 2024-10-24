@@ -26,7 +26,21 @@ contextBridge.exposeInMainWorld('electronAPI', {
       ipcRenderer.on(channel, (event, ...args) => func(...args));
     }
   },
-  send: (channel, data) => ipcRenderer.send(channel, data)
+  send: (channel, data) => ipcRenderer.send(channel, data),
+  onTrackAction: (userId, type) => ipcRenderer.send('track-action', userId, type),
+  //onTrackAction: (callback) => ipcRenderer.on('track-action', (event, action) => callback(action)),
+  UpdateTrackreceive: (channel, func) => {
+    const validChannels = ['update-track'];
+    if (validChannels.includes(channel)) {
+      ipcRenderer.on(channel, (event, ...args) => func(...args));
+    }
+  },
+  RemoveTrackreceive: (channel, func) => {
+    const validChannels = ['remove-track'];
+    if (validChannels.includes(channel)) {
+      ipcRenderer.on(channel, (event, ...args) => func(...args));
+    }
+  },
 });
 
 // Loading enviornmental variables form env file

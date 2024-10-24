@@ -51,6 +51,8 @@ let participantListUpdateFirst = true;
 let MeetingInvitationNotification = true;
 let newGroupNotification = true;
 let missedCallNotification = true;
+let AvilUserIds = [];
+let userTracks = {};
 
 const callbackEvents = {
   RoomCreated: "RoomCreated",
@@ -2467,3 +2469,55 @@ function pong(pingTime) {
   let latency = Date.now() - pingTime;
   console.log("Latency: " + latency + "ms");
 }
+
+async function findStreams() {
+  let userids = [];
+  let videoCont = document.getElementsByClassName("video-container");
+
+  // Loop through each video-container element
+  for (let i = 0; i < videoCont.length; i++) {
+    // Find all child divs with the data-username attribute within each container
+    let childDivs = videoCont[i].querySelectorAll('[data-username]');
+
+    // Loop through the child divs
+    childDivs.forEach(childDiv => {
+      let username = childDiv.getAttribute('data-username');
+
+      // Check if username starts with "video_" or "audio_" and split the ID
+      if (username.startsWith("video_") || username.startsWith("audio_")) {
+        let splitUsername = username.split('_')[1]; // Extract the ID part after "video_" or "audio_"
+        userids.push(splitUsername); // Add the extracted ID to the array
+      }
+    });
+  }
+
+  // Remove duplicates
+  AvilUserIds = [...new Set(userids)];
+
+
+
+  // Iterate over available user IDs to find corresponding tracks
+  AvilUserIds.forEach(userid => {
+    // Initialize an object for each user ID if it doesn't exist
+    if (!userTracks[userid]) {
+      userTracks[userid] = {
+        audioTrack: null, // Default to null if no audio track is found
+        videoTrack: null  // Default to null if no video track is found
+      };
+    }
+
+    // Get the audio track for the user ID
+    if (AvilAudioTracks[userid]) {
+      userTracks[userid].audioTrack = AvilAudioTracks[userid];
+    }
+
+    // Get the video track for the user ID
+    if (AvilVideoTracks[userid]) {
+      userTracks[userid].videoTrack = AvilVideoTracks[userid];
+    }
+  });
+  return userTracks;
+}
+
+
+

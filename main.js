@@ -269,6 +269,11 @@ ipcMain.on('navigate-to-room', (event, roomType) => {
   mainWindow.loadFile('confieranceroom.html');
 });
 
+///////////////////////
+ipcMain.on('track-action', (event, userId, type) => {
+  mainWindow.webContents.send('update-track', userId, type);
+});
+
 
 // -------------------- App Lifecycle -------------------- //
 

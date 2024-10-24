@@ -12,7 +12,7 @@
     "appId": "com.appsteam.appsconnect",
     "productName": "AppsConnect",
     "files": [
-      "assets/**", 
+      "assets/**",
       "dist/**/*",
       "node_modules/**/*",
       "main.js",

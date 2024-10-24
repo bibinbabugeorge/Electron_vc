@@ -5,6 +5,22 @@ var IsCameraOnArray = [false];
 var isVideoOnArray = [];
 var silence = false;
 let chatImageDictionary = {};
+let MainMediachunks = [];
+let updateduserid;
+let removeduserid;
+let trackType;
+let mediaRecorder = null;
+
+window.electronAPI.UpdateTrackreceive('update-track', (userId, type) => {
+  updateduserid = userId;
+  trackType = type;
+  if (mediaRecorder && mediaRecorder.state == 'recording') {
+    //UpdatingReceivedTracks(userId, type);
+  }
+});
+window.electronAPI.RemoveTrackreceive('remove-track', (userId) => {
+  removeduserid = userId;
+});
 
 $("#silence-btn,.mobile-drawer-volume-btn").click(function () {
   silence = !silence;
@@ -1105,7 +1121,7 @@ async function getcolor(firstNumber) {
   const colorArray = await response.json();
   return colorArray.colors[firstNumber];
 }
-let mediaRecorder = null;
+
 let recordedChunks = [];
 let endTime = null;
 let startTime = null;

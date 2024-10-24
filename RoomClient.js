@@ -24,6 +24,11 @@ let userName = null;
 let roomDetailsObj;
 let participantList;
 let currentStream;
+let streamKey;
+let AvilVideoTracks = [];
+let AvilAudioTracks = [];
+let Aalength = 0;
+let Avlength = 0;
 
 class RoomClient {
   socket = null;
@@ -1048,6 +1053,14 @@ class RoomClient {
     let videoTagCount = 0;
 
     if (kind === "video") {
+      streamKey = `${userinfo.user_id}`;
+      AvilVideoTracks[streamKey] = stream;
+      if (Avlength < Object.keys(AvilVideoTracks).length) {
+        window.electronAPI.onTrackAction(userinfo.user_id, 'update');
+      } else {
+        Avlength = Object.keys(AvilVideoTracks).length;
+      }
+
       const elem = document.createElement("video");
       elem.srcObject = stream;
       elem.id = consumer.id;
@@ -1176,6 +1189,14 @@ class RoomClient {
           $(".local-camera-view-wrapper").toggle();
       });
     } else {
+      streamKey = `${userinfo.user_id}`;
+      AvilAudioTracks[streamKey] = stream;
+      if (Aalength < Object.keys(AvilAudioTracks).length) {
+        window.electronAPI.onTrackAction(userinfo.user_id, 'update');
+      } else {
+        Aalength = Object.keys(AvilAudioTracks).length;
+      }
+
       let audioWrapper = document.createElement("div");
       audioWrapper.setAttribute("data-user_name", userinfo.name);
       elem = document.createElement("audio");
