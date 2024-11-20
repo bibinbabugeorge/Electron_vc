@@ -931,7 +931,8 @@ $("#remoteVideos .carousel-control-prev").click(function () {
 
 $(".chatAttachment").change(function () {
   $(".attachedFilesUl").empty();
-  let closeBtnHtml = `<button class="btn border-0 p-0"><img src="modules/images/attachment_close.svg"/></button>`;
+  let fileName;
+  let closeBtnHtml = `<button class="btn border-0 p-0 close-btn"><img src="modules/images/attachment_close.svg"/></button>`;
 
   let imageExtensions = [
     ".apng",
@@ -952,10 +953,16 @@ $(".chatAttachment").change(function () {
 
   if (this.files && this.files.length > 0) {
     $.each(this.files, function (index, file) {
-      let extension = file.name.substring(
-        file.name.lastIndexOf("."),
-        file.name.length
-      );
+      const extension = file.name.substring(file.name.lastIndexOf("."));
+      if (file.name.toLowerCase().endsWith(extension.toLowerCase())) {
+        fileName = file.name.substring(0, file.name.length - extension.length);
+      }
+
+      if (fileName.length > 8) { // Check if greater than 8 characters
+        fileName = `<p>${fileName.substring(0, 8) + "..." + extension}</p>`;
+      } else {
+        fileName = `<p>${fileName + extension}</p>`;
+      }
 
       let objectUrl = URL.createObjectURL(file);
       let listItem = $("<li>")
@@ -981,7 +988,7 @@ $(".chatAttachment").change(function () {
         .append(closeBtnHtml)
         .append(
           !imageExtensions.includes(extension)
-            ? `<p>${file.name.substring(0, 8) + "..." + extension}</p>`
+            ? fileName
             : ""
         );
       $(".attachedFilesUl").append(listItem);
@@ -991,8 +998,19 @@ $(".chatAttachment").change(function () {
       });
     });
   }
+  $(this).val("");
   mobileViewChatBodyHeight();
 });
+
+$(document).on("click", ".attachedFilesUl .close-btn", function () {
+  const listItem = $(this).closest("li");
+  const objectUrl = listItem.find("source").attr("srcset");
+
+  // Free up memory by revoking the object URL and removing the list item
+  URL.revokeObjectURL(objectUrl);
+  listItem.remove();
+});
+
 
 function setCarouselButtonState() {
   var currentItem = $(".carousel-indicators-main-slider").children(".active");
@@ -1347,7 +1365,7 @@ $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(a
         }
       };
     };
-    
+
     mediaRecorder.onstop = () => {
       const blob = new Blob(recordedChunks, { type: 'video/webm' });
       const url = URL.createObjectURL(blob);
@@ -1541,9 +1559,7 @@ function chatAttachementCarousel() {
 }
 $(".image-carousel-download").click(function () {
   let a = document.createElement("a");
-  a.href =
-    window.location.origin +
-    $("#image-carousel .carousel-item.active picture source").prop("srcset");
+  a.href = $("#image-carousel .carousel-item.active picture source").prop("srcset");
   a.download = $("#image-carousel .carousel-item.active picture img").prop(
     "alt"
   );

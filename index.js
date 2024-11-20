@@ -761,16 +761,22 @@ server.connect().then((events) => {
     }
   });
 
-  events.on(callbackEvents.DashboardParticipantsListSuccess, async function (data) {
+  events.on(callbackEvents.DashboardParticipantsListSuccess, function (data) {
     // Assign data.Data.RoomList to the global variable
     roomList = data.Data.RoomList;
 
-    if (window.location.href.includes("dashboard.html"))
-      dashboardInit(data.Data.RoomList);
+    let CachedRoomlist = JSON.parse(localStorage.getItem('roomList')) || [];
+    if (CachedRoomlist.length !== data.Data.RoomList.length) {
+      if (window.location.href.includes("dashboard.html")) {
+        dashboardInit(data.Data.RoomList);
+        localStorage.setItem('roomList', JSON.stringify(data.Data.RoomList));
+      }
+    }
 
+    // Send request for user call history
     var dataObj = {
       commandType: "GetUserCallHistory",
-      Data: { UserId: await getuserid() },
+      Data: { UserId: getuserid() },
     };
     server.sendCommand(JSON.stringify(dataObj));
   });
