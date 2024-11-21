@@ -701,9 +701,6 @@ class RoomClient {
             if (inputsrc.thumbnailURL.length <= 22) {
               inputsrc.thumbnailURL = "modules/images/no_preview.svg";
             }
-            if(inputsrc.name.length > 12){
-              inputsrc.name = inputsrc.name.slice(0, 11) + "...";
-            }
           }
           const desktopScreensContainer = document.getElementById(
             "desktop-screens-img-block"
@@ -730,6 +727,9 @@ class RoomClient {
           );
 
           windowScreens.forEach((window, index) => {
+            if(window.name.length > 10){
+              window.name = window.name.slice(0, 10) + "...";
+            }
             const windowHTML = `<div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-2">
                 <div class="img-block" data-id="${window.id}">
                   <img src="${window.thumbnailURL}" alt="${window.name}" class="img-fluid" />
