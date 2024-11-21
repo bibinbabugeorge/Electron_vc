@@ -45,7 +45,7 @@ function createWindow() {
   });
 
   mainWindow.loadFile('splash.html');
-  //mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();

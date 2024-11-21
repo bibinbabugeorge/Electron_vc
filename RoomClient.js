@@ -72,7 +72,6 @@ class RoomClient {
     );
   }
 
-
   ////////// PartcipantList and Pause-Resume /////////
 
   updateRoom(participantListObj) {
@@ -674,58 +673,86 @@ class RoomClient {
       let screenParams = null;
       let stream;
 
-
       if (!screen) {
         stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
       } else {
         let selectedScreenId = null;
 
         function handleScreenSelection(element, id) {
-          if (element.classList.contains('selected')) {
-            element.classList.remove('selected');
+          if (element.classList.contains("selected")) {
+            element.classList.remove("selected");
             selectedScreenId = null;
-            document.querySelector('.share-btn').disabled = true;
+            document.querySelector(".share-btn").disabled = true;
           } else {
-            document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
-            element.classList.add('selected');
+            document
+              .querySelectorAll(".img-block")
+              .forEach((block) => block.classList.remove("selected"));
+            element.classList.add("selected");
             selectedScreenId = id;
-            document.querySelector('.share-btn').disabled = false;
+            document.querySelector(".share-btn").disabled = false;
           }
         }
 
         async function getVideoSources() {
+          let imagePreview;
           const inputSources = await window.electronAPI.getSources();
-          const desktopScreensContainer = document.getElementById("desktop-screens-img-block");
+          for (let i = 0; i < inputSources.length; i++) {
+            let inputsrc = inputSources[i];
+            if (inputsrc.thumbnailURL.length <= 22) {
+              inputsrc.thumbnailURL = "modules/images/no_preview.svg";
+            }
+            if(inputsrc.name.length > 12){
+              inputsrc.name = inputsrc.name.slice(0, 11) + "...";
+            }
+          }
+          const desktopScreensContainer = document.getElementById(
+            "desktop-screens-img-block"
+          );
           desktopScreensContainer.innerHTML = "";
 
-          const desktopScreens = inputSources.filter(source => source.id.includes('screen'));
+          const desktopScreens = inputSources.filter((source) =>
+            source.id.includes("screen")
+          );
           desktopScreens.forEach((desktop, index) => {
             const desktopHTML = `<div class="img-block" data-id="${desktop.id}">
                 <img src="${desktop.thumbnailURL}" alt="${desktop.name}" class="img-fluid" />
-              </div>`;
+              </div>
+              <div style="color: black;text-align: center;font-size: 13px;">${desktop.name}</div>`;
             desktopScreensContainer.innerHTML += desktopHTML;
           });
 
-          const windowScreensContainer = document.getElementById("window-screens-img-block");
+          const windowScreensContainer = document.getElementById(
+            "window-screens-img-block"
+          );
           windowScreensContainer.innerHTML = "";
-          const windowScreens = inputSources.filter(source => source.id.includes('window'));
+          const windowScreens = inputSources.filter((source) =>
+            source.id.includes("window")
+          );
 
           windowScreens.forEach((window, index) => {
             const windowHTML = `<div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-2">
                 <div class="img-block" data-id="${window.id}">
                   <img src="${window.thumbnailURL}" alt="${window.name}" class="img-fluid" />
                 </div>
+               <div style="color: black;text-align: center;font-size: 13px;">${window.name}</div> 
               </div>`;
             windowScreensContainer.innerHTML += windowHTML;
           });
 
           // Reattach event listeners
-          document.querySelectorAll('#desktop-screens-img-block .img-block, #window-screens-img-block .img-block').forEach(container => {
-            container.addEventListener('click', (event) => {
-              const imgBlock = event.currentTarget;
-              handleScreenSelection(imgBlock, imgBlock.getAttribute('data-id'));
+          document
+            .querySelectorAll(
+              "#desktop-screens-img-block .img-block, #window-screens-img-block .img-block"
+            )
+            .forEach((container) => {
+              container.addEventListener("click", (event) => {
+                const imgBlock = event.currentTarget;
+                handleScreenSelection(
+                  imgBlock,
+                  imgBlock.getAttribute("data-id")
+                );
+              });
             });
-          });
 
           $("#sharePopup").show();
         }
@@ -733,44 +760,54 @@ class RoomClient {
         // Attach the click event for the first time
         getVideoSources();
 
-        document.querySelector('.share-btn').addEventListener('click', async () => {
-          if (selectedScreenId) {
-            let ScreenShareAudio = document.getElementById('ScreenShareAudio');
-            await this.handleOptionClick(selectedScreenId, type, ScreenShareAudio);
-            $('#sharePopup').hide();
-            // Reset after sharing
-            selectedScreenId = null;
-            document.querySelector('.share-btn').disabled = true;
-            document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
-          }
-        });
+        document
+          .querySelector(".share-btn")
+          .addEventListener("click", async () => {
+            if (selectedScreenId) {
+              let ScreenShareAudio =
+                document.getElementById("ScreenShareAudio");
+              await this.handleOptionClick(
+                selectedScreenId,
+                type,
+                ScreenShareAudio
+              );
+              $("#sharePopup").hide();
+              // Reset after sharing
+              selectedScreenId = null;
+              document.querySelector(".share-btn").disabled = true;
+              document
+                .querySelectorAll(".img-block")
+                .forEach((block) => block.classList.remove("selected"));
+            }
+          });
 
         // Handle the "Cancel" button click
-        document.querySelector('.cancel-btn').addEventListener('click', () => {
-          $('#sharePopup').hide();
+        document.querySelector(".cancel-btn").addEventListener("click", () => {
+          $("#sharePopup").hide();
           selectedScreenId = null;
-          document.querySelector('.share-btn').disabled = true;
-          document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
+          document.querySelector(".share-btn").disabled = true;
+          document
+            .querySelectorAll(".img-block")
+            .forEach((block) => block.classList.remove("selected"));
         });
 
         // Close modal when clicking outside of it
-        $(document).on('click', function (e) {
-          if ($(e.target).closest('.modal-content').length === 0) {
-            $('#sharePopup').hide();
+        $(document).on("click", function (e) {
+          if ($(e.target).closest(".modal-content").length === 0) {
+            $("#sharePopup").hide();
             selectedScreenId = null;
-            document.querySelector('.share-btn').disabled = true;
-            document.querySelectorAll('.img-block').forEach(block => block.classList.remove('selected'));
+            document.querySelector(".share-btn").disabled = true;
+            document
+              .querySelectorAll(".img-block")
+              .forEach((block) => block.classList.remove("selected"));
           }
         });
 
         return;
-
       }
 
       if (stream.getAudioTracks()[0] != undefined && type == mediaType.screen)
         sysAudio = true;
-
-
 
       if (!jsonConfig.MultipleCamera) {
         if (type == mediaType.screen) {
@@ -1649,38 +1686,42 @@ class RoomClient {
           .attr("id", "multipleInnerVideos")
           .append(
             $("<div>").addClass("col").append(`
-                  <!--  <h3 class=" text-white mt-1" style="font-size:14px" data-username="avatar_${userinfo.user_id
-              }">
+                  <!--  <h3 class=" text-white mt-1" style="font-size:14px" data-username="avatar_${
+                    userinfo.user_id
+                  }">
                   <span id="audiostatus_${userinfo.user_id}">
                     <img src="modules/images/remote_mic_muted.svg" />
                   </span>
                   ${userinfo.name}
                 </h3> -->
                 ${controlBuilder.RemoteVideoControllerAvatar(
-                userinfo.name,
-                userinfo.user_id,
-                userinfo.client_id
-              )}
+                  userinfo.name,
+                  userinfo.user_id,
+                  userinfo.client_id
+                )}
               <div class="audio-container">
-              ${userinfo.profileImg
-                ? `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center hand-raised-icon" data-username="avatar_${userinfo.user_id}"
+              ${
+                userinfo.profileImg
+                  ? `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center hand-raised-icon" data-username="avatar_${userinfo.user_id}"
                       style="width: 122px; height: 122px;">
                       <img class="rounded-circle d-flex mb-1 justify-content-center align-items-center" style="width: 122px; height: 122px;" src="${fileUploadPath}${userinfo.profileImg}" alt="Profile Image" /> 
                       <img id="hand-raised${userinfo.user_id}" src="modules/images/audio_raise_hand.svg" class="audio-raise-hand d-none" />
                   </div>`
-                : `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center" data-username="avatar_${userinfo.user_id
-                }"
+                  : `<div class="rounded-circle d-flex mb-1 justify-content-center align-items-center" data-username="avatar_${
+                      userinfo.user_id
+                    }"
                     style="width: 122px; height: 122px; background-color: ${backgroundColor}36;">
                     <h6 class="fs-1 mb-0 noselect" style="text-indent: 0px; position: relative; color: ${backgroundColor}">
                       ${userinfo.name
-                  .split(" ")
-                  .filter((word) => word !== "")
-                  .map((word) => word[0].toUpperCase())
-                  .slice(0, 2) // Take only the first two initials
-                  .join("")}
+                        .split(" ")
+                        .filter((word) => word !== "")
+                        .map((word) => word[0].toUpperCase())
+                        .slice(0, 2) // Take only the first two initials
+                        .join("")}
                     </h6>
-                    <img id="hand-raised${userinfo.user_id
-                }" src="modules/images/audio_raise_hand.svg" class="audio-raise-hand d-none" />     
+                    <img id="hand-raised${
+                      userinfo.user_id
+                    }" src="modules/images/audio_raise_hand.svg" class="audio-raise-hand d-none" />     
                 </div>`
               }
               
@@ -1863,27 +1904,28 @@ class RoomClient {
     let screenParams = null;
     let stream;
     if (currentStream) {
-      currentStream.getTracks().forEach(track => track.stop());
+      currentStream.getTracks().forEach((track) => track.stop());
       currentStream = null;
-      this.closeProducer(type, null) // Clear the current stream
+      this.closeProducer(type, null); // Clear the current stream
     }
-    const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin';
+    const IS_MACOS =
+      (await window.electronAPI.getOperatingSystem()) === "darwin";
     const audio = !IS_MACOS
       ? {
-        mandatory: {
-          echoCancellation: true,
-          chromeMediaSource: "desktop",
+          mandatory: {
+            echoCancellation: true,
+            chromeMediaSource: "desktop",
+          },
         }
-      }
       : false;
     const constraints = {
       audio, // Set to true if you need audio
       video: {
         mandatory: {
-          chromeMediaSource: 'desktop',
-          chromeMediaSourceId: selectedOption // Use selectedOption as the screenId
-        }
-      }
+          chromeMediaSource: "desktop",
+          chromeMediaSourceId: selectedOption, // Use selectedOption as the screenId
+        },
+      },
     };
 
     currentStream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -1953,17 +1995,9 @@ class RoomClient {
       producer = await this.producerTransport.produce(params);
       this.producers.set(producer.id, producer);
       if (audio)
-        this.acknowledgeNewProduer(
-          producer.id,
-          producer.kind,
-          mediaType.audio
-        );
+        this.acknowledgeNewProduer(producer.id, producer.kind, mediaType.audio);
       else
-        this.acknowledgeNewProduer(
-          producer.id,
-          producer.kind,
-          mediaType.video
-        );
+        this.acknowledgeNewProduer(producer.id, producer.kind, mediaType.video);
 
       if (!audio) {
         elem = document.createElement("video");
@@ -2038,8 +2072,7 @@ class RoomClient {
       } else {
         audioStream = currentStream;
         if (recordingActive) {
-          let micAudio =
-            this.audioContext.createMediaStreamSource(audioStream);
+          let micAudio = this.audioContext.createMediaStreamSource(audioStream);
           micAudio.connect(destAudio);
         }
       }
@@ -2068,11 +2101,7 @@ class RoomClient {
       params = screenParams;
       producer = await this.producerTransport.produce(params);
       this.producers.set(producer.id, producer);
-      this.acknowledgeNewProduer(
-        producer.id,
-        producer.kind,
-        mediaType.screen
-      );
+      this.acknowledgeNewProduer(producer.id, producer.kind, mediaType.screen);
 
       $(".share-screen-btn").addClass("active");
       this.IsShareScreen = true;
@@ -2107,5 +2136,3 @@ class RoomClient {
     }
   }
 }
-
-
