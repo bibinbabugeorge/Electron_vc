@@ -761,7 +761,7 @@ server.connect().then((events) => {
     }
   });
 
-  events.on(callbackEvents.DashboardParticipantsListSuccess, function (data) {
+  events.on(callbackEvents.DashboardParticipantsListSuccess, async function (data) {
     // Assign data.Data.RoomList to the global variable
     roomList = data.Data.RoomList;
 
@@ -776,7 +776,7 @@ server.connect().then((events) => {
     // Send request for user call history
     var dataObj = {
       commandType: "GetUserCallHistory",
-      Data: { UserId: getuserid() },
+      Data: { UserId: await getuserid() },
     };
     server.sendCommand(JSON.stringify(dataObj));
   });
