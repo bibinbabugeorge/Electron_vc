@@ -3273,7 +3273,7 @@ input.form-control::placeholder {
   margin: 0;
 }
 .participants-list-view .participants-list {
-  min-height: 355px;
+  min-height: 339px;
   max-height: calc(100vh - 675px);
   overflow-y: auto;
   overflow-x: hidden;
