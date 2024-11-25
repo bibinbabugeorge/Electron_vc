@@ -83,8 +83,6 @@ window.electronAPI.onStopCall(async () => {
   window.electronAPI.sendCallStopped();
 });
 
-
-
 // function to toggle the share screen stream
 $("#epi_ShareScreenBtn, .mobile-view-share-btn").click(function () {
   // if (IsShareScreen) {
@@ -222,7 +220,8 @@ function setElapsedTime(istStartTime) {
     const minutes = Math.floor((elapsedTime % 3600000) / 60000);
     const seconds = Math.floor((elapsedTime % 60000) / 1000);
     $("#elapsedTime").html(
-      `${hours > 9 ? hours : "0" + hours}:${minutes > 9 ? minutes : "0" + minutes
+      `${hours > 9 ? hours : "0" + hours}:${
+        minutes > 9 ? minutes : "0" + minutes
       }:${seconds > 9 ? seconds : "0" + seconds}`
     );
   }
@@ -290,14 +289,19 @@ $(".chat-send-btn").click(function () {
 
 // Trigger send on Enter key press
 $(".chat-text-area").keypress(function (event) {
-  if (event.which == 13 && !event.shiftKey) { // Check if Enter key is pressed without Shift
+  if (event.which == 13 && !event.shiftKey) {
+    // Check if Enter key is pressed without Shift
     event.preventDefault(); // Prevent default behavior (adding new line)
     handleSendChat();
   }
 });
 
 async function handleSendChat() {
-  if (($(".chat-text-area").eq(1).val() == "" && $(".chat-text-area").eq(0).val() == "") && $(".attachedFilesUl li").length == 0)
+  if (
+    $(".chat-text-area").eq(1).val() == "" &&
+    $(".chat-text-area").eq(0).val() == "" &&
+    $(".attachedFilesUl li").length == 0
+  )
     return;
 
   if ($(".attachedFilesUl li").length == 0) {
@@ -344,22 +348,28 @@ async function handleSendChat() {
       }
     });
   });
-};
+}
 
 async function sendChat(files) {
-  let message = '';
-  const messages = $(".chat-text-area").map((_, element) => $(element).val()).get();
-  messages.forEach(element => {
+  let message = "";
+  const messages = $(".chat-text-area")
+    .map((_, element) => $(element).val())
+    .get();
+  messages.forEach((element) => {
     if (element != null && element != "") {
       message = element;
     }
   });
   function getFormattedDate() {
-    const options = { day: 'numeric', month: 'short', year: 'numeric' };
-    return new Date().toLocaleDateString('en-GB', options); // e.g., "23 Sept 2024"
+    const options = { day: "numeric", month: "short", year: "numeric" };
+    return new Date().toLocaleDateString("en-GB", options); // e.g., "23 Sept 2024"
   }
 
-  const lastDateText = $(".chat-ul .chat-date-view:last p").first().text().trim().toLowerCase();
+  const lastDateText = $(".chat-ul .chat-date-view:last p")
+    .first()
+    .text()
+    .trim()
+    .toLowerCase();
   const todayFormatted = getFormattedDate().toLowerCase(); // "23 Sept 2024"
 
   // Update the condition
@@ -492,11 +502,20 @@ async function bindChatHistory(Data) {
       ? `${fileUploadPath}/${chat.sendUserPic}`
       : "modules/images/default_user.svg";
 
-
     if (chat.sendUserId == User_ID) {
-      let bindSenderChatResp = await bindSenderChat(chat.files, chat.message, istSendTime, chat.groupId);
+      let bindSenderChatResp = await bindSenderChat(
+        chat.files,
+        chat.message,
+        istSendTime,
+        chat.groupId
+      );
     } else {
-      let bindRecieverChatResp = await bindRecieverChat(chat.sendUserName, chat, senderPic, istSendTime);
+      let bindRecieverChatResp = await bindRecieverChat(
+        chat.sendUserName,
+        chat,
+        senderPic,
+        istSendTime
+      );
     }
   });
 
@@ -517,7 +536,7 @@ function DocImgClick() {
   $(".document-download").off("click");
 
   $(".document-download").click(function () {
-    debugger
+    debugger;
     let a = document.createElement("a");
     a.href = fileUploadPath + $(this).prop("alt");
     a.download = $(this).siblings("p").text();
@@ -574,60 +593,63 @@ async function bindSenderChat(files, message, time, groupId) {
     <li class="chat-sender">
     <!-- <img src="modules/images/receiver.png" alt="" /> -->
     <div class="chat-sender-message">
-      ${files.length > 0
-      ? `<ul class="chat-attached-list" id="images-${groupId}">
+      ${
+        files.length > 0
+          ? `<ul class="chat-attached-list" id="images-${groupId}">
                   ${files
-        .map((file) => {
-          let extension = file.file.substring(
-            file.file.lastIndexOf("."),
-            file.file.length
-          );
-          if (imageExtensions.includes(extension)) {
-            imageCount++;
-            chatImageDictionary[groupId].push(file);
-            // return `<li><img src="/uploads/${file.file}" alt="${file.name}" /></li>`;
-            if (imageCount < 5)
-              return `<li><picture>
+                    .map((file) => {
+                      let extension = file.file.substring(
+                        file.file.lastIndexOf("."),
+                        file.file.length
+                      );
+                      if (imageExtensions.includes(extension)) {
+                        imageCount++;
+                        chatImageDictionary[groupId].push(file);
+                        // return `<li><img src="/uploads/${file.file}" alt="${file.name}" /></li>`;
+                        if (imageCount < 5)
+                          return `<li><picture>
                         <source srcset="${fileUploadPath}${file.file}" />
                         <img src="/modules/images/attachment.svg" alt="${file.name}" />
                       </picture></li>`;
-            else return "";
-          } else documentArray.push(file);
-          return "";
-        })
-        .join("")}
+                        else return "";
+                      } else documentArray.push(file);
+                      return "";
+                    })
+                    .join("")}
                 </ul>`
-      : ""
-    }
+          : ""
+      }
      ${message ? "<p>" + message + "</p>" : ""} 
       <p class="chat-message-time">${time.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    })}</p>
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })}</p>
     </div>
   </li>`;
 
-  let senderDoc = `${documentArray.length > 0
-    ? `${documentArray
-      .map(
-        (document) => `<li class="chat-sender" >
+  let senderDoc = `${
+    documentArray.length > 0
+      ? `${documentArray
+          .map(
+            (document) => `<li class="chat-sender" >
   <div class="chat-sender-message">
   <div class="attached-document-wrapper">
   <img src="./modules/images/attachment.svg" alt="${document.name}" />
   <p>${document.name}</p>
-  <img class="document-download" src="./modules/images/download.svg" alt="${document.file
-          }" />
+  <img class="document-download" src="./modules/images/download.svg" alt="${
+    document.file
+  }" />
   </div><p class="chat-message-time">${time.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })}</p>
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}</p>
   </div></li>`
-      )
-      .join("")}`
-    : ""
-    }`;
+          )
+          .join("")}`
+      : ""
+  }`;
 
   if (imageCount > 0 || message != "") chatUl.append(senderChat);
   chatUl.append(senderDoc);
@@ -676,68 +698,71 @@ async function bindRecieverChat(sender, chat, senderPic, istSendTime) {
   <div>
   <h6>${sender}</h6>
   <div class="chat-receiver-message">
-  ${chat.files.length > 0
+  ${
+    chat.files.length > 0
       ? ` <div class="position-relative">
               <ul class="chat-attached-list" id="images-${chat.groupId}">
                 ${chat.files
-        .map((file) => {
-          let extension = file.file.substring(
-            file.file.lastIndexOf("."),
-            file.file.length
-          );
-          if (imageExtensions.includes(extension)) {
-            imageCount++;
-            chatImageDictionary[chat.groupId].push(file);
-            // return `<li><img src="/uploads/${file.file}" alt="${file.name}" /></li>`;
-            if (imageCount < 5)
-              return `<li><picture>
+                  .map((file) => {
+                    let extension = file.file.substring(
+                      file.file.lastIndexOf("."),
+                      file.file.length
+                    );
+                    if (imageExtensions.includes(extension)) {
+                      imageCount++;
+                      chatImageDictionary[chat.groupId].push(file);
+                      // return `<li><img src="/uploads/${file.file}" alt="${file.name}" /></li>`;
+                      if (imageCount < 5)
+                        return `<li><picture>
                             <source srcset="${fileUploadPath}${file.file}" />
                             <img src="/modules/images/attachment.svg" alt="${file.name}" />
                           </picture></li>`;
-            else return "";
-          } else documentArray.push(file);
-          return "";
-        })
-        .join("")}
+                      else return "";
+                    } else documentArray.push(file);
+                    return "";
+                  })
+                  .join("")}
               </ul> 
               <button class="btn p-0 border-0 attachemnt-download-btn attachemnt-download-btn-image-ul">
                   <img  src="./modules/images/download.svg"/>
                 </button>
           </div> `
       : ""
-    }
+  }
   ${chat.message ? "<p>" + chat.message + "</p>" : ""} 
     <p class="chat-message-time">
       ${istSendTime.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    })}
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })}
     </p>
   </div>
   </div>
   </li>`;
 
-  let recieverDoc = `${documentArray.length > 0
-    ? `${documentArray
-      .map(
-        (document) => `<li class="chat-receiver" >
+  let recieverDoc = `${
+    documentArray.length > 0
+      ? `${documentArray
+          .map(
+            (document) => `<li class="chat-receiver" >
   <div class="chat-receiver-message">
   <div class="attached-document-wrapper">
   <img src="./modules/images/attachment.svg" alt="${document.name}" />
   <p>${document.name}</p>
-  <img class="document-download" src="./modules/images/download.svg" alt="${document.file
-          }" />
+  <img class="document-download" src="./modules/images/download.svg" alt="${
+    document.file
+  }" />
   </div><p class="chat-message-time">${istSendTime.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })}</p>
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}</p>
   </div></li>`
-      )
-      .join("")}`
-    : ""
-    }`;
+          )
+          .join("")}`
+      : ""
+  }`;
 
   if (imageCount > 0 || chat.message != "") chatUl.append(recieverChat);
   else
@@ -777,8 +802,9 @@ function manageProducerButtonState(kind, closeUser) {
   }
 
   let message = kind == "audio" ? "muted you" : "turned off your video";
-  let img = `<img src="modules/images/toastr_${kind === "audio" ? "audio" : "video"
-    }.svg"/>`;
+  let img = `<img src="modules/images/toastr_${
+    kind === "audio" ? "audio" : "video"
+  }.svg"/>`;
   var ulToastr = $(".participants-raise-hand-popup");
   ulToastr.append(`<li id="rpc-toastr-${kind}-${closeUser.replace(/\s/g, "")}" >
                     <div class="raise-hand-popup ">
@@ -857,21 +883,22 @@ async function raiseHand(user_id, user_name, status, profileImg) {
 
     ulBubble.append(`
         <li id="rh-bubble-${user_id}">
-            ${profileImg
-        ? `<div class="rounded-circle d-flex justify-content-center align-items-center">
+            ${
+              profileImg
+                ? `<div class="rounded-circle d-flex justify-content-center align-items-center">
                     <img src="${fileUploadPath}/${profileImg}" style="width: 48px; height: 48px" class="rounded-circle d-flex mb-1 justify-content-center align-items-center" alt="" />
                 </div>`
-        : `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 48px; height: 48px; background-color: ${backgroundColor}36;">
+                : `<div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 48px; height: 48px; background-color: ${backgroundColor}36;">
                     <h6 class="initials noselect" style="margin: 0; position: relative; color: ${backgroundColor};">
                         ${user_name
-          .split(" ")
-          .filter((word) => word !== "")
-          .map((word) => word[0].toUpperCase())
-          .slice(0, 2)
-          .join("")}
+                          .split(" ")
+                          .filter((word) => word !== "")
+                          .map((word) => word[0].toUpperCase())
+                          .slice(0, 2)
+                          .join("")}
                     </h6>
                 </div>`
-      }
+            }
             <img src="modules/images/hand_raised_icon.svg" class="hand-raised-icon" alt="" />
         </li>
     `);
@@ -958,7 +985,8 @@ $(".chatAttachment").change(function () {
         fileName = file.name.substring(0, file.name.length - extension.length);
       }
 
-      if (fileName.length > 8) { // Check if greater than 8 characters
+      if (fileName.length > 8) {
+        // Check if greater than 8 characters
         fileName = `<p>${fileName.substring(0, 8) + "..." + extension}</p>`;
       } else {
         fileName = `<p>${fileName + extension}</p>`;
@@ -986,11 +1014,7 @@ $(".chatAttachment").change(function () {
             )
         )
         .append(closeBtnHtml)
-        .append(
-          !imageExtensions.includes(extension)
-            ? fileName
-            : ""
-        );
+        .append(!imageExtensions.includes(extension) ? fileName : "");
       $(".attachedFilesUl").append(listItem);
       listItem.find("button").click(function () {
         URL.revokeObjectURL(objectUrl);
@@ -1010,7 +1034,6 @@ $(document).on("click", ".attachedFilesUl .close-btn", function () {
   URL.revokeObjectURL(objectUrl);
   listItem.remove();
 });
-
 
 function setCarouselButtonState() {
   var currentItem = $(".carousel-indicators-main-slider").children(".active");
@@ -1130,14 +1153,12 @@ let startTime = null;
 let finalStream = null;
 let canvas;
 let ctx;
-
+// Electron working code ---------------
 // $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(async () => {
 //   if (!$(".record-btn,.mobile-view-record-btn").hasClass("active")) {
-//     // Reset recording chunks array
 //     recordedChunks = [];
 //     recordingActive = true;
 
-//     // Create the canvas for capturing frames
 //     canvas = document.createElement('canvas');
 //     ctx = canvas.getContext('2d');
 
@@ -1165,11 +1186,11 @@ let ctx;
 //         }
 //         : false;
 //       const constraints = {
-//         audio, // Set to true if you need audio
+//         audio,
 //         video: {
 //           mandatory: {
 //             chromeMediaSource: 'desktop',
-//             chromeMediaSourceId: source.id // Use selectedOption as the screenId
+//             chromeMediaSourceId: source.id
 //           }
 //         }
 //       };
@@ -1178,24 +1199,22 @@ let ctx;
 //       console.error("Error capturing system audio:", err);
 //       return;
 //     }
-//     let systemAudioSource;
-//     const canvasVideoStream = canvas.captureStream();
-//     // Combine microphone and system audio using AudioContext
+
+//     const canvasVideoStream = canvas.captureStream(30); // Limit frame rate to 30 FPS
 //     const audioContext = new AudioContext();
 //     const micAudioSource = audioContext.createMediaStreamSource(micAudioStream);
 //     const destination = audioContext.createMediaStreamDestination();
 //     micAudioSource.connect(destination);
+
 //     if (!IS_MACOS) {
-//       systemAudioSource = audioContext.createMediaStreamSource(desktopStream);
-//       systemAudioSource.connect(destination);
+//       const systemAudioSource = audioContext.createMediaStreamSource(desktopStream);
 //       systemAudioSource.connect(destination);
 //     }
 
 //     const finalStream = new MediaStream();
-//     finalStream.addTrack(canvasVideoStream.getVideoTracks()[0]); // Add canvas video
-//     finalStream.addTrack(destination.stream.getAudioTracks()[0]); // Add combined audio (mic + system audio)
+//     finalStream.addTrack(canvasVideoStream.getVideoTracks()[0]);
+//     finalStream.addTrack(destination.stream.getAudioTracks()[0]);
 
-//     // Setup MediaRecorder to record the final stream
 //     mediaRecorder = new MediaRecorder(finalStream, {
 //       mimeType: 'video/webm'
 //     });
@@ -1205,7 +1224,20 @@ let ctx;
 //         recordedChunks.push(event.data);
 //       }
 //     };
+
+//     // Frame capture logic with skipping if necessary
+//     let lastFrameTime = 0;
+//     const frameRate = 30; // Target frame rate
+//     const frameInterval = 1000 / frameRate;
+
 //     const captureFrames = async () => {
+//       const currentTime = performance.now();
+//       if (currentTime - lastFrameTime < frameInterval) {
+//         requestAnimationFrame(captureFrames);
+//         return;
+//       }
+//       lastFrameTime = currentTime;
+
 //       const base64Data = await window.electronAPI.captureElectronPage();
 //       const img = new Image();
 //       img.src = `data:image/png;base64,${base64Data}`;
@@ -1216,16 +1248,14 @@ let ctx;
 //         ctx.drawImage(img, 0, 0);
 
 //         if (mediaRecorder.state === 'recording') {
-//           requestAnimationFrame(captureFrames); // Keep capturing frames
+//           requestAnimationFrame(captureFrames);
 //         }
 //       };
 //     };
 
-
 //     mediaRecorder.onstop = () => {
 //       const blob = new Blob(recordedChunks, { type: 'video/webm' });
 //       const url = URL.createObjectURL(blob);
-
 //       const a = document.createElement('a');
 //       a.style.display = 'none';
 //       a.href = url;
@@ -1236,7 +1266,8 @@ let ctx;
 //     };
 
 //     mediaRecorder.start();
-//     captureFrames(); // Start capturing frames from the Electron page
+//     captureFrames();
+
 //     $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").toggleClass("active");
 
 //     // Timer function for showing recording time
@@ -1257,40 +1288,31 @@ let ctx;
 //     setRecordTime();
 
 //   } else {
-//     // Stop the recording
 //     $(".record-btn,.mobile-view-record-btn, .mobile-view-record-btn-start").toggleClass("active");
 //     if (mediaRecorder && mediaRecorder.state === 'recording') {
 //       mediaRecorder.stop();
 //     }
-
 //     $(".record-active").html("00:00:00");
 //   }
 // });
+//-------------------------------------
 
-$(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(async () => {
-  if (!$(".record-btn,.mobile-view-record-btn").hasClass("active")) {
-    recordedChunks = [];
-    recordingActive = true;
+$(".record-btn").click(async () => {
+  if (!$(".record-btn").hasClass("active")) {
+    const audioContext = new AudioContext();
+    roomObj.audioContext = audioContext;
+    const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin'; 
+    const displayMediaOptions = {
+      preferCurrentTab: true,
+      audio: { echoCancellation: false },
+      video: { cursor: "never" },
+    };
 
-    canvas = document.createElement('canvas');
-    ctx = canvas.getContext('2d');
-
-    // Capture microphone audio
     let micAudioStream;
-    try {
-      micAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (err) {
-      console.error("Error capturing microphone audio:", err);
-      return;
-    }
-
-    // Capture system audio (for the call audio)
-    let desktopStream;
-    const IS_MACOS = await window.electronAPI.getOperatingSystem() === 'darwin';
-    try {
-      const sources = await window.electronAPI.getSources();
-      const source = sources.find(src => src.name === 'Entire screen'); // Adjust this based on your call window title
-      const audio = !IS_MACOS
+    micAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const sources = await window.electronAPI.getSources();
+    const source = sources.find(src => src.name === "Apps Connect"); // Adjust this based on your call window title
+    const audio = !IS_MACOS
         ? {
           mandatory: {
             echoCancellation: true,
@@ -1307,108 +1329,138 @@ $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").click(a
           }
         }
       };
-      desktopStream = await navigator.mediaDevices.getUserMedia(constraints);
-    } catch (err) {
-      console.error("Error capturing system audio:", err);
-      return;
+      stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+
+    $(".record-btn").toggleClass("active");
+    recordingActive = true;
+    desktopStream = stream;
+
+    if (IsAudioopen) {
+      let screenAudioStream = new MediaStream();
+      let deskStreamaud = desktopStream.getAudioTracks()[0];
+      let deskStreamvid = desktopStream.getVideoTracks()[0];
+      screenAudioStream.addTrack(micAudioStream.getAudioTracks()[0]);
+
+      //const audioContext = new AudioContext();
+      //roomObj.audioContext = audioContext;
+      let screenAudio = audioContext.createMediaStreamSource(screenAudioStream);
+      let micAudio = audioContext.createMediaStreamSource(audioStream);
+      destAudio = audioContext.createMediaStreamDestination();
+      screenAudio.connect(destAudio);
+      micAudio.connect(destAudio);
+
+      finalStream = new MediaStream();
+      finalStream.addTrack(desktopStream.getVideoTracks()[0]);
+      finalStream.addTrack(destAudio.stream.getAudioTracks()[0]);
+    } else {
+      finalStream = desktopStream;
     }
 
-    const canvasVideoStream = canvas.captureStream(30); // Limit frame rate to 30 FPS
-    const audioContext = new AudioContext();
-    const micAudioSource = audioContext.createMediaStreamSource(micAudioStream);
-    const destination = audioContext.createMediaStreamDestination();
-    micAudioSource.connect(destination);
+     // Handle mic mute/unmute
+     const toggleMic = (isMicEnabled) => {
+      const micTrack = isMicEnabled
+        ? micAudioStream.getAudioTracks()[0]
+        : null;
 
-    if (!IS_MACOS) {
-      const systemAudioSource = audioContext.createMediaStreamSource(desktopStream);
-      systemAudioSource.connect(destination);
-    }
+      if (micTrack) {
+        micAudioStream = new MediaStream([micTrack]);
+        micAudio = audioContext.createMediaStreamSource(micAudioStream);
+        micAudio.connect(destAudio);
+      } else {
+        destAudio.disconnect(); // Stop sending mic audio
+      }
+    };
 
-    const finalStream = new MediaStream();
-    finalStream.addTrack(canvasVideoStream.getVideoTracks()[0]);
-    finalStream.addTrack(destination.stream.getAudioTracks()[0]);
-
-    mediaRecorder = new MediaRecorder(finalStream, {
-      mimeType: 'video/webm'
+    // Example usage of toggleMic function
+    // Replace this with your actual mute/unmute button logic
+    $("#epic_AudioMute").click(() => {
+      IsAudioopen = !IsAudioopen;
+      toggleMic(IsAudioopen);
     });
 
-    mediaRecorder.ondataavailable = event => {
+    startTime = Date.now();
+    const options = { mimeType: "video/webm; codecs=vp9,opus" };
+
+    mediaRecorder = new MediaRecorder(finalStream, options);
+
+    mediaRecorder.ondataavailable = handleDataAvailable;
+    mediaRecorder.start();
+
+    desktopStream.getVideoTracks()[0].onended = () => {
+      $(".record-btn").click();
+    };
+
+    function handleDataAvailable(event) {
       if (event.data.size > 0) {
         recordedChunks.push(event.data);
+        download()
+          .then(function (data) {
+            recordingActive = false;
+            mediaRecorder = null;
+            recordedChunks = [];
+            endTime = null;
+            startTime = null;
+            finalStream = null;
+          })
+          .catch(function (error) {
+            console.error("Error downloading:", error);
+          });
       }
-    };
+    }
+    function download() {
+      return new Promise(function (resolve, reject) {
+        const blob = new Blob(recordedChunks, {
+          type: "video/webm",
+        });
+        let duration = endTime - startTime;
+        ysFixWebmDuration(blob, duration, { logger: false })
+          .then(function (fixedBlob) {
+            const url = URL.createObjectURL(fixedBlob);
+            const a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            a.href = url;
+            a.download = `${$(
+              "#callName"
+            ).text()}_${formatDateToDDMMYYYYHHMMSS()}.webm`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            resolve(true);
+          })
+          .catch(reject);
+      });
+    }
 
-    // Frame capture logic with skipping if necessary
-    let lastFrameTime = 0;
-    const frameRate = 30; // Target frame rate
-    const frameInterval = 1000 / frameRate;
-
-    const captureFrames = async () => {
-      const currentTime = performance.now();
-      if (currentTime - lastFrameTime < frameInterval) {
-        requestAnimationFrame(captureFrames);
-        return;
-      }
-      lastFrameTime = currentTime;
-
-      const base64Data = await window.electronAPI.captureElectronPage();
-      const img = new Image();
-      img.src = `data:image/png;base64,${base64Data}`;
-
-      img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        if (mediaRecorder.state === 'recording') {
-          requestAnimationFrame(captureFrames);
-        }
-      };
-    };
-
-    mediaRecorder.onstop = () => {
-      const blob = new Blob(recordedChunks, { type: 'video/webm' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = `${$("#callName").text()}_${formatDateToDDMMYYYYHHMMSS()}.webm`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-    };
-
-    mediaRecorder.start();
-    captureFrames();
-
-    $(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").toggleClass("active");
-
-    // Timer function for showing recording time
-    const startTime = new Date();
-    const setRecordTime = () => {
+    function setRecordTime() {
       const currentTime = new Date();
       const elapsedTime = currentTime - startTime;
-      const hours = Math.floor(elapsedTime / 3600000);
-      const minutes = Math.floor((elapsedTime % 3600000) / 60000);
-      const seconds = Math.floor((elapsedTime % 60000) / 1000);
-      $(".record-active").html(
-        `${hours > 9 ? hours : "0" + hours}:${minutes > 9 ? minutes : "0" + minutes}:${seconds > 9 ? seconds : "0" + seconds}`
-      );
-      if ($(".record-btn, .mobile-view-record-btn, .mobile-view-record-btn-start").hasClass("active")) {
-        requestAnimationFrame(setRecordTime);
+      if (currentTime >= startTime) {
+        const hours = Math.floor(elapsedTime / 3600000);
+        const minutes = Math.floor((elapsedTime % 3600000) / 60000);
+        const seconds = Math.floor((elapsedTime % 60000) / 1000);
+        $(".record-active").html(
+          `${hours > 9 ? hours : "0" + hours}:${
+            minutes > 9 ? minutes : "0" + minutes
+          }:${seconds > 9 ? seconds : "0" + seconds}`
+        );
       }
-    };
-    setRecordTime();
-
-  } else {
-    $(".record-btn,.mobile-view-record-btn, .mobile-view-record-btn-start").toggleClass("active");
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-      mediaRecorder.stop();
+      requestAnimationFrame(() => setRecordTime());
     }
+    setRecordTime();
+  } else {
+    $(".record-btn").toggleClass("active");
+    endTime = Date.now();
+    mediaRecorder.stop();
+
+    const tracks = desktopStream.getTracks();
+    tracks.forEach((track) => {
+      track.stop();
+    });
+
     $(".record-active").html("00:00:00");
   }
 });
-
 
 function formatDateToDDMMYYYYHHMMSS() {
   // Convert milliseconds to a Date object
@@ -1490,9 +1542,11 @@ function bindChatImagesCarousel(files) {
     );
 
     $(".chat-carousel-wrapper ol").append(
-      `<li data-bs-target="#image-carousel" data-bs-slide-to="${imageCount}" aria-label="Slide ${imageCount + 1
+      `<li data-bs-target="#image-carousel" data-bs-slide-to="${imageCount}" aria-label="Slide ${
+        imageCount + 1
       }"
-        class="${imageCount > 0 ? "" : "active"}" ${imageCount > 0 ? "" : 'aria-current="true"'
+        class="${imageCount > 0 ? "" : "active"}" ${
+        imageCount > 0 ? "" : 'aria-current="true"'
       }
        >
           <picture>
@@ -1559,7 +1613,9 @@ function chatAttachementCarousel() {
 }
 $(".image-carousel-download").click(function () {
   let a = document.createElement("a");
-  a.href = $("#image-carousel .carousel-item.active picture source").prop("srcset");
+  a.href = $("#image-carousel .carousel-item.active picture source").prop(
+    "srcset"
+  );
   a.download = $("#image-carousel .carousel-item.active picture img").prop(
     "alt"
   );
