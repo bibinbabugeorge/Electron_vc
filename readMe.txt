@@ -11,4 +11,4 @@ Following are the important notes on maintaining the electron build of VC
 
 * File uploads are stored under uploads folder. In any event of file upload folder change, change `fileUploadPath` variable in line number 3 of index.js
 
-* Screen recording and screen sharing are custom written for electron, Incase of a framework change this need to be addressed
+* Screen recording and screen sharing are custom written for electron, Incase of a framework change this need to be addressed 
