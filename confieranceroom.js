@@ -1338,12 +1338,7 @@ $(".record-btn").click(async () => {
 
     if (IsAudioopen) {
       let screenAudioStream = new MediaStream();
-      let deskStreamaud = desktopStream.getAudioTracks()[0];
-      let deskStreamvid = desktopStream.getVideoTracks()[0];
-      screenAudioStream.addTrack(micAudioStream.getAudioTracks()[0]);
-
-      //const audioContext = new AudioContext();
-      //roomObj.audioContext = audioContext;
+      screenAudioStream.addTrack(audioStream.getAudioTracks()[0]);
       let screenAudio = audioContext.createMediaStreamSource(screenAudioStream);
       let micAudio = audioContext.createMediaStreamSource(audioStream);
       destAudio = audioContext.createMediaStreamDestination();
@@ -1356,28 +1351,6 @@ $(".record-btn").click(async () => {
     } else {
       finalStream = desktopStream;
     }
-
-     // Handle mic mute/unmute
-     const toggleMic = (isMicEnabled) => {
-      const micTrack = isMicEnabled
-        ? micAudioStream.getAudioTracks()[0]
-        : null;
-
-      if (micTrack) {
-        micAudioStream = new MediaStream([micTrack]);
-        micAudio = audioContext.createMediaStreamSource(micAudioStream);
-        micAudio.connect(destAudio);
-      } else {
-        destAudio.disconnect(); // Stop sending mic audio
-      }
-    };
-
-    // Example usage of toggleMic function
-    // Replace this with your actual mute/unmute button logic
-    $("#epic_AudioMute").click(() => {
-      IsAudioopen = !IsAudioopen;
-      toggleMic(IsAudioopen);
-    });
 
     startTime = Date.now();
     const options = { mimeType: "video/webm; codecs=vp9,opus" };
