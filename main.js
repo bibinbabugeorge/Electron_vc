@@ -30,8 +30,10 @@ if (!gotTheLock) {
 function createWindow() {
   mainWindow = new BrowserWindow({
     title: 'AppsConnect',
-    width: 800,
+    width: 1030,
     height: 800,
+    minHeight:768,
+    minWidth:1024,
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
@@ -43,6 +45,7 @@ function createWindow() {
   });
 
   mainWindow.loadFile('splash.html');
+  //mainWindow.webContents.openDevTools();
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();

@@ -1,3 +1,10 @@
+document.addEventListener("DOMContentLoaded", function () {
+  let CachedRoomlist = JSON.parse(localStorage.getItem('roomList'));
+  if(CachedRoomlist){
+    dashboardInit(CachedRoomlist);
+  }
+});
+
 // function that will hit on the initialization of dashboard.html
 async function dashboardInit(Roomlist) {
   var _userid = await getCookieDetails("userID");
