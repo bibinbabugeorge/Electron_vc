@@ -12,7 +12,7 @@
     "appId": "com.appsteam.appsconnect",
     "productName": "AppsConnect",
     "files": [
-      "assets/**", 
+      "assets/**",
       "dist/**/*",
       "node_modules/**/*",
       "main.js",
@@ -73,12 +73,12 @@
       "createStartMenuShortcut": true
     },
     "mac": {
-      "identity": "Apple Development: app@appsteantechnologies.com",
       "target": [
         "dmg"
       ],
       "icon": "./assets/appsconnect_icon.icns",
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "hardenedRuntime": true
     },
     "dmg": {
       "background": "./assets/appsconnect_background.png",
@@ -112,7 +112,7 @@
     }
   },
   "devDependencies": {
-    "electron": "^33.0.1",
+    "electron": "^33.2.1",
     "electron-builder": "^25.1.8"
   },
   "dependencies": {
