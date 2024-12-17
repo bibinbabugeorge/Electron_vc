@@ -78,9 +78,15 @@
       ],
       "icon": "./assets/appsconnect_icon.icns",
       "category": "public.app-category.utilities",
-      "hardenedRuntime": true
+      "entitlements": "./assets/Entitlements.plist",
+      "entitlementsInherit": "./assets/entitlements-inherit.plist",
+      "provisioningProfile": "./assets/AppsConnectProfile.provisionprofile",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "identity": null
     },
     "dmg": {
+      "sign": true,
       "background": "./assets/appsconnect_background.png",
       "icon": "./assets/appsconnect_icon.icns",
       "iconSize": 100,
@@ -118,6 +124,8 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "electron-auto-launch": "^5.0.7",
+    "electron-notarize": "^1.2.2",
+    "electron-osx-sign": "^0.6.0",
     "electron-updater": "^6.3.9"
   }
 }

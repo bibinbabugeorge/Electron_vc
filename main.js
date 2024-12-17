@@ -40,7 +40,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload'), // Preload script
       nodeIntegration: true,
       contextIsolation: true,
-      enableRemoteModule: false,
+      enableRemoteModule: true,
     }
   });
 

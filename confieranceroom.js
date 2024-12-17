@@ -536,7 +536,6 @@ function DocImgClick() {
   $(".document-download").off("click");
 
   $(".document-download").click(function () {
-    debugger;
     let a = document.createElement("a");
     a.href = fileUploadPath + $(this).prop("alt");
     a.download = $(this).siblings("p").text();
@@ -1310,7 +1309,8 @@ $(".record-btn").click(async () => {
 
     let micAudioStream;
     micAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const sources = await window.electronAPI.getSources();
+    const srcee = window.electronAPI;
+    const sources = await srcee.getSources();
     const source = sources.find(src => src.name === "Apps Connect"); // Adjust this based on your call window title
     const audio = !IS_MACOS
         ? {

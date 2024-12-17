@@ -75,7 +75,6 @@ function toggleButtontext() {
 }
 
 $("#groupIcon").change(function () {
-  debugger
   var form = new FormData();
   ApiURL = apiUri + "uploadfile"
   form.append("Picture", $('#groupIcon')[0].files[0]);
@@ -101,7 +100,6 @@ $("#groupIcon").change(function () {
 
 
 function Bindparticipant(participant) {
-  debugger
   var list = "";
   if (participant !== null || participant !== undefined) {
     participant.forEach((element) => {
